@@ -106,12 +106,10 @@ const Skills = () => {
           onMouseLeave={() => setIsHovered(false)}
         >
           <div
-            className={`flex gap-8 transition-transform duration-300 ${
-              isHovered ? "pause-animation" : "animate-marquee"
-            }`}
+            className="flex gap-8 transition-all duration-300"
             style={{
               width: "fit-content",
-              animation: isHovered ? "none" : "marquee 20s linear infinite",
+              animation: `marquee ${isHovered ? '40s' : '20s'} linear infinite`,
             }}
           >
             <TooltipProvider>
