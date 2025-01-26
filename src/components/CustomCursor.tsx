@@ -170,18 +170,20 @@ const CustomCursor = () => {
       >
         {isCompact ? "Expand" : "Compact"} Cursor
       </button>
-      <style jsx global>{`
-        .ripple-effect {
-          position: fixed;
-          pointer-events: none;
-          z-index: 45;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: rgba(147, 51, 234, 0.4);
-          transform-origin: center;
-        }
-      `}</style>
+      <style>
+        {`
+          .ripple-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 45;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(147, 51, 234, 0.4);
+            transform-origin: center;
+          }
+        `}
+      </style>
     </>
   );
 };
