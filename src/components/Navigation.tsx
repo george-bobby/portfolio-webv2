@@ -24,9 +24,8 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/80 backdrop-blur-md py-4" : "py-6"
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-background/80 backdrop-blur-md py-4" : "py-6"
+        }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
@@ -48,9 +47,8 @@ const Navigation = () => {
 
           {/* Navigation and social icons container */}
           <div
-            className={`${
-              isOpen ? "flex" : "hidden"
-            } lg:flex absolute lg:relative top-full left-0 w-full lg:w-auto bg-background lg:bg-transparent flex-col lg:flex-row items-center gap-6 p-4 lg:p-0`}
+            className={`${isOpen ? "flex" : "hidden"
+              } lg:flex absolute lg:relative top-full left-0 w-full lg:w-auto bg-background lg:bg-transparent flex-col lg:flex-row items-center gap-6 p-4 lg:p-0`}
           >
             {/* Navigation links */}
             <div className="flex flex-col lg:flex-row items-center gap-4">

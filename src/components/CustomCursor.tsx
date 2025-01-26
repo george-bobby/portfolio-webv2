@@ -6,7 +6,6 @@ const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
   const trailRef = useRef<HTMLDivElement>(null);
-  const [isCompact, setIsCompact] = useState(true);
   const [isIdle, setIsIdle] = useState(false);
   const idleTimerRef = useRef<number | null>(null);
 
@@ -96,8 +95,7 @@ const CustomCursor = () => {
       <div
         ref={cursorRef}
         className={cn(
-          "fixed pointer-events-none z-50 w-3 h-3 rounded-full bg-primary/20 border border-primary/50 mix-blend-difference",
-          isCompact ? "scale-75" : "scale-100",
+          "fixed pointer-events-none z-50 w-3 h-3 rounded-full bg-primary/20 border border-primary/50 mix-blend-difference scale-100",
           isIdle && "opacity-50"
         )}
       />
@@ -109,12 +107,6 @@ const CustomCursor = () => {
         ref={trailRef}
         className="fixed pointer-events-none z-30 w-8 h-8 rounded-full bg-primary/5 mix-blend-difference transition-transform"
       />
-      <button
-        onClick={() => setIsCompact(!isCompact)}
-        className="fixed bottom-4 right-4 px-3 py-1 text-xs bg-secondary/50 rounded-full hover:bg-secondary/70"
-      >
-        {isCompact ? "Expand" : "Compact"} Cursor
-      </button>
     </>
   );
 };
