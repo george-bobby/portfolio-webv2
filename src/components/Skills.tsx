@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Code2, Database, Cloud, Figma, Server, Laptop, Rocket } from "lucide-react";
 import { Button } from "./ui/button";
@@ -78,6 +78,20 @@ const skills: Skill[] = [
 
 const Skills = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const [animationSpeed, setAnimationSpeed] = useState(20);
+
+  useEffect(() => {
+    const marqueeElement = marqueeRef.current;
+    if (!marqueeElement) return;
+
+    const duplicateSkills = () => {
+      const originalContent = marqueeElement.innerHTML;
+      marqueeElement.innerHTML += originalContent;
+    };
+
+    duplicateSkills();
+  }, []);
 
   return (
     <section id="skills" className="py-20 relative overflow-hidden">
@@ -102,14 +116,20 @@ const Skills = () => {
         {/* Marquee Container */}
         <div
           className="relative overflow-hidden py-10"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={() => {
+            setIsHovered(true);
+            setAnimationSpeed(40);
+          }}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            setAnimationSpeed(20);
+          }}
         >
           <div
-            className="flex gap-8 transition-all duration-300"
+            ref={marqueeRef}
+            className="flex gap-8 transition-all duration-300 w-max animate-marquee"
             style={{
-              width: "fit-content",
-              animation: `marquee ${isHovered ? '40s' : '20s'} linear infinite`,
+              animationDuration: `${animationSpeed}s`,
             }}
           >
             <TooltipProvider>
