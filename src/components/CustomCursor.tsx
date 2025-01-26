@@ -57,7 +57,7 @@ const CustomCursor = () => {
 
     const resetCursor = () => {
       gsap.to(cursor, {
-        scale: 1,
+        scale: 2,
         width: "12px",
         height: "12px",
         backgroundColor: "rgba(147, 51, 234, 0.2)",
