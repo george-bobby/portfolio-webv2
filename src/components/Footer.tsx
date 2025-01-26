@@ -2,10 +2,11 @@ import { Github, Linkedin, Twitter, ArrowUp, Mail, Phone } from "lucide-react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const Footer = () => {
   const { toast } = useToast();
@@ -20,7 +21,10 @@ const Footer = () => {
   const scrollToTop = () => {
     gsap.to(window, {
       duration: 1.5,
-      scrollTo: 0,
+      scrollTo: {
+        y: 0,
+        autoKill: false
+      },
       ease: "power3.inOut",
     });
   };
