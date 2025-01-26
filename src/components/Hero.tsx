@@ -64,31 +64,31 @@ const Hero = () => {
 
       // Initial animations
       const tl = gsap.timeline();
-      
+
       tl.from(socialsRef.current, {
         x: -30,
         opacity: 0,
         duration: 1,
         ease: "power3.out",
       })
-      .from(headingRef.current, {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      }, "-=0.5")
-      .from(textRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      }, "-=0.7")
-      .from(buttonsRef.current, {
-        y: 20,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      }, "-=0.5");
+        .from(headingRef.current, {
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        }, "-=0.5")
+        .from(textRef.current, {
+          y: 30,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        }, "-=0.7")
+        .from(buttonsRef.current, {
+          y: 20,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        }, "-=0.5");
 
       // Floating animation for buttons
       gsap.to(buttonsRef.current, {
@@ -145,19 +145,19 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl">
-          <h1 
-            ref={headingRef} 
+          <h1
+            ref={headingRef}
             className="text-5xl md:text-7xl font-heading font-bold mb-6 relative"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            Hi, I'm <span className="text-primary">John Doe</span>.<br />
+            Hi, I'm <span className="text-primary">George Bobby</span>.<br />
             Let's Build Something Extraordinary.
             <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-primary/50 transform origin-left transition-transform duration-300 ${isHovered ? 'scale-x-100' : 'scale-x-0'}`} />
           </h1>
-          <p ref={textRef} className="text-xl md:text-2xl text-muted-foreground mb-8 hover:scale-105 transition-transform duration-300">
+          {/* <p ref={textRef} className="text-xl md:text-2xl text-muted-foreground mb-8 hover:scale-105 transition-transform duration-300">
             I build exceptional digital experiences that inspire and innovate.
-          </p>
+          </p> */}
           <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4">
             <Button
               size="lg"

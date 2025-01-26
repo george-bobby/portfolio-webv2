@@ -12,7 +12,7 @@ const ResearchPaper = () => {
   const paper = {
     title: "Exploring AI in Education: A Comparative Study",
     abstract: "This paper explores the potential of AI in question paper generation using models like LSA, Word2Vec, and Seq2Seq to achieve better accuracy and automation. The study compares different approaches and presents a comprehensive analysis of their effectiveness in educational contexts.",
-    authors: ["John Doe", "Jane Smith"],
+    authors: ["George Bobby", "Dr. Jayapandiyan N"],
     publishedDate: "March 2024",
     publication: "Springer",
     technologies: ["AI", "NLP", "LSA", "Word2Vec", "Seq2Seq", "Python", "TensorFlow"],
