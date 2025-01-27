@@ -111,9 +111,8 @@ const WorkApproach = () => {
             {phases.map((phase, index) => (
               <div
                 key={phase.title}
-                className={`phase-card flex items-center gap-8 opacity-0 ${
-                  index % 2 === 0 ? "flex-row" : "flex-row-reverse"
-                }`}
+                className={`phase-card flex items-center gap-8 opacity-0 ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                  }`}
               >
                 {/* Content */}
                 <div className={`flex-1 ${index % 2 === 0 ? "text-right" : "text-left"}`}>

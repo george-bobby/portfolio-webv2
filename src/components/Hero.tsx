@@ -153,7 +153,7 @@ const Hero = () => {
           ref={headingRef}
           className="text-5xl md:text-7xl font-heading font-bold mb-6"
         >
-          Hi, I'm <span className="text-primary">George Bobby</span>.
+          Hi, I'm <span className="text-primary">John Doe</span>.
           <br />
           Let's Build Something Extraordinary.
         </h1>
