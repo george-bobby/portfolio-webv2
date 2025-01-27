@@ -39,6 +39,9 @@ const CustomCursor = () => {
 
     const handleHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      // Add null check and ensure target is an HTMLElement
+      if (!target || !(target instanceof HTMLElement)) return;
+      
       const tagName = target.tagName.toLowerCase();
 
       const cursorStyles: Record<string, any> = {
