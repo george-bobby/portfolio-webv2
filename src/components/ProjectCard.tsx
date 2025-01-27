@@ -16,11 +16,17 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ title, description, image, technologies, link, className }: ProjectCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const techsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const card = cardRef.current;
-    if (!card) return;
+    const overlay = overlayRef.current;
+    const techs = techsRef.current;
+    if (!card || !overlay || !techs) return;
 
+    // Initial animation
     gsap.fromTo(
       card,
       { opacity: 0, y: 20 },
@@ -35,27 +41,66 @@ const ProjectCard = ({ title, description, image, technologies, link, className 
         },
       }
     );
+
+    // Hover animations
+    const handleMouseEnter = () => {
+      gsap.to(card, {
+        scale: 1.02,
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        duration: 0.3,
+      });
+      gsap.to(overlay, { opacity: 1, duration: 0.3 });
+      gsap.to(techs, { y: 0, opacity: 1, duration: 0.3 });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(card, {
+        scale: 1,
+        boxShadow: "none",
+        duration: 0.3,
+      });
+      gsap.to(overlay, { opacity: 0, duration: 0.3 });
+      gsap.to(techs, { y: 10, opacity: 0, duration: 0.3 });
+    };
+
+    card.addEventListener("mouseenter", handleMouseEnter);
+    card.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      card.removeEventListener("mouseenter", handleMouseEnter);
+      card.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, []);
 
   return (
     <Card
       ref={cardRef}
       className={cn(
-        "w-[300px] min-w-[300px] bg-secondary/50 backdrop-blur-sm hover:bg-secondary/70 transition-all duration-300 hover:scale-105 group",
+        "bg-secondary/50 backdrop-blur-sm transition-all duration-300 group",
         className
       )}
     >
       <div className="relative aspect-video overflow-hidden rounded-t-lg">
         <img
+          ref={imageRef}
           src={image}
           alt={title}
           className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
         />
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 bg-gradient-to-t from-primary/80 to-primary/20 opacity-0 transition-opacity flex items-center justify-center"
+        >
+          <span className="text-primary-foreground font-medium">View Case Study</span>
+        </div>
       </div>
       <CardContent className="p-6">
         <h3 className="text-xl font-heading font-bold mb-2">{title}</h3>
         <p className="text-muted-foreground mb-4 line-clamp-3">{description}</p>
-        <div className="flex flex-wrap gap-2 mb-4 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+        <div
+          ref={techsRef}
+          className="flex flex-wrap gap-2 mb-4 opacity-0 translate-y-2"
+        >
           {technologies.map((tech) => (
             <span
               key={tech}
