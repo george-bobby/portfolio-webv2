@@ -1,9 +1,9 @@
 import { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,10 +40,9 @@ const Projects = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!sectionRef.current || !projectsRef.current) return;
-
     const section = sectionRef.current;
     const projects = projectsRef.current;
+    if (!section || !projects) return;
 
     // Create horizontal scroll animation
     const tl = gsap.timeline({
@@ -51,6 +50,7 @@ const Projects = () => {
         trigger: section,
         pin: true,
         scrub: 1,
+        snap: 1 / (projects.children.length - 1),
         end: () => `+=${section.offsetWidth * (projects.children.length - 1)}`,
       }
     });
@@ -61,7 +61,7 @@ const Projects = () => {
     });
 
     // Animate project cards on scroll
-    Array.from(projects.children).forEach((project, i) => {
+    Array.from(projects.children).forEach((project) => {
       gsap.from(project, {
         opacity: 0,
         scale: 0.8,
@@ -91,7 +91,7 @@ const Projects = () => {
         {projects.map((project) => (
           <div 
             key={project.id}
-            className="relative min-w-screen h-full flex items-center justify-center p-8"
+            className="relative w-screen h-full flex items-center justify-center p-8 shrink-0"
           >
             <div className="relative w-full max-w-4xl bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm group">
               <div className="relative aspect-video overflow-hidden">
@@ -134,7 +134,7 @@ const Projects = () => {
           </div>
         ))}
 
-        <div className="relative min-w-screen h-full flex items-center justify-center">
+        <div className="relative w-screen h-full flex items-center justify-center shrink-0">
           <Button
             onClick={() => navigate('/projects')}
             size="lg"
