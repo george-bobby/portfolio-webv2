@@ -93,21 +93,21 @@ const Projects = () => {
             key={project.id}
             className="relative w-screen h-full flex items-center justify-center p-8 shrink-0"
           >
-            <div className="relative w-full max-w-4xl bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm group">
-              <div className="relative aspect-video overflow-hidden">
+            <div className="relative w-full max-w-6xl h-[70vh] bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm group hover:bg-secondary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20">
+              <div className="relative h-[60%] overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               
-              <div className="p-8">
-                <h3 className="text-3xl font-heading font-bold mb-4 animate-fade-up">
+              <div className="p-8 transform transition-all duration-500 group-hover:translate-y-[-10px]">
+                <h3 className="text-3xl font-heading font-bold mb-4 animate-fade-up group-hover:text-primary transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-muted-foreground mb-6 animate-fade-up">
+                <p className="text-muted-foreground mb-6 animate-fade-up line-clamp-2 group-hover:line-clamp-none transition-all">
                   {project.description}
                 </p>
                 
@@ -115,7 +115,7 @@ const Projects = () => {
                   {project.tools.map((tool) => (
                     <span
                       key={tool}
-                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full"
+                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-all duration-300 hover:scale-110 hover:bg-primary/30"
                     >
                       {tool}
                     </span>
@@ -124,10 +124,10 @@ const Projects = () => {
 
                 <Button
                   onClick={() => navigate(`/projects/${project.slug}`)}
-                  className="group bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-300 hover:scale-105"
+                  className="group bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
                 >
                   View Case Study
-                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </Button>
               </div>
             </div>
@@ -138,10 +138,10 @@ const Projects = () => {
           <Button
             onClick={() => navigate('/projects')}
             size="lg"
-            className="group bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-300 hover:scale-105"
+            className="group bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
           >
             View All Projects
-            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
           </Button>
         </div>
       </div>
