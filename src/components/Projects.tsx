@@ -10,27 +10,27 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
   {
     id: 1,
-    title: "E-Commerce Platform",
-    description: "A modern e-commerce platform built with Next.js and Stripe integration for seamless payments.",
-    image: "/placeholder.svg",
-    tools: ["React", "Next.js", "Stripe", "TailwindCSS"],
-    slug: "e-commerce-platform"
+    title: "AI-Powered Healthcare Platform",
+    description: "A revolutionary healthcare platform that leverages artificial intelligence for early disease detection and personalized treatment recommendations.",
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    tools: ["React", "TensorFlow", "Python", "AWS"],
+    slug: "ai-healthcare"
   },
   {
     id: 2,
-    title: "AI Chat Interface",
-    description: "An intelligent chat interface powered by machine learning for natural conversations.",
-    image: "/placeholder.svg",
-    tools: ["Python", "TensorFlow", "React"],
-    slug: "ai-chat-interface"
+    title: "Smart Home Automation System",
+    description: "An IoT-based home automation system that provides intelligent control over household devices with advanced energy management.",
+    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+    tools: ["React Native", "Node.js", "MongoDB", "IoT"],
+    slug: "smart-home"
   },
   {
     id: 3,
-    title: "Portfolio Website",
-    description: "A personal portfolio website showcasing projects and skills with advanced animations.",
-    image: "/placeholder.svg",
-    tools: ["React", "GSAP", "TailwindCSS"],
-    slug: "portfolio-website"
+    title: "E-Learning Platform",
+    description: "A comprehensive e-learning platform featuring interactive courses, real-time collaboration, and AI-powered personalized learning paths.",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    tools: ["Next.js", "TypeScript", "PostgreSQL", "WebRTC"],
+    slug: "e-learning"
   }
 ];
 
@@ -46,15 +46,18 @@ const Projects = () => {
     const projects = projectsRef.current;
 
     // Create horizontal scroll animation
-    gsap.to(projects, {
-      xPercent: -100 * (projects.children.length - 1),
-      ease: "none",
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         pin: true,
         scrub: 1,
         end: () => `+=${section.offsetWidth * (projects.children.length - 1)}`,
-      },
+      }
+    });
+
+    tl.to(projects, {
+      xPercent: -100 * (projects.children.length - 1),
+      ease: "none",
     });
 
     // Animate project cards on scroll
@@ -65,7 +68,6 @@ const Projects = () => {
         duration: 1,
         scrollTrigger: {
           trigger: project,
-          containerAnimation: ScrollTrigger.getById("projects"),
           start: "left center",
           toggleActions: "play none none reverse",
         },
@@ -131,17 +133,17 @@ const Projects = () => {
             </div>
           </div>
         ))}
-      </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-        {projects.map((_, i) => (
-          <div
-            key={i}
-            className={`w-2 h-2 rounded-full bg-primary/20 ${
-              i === 0 ? "bg-primary" : ""
-            }`}
-          />
-        ))}
+        <div className="relative min-w-screen h-full flex items-center justify-center">
+          <Button
+            onClick={() => navigate('/projects')}
+            size="lg"
+            className="group bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-300 hover:scale-105"
+          >
+            View All Projects
+            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+          </Button>
+        </div>
       </div>
     </section>
   );
