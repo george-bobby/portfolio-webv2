@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import ResearchPaper from "./pages/ResearchPaper";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import ProjectDetails from "./pages/ProjectDetails";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/research/:slug" element={<ResearchPaper />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/projects/:slug" element={<ProjectDetails />} />
         </Routes>
         <Footer />
       </BrowserRouter>
