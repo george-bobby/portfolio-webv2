@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -41,7 +41,7 @@ const CustomCursor = () => {
       const target = e.target as HTMLElement;
       // Add null check and ensure target is an HTMLElement
       if (!target || !(target instanceof HTMLElement)) return;
-      
+
       const tagName = target.tagName.toLowerCase();
 
       const cursorStyles: Record<string, any> = {

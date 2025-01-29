@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Button } from "./ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/utils/use-toast";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -95,7 +95,7 @@ const Footer = () => {
         <div className="parallax-layer absolute inset-0">
           <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMiIgZmlsbD0iIzMzMzMzMyIgZmlsbC1vcGFjaXR5PSIwLjEiLz48L3N2Zz4=')]" />
         </div>
-        
+
         {/* Decorative floating elements */}
         <div className="floating-element absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-xl" />
         <div className="floating-element absolute top-1/3 right-1/4 w-24 h-24 bg-primary/5 rounded-full blur-lg" />
