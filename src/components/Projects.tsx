@@ -44,7 +44,6 @@ const Projects = () => {
     const projects = projectsRef.current;
     if (!section || !projects) return;
 
-    // Create horizontal scroll animation
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -60,7 +59,6 @@ const Projects = () => {
       ease: "none",
     });
 
-    // Animate project cards on scroll
     Array.from(projects.children).forEach((project) => {
       gsap.from(project, {
         opacity: 0,
@@ -91,31 +89,31 @@ const Projects = () => {
         {projects.map((project) => (
           <div 
             key={project.id}
-            className="relative w-screen h-full flex items-center justify-center p-8 shrink-0"
+            className="relative w-screen h-full flex items-center justify-center p-4 md:p-8 shrink-0"
           >
-            <div className="relative w-full max-w-6xl h-[70vh] bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm group hover:bg-secondary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20">
-              <div className="relative h-[60%] overflow-hidden">
+            <div className="relative w-full max-w-[90vw] md:max-w-6xl h-[60vh] md:h-[70vh] bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm group hover:bg-secondary/30 transition-all duration-500">
+              <div className="relative h-[50%] md:h-[60%] overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               
-              <div className="p-8 transform transition-all duration-500 group-hover:translate-y-[-10px]">
-                <h3 className="text-3xl font-heading font-bold mb-4 animate-fade-up group-hover:text-primary transition-colors">
+              <div className="p-4 md:p-8 transform transition-all duration-500">
+                <h3 className="text-2xl md:text-3xl font-heading font-bold mb-2 md:mb-4 group-hover:text-primary transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-muted-foreground mb-6 animate-fade-up line-clamp-2 group-hover:line-clamp-none transition-all">
+                <p className="text-sm md:text-base text-muted-foreground mb-4 md:mb-6 line-clamp-2 group-hover:line-clamp-none transition-all">
                   {project.description}
                 </p>
                 
-                <div className="flex flex-wrap gap-3 mb-8">
+                <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-8">
                   {project.tools.map((tool) => (
                     <span
                       key={tool}
-                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-all duration-300 hover:scale-110 hover:bg-primary/30"
+                      className="px-2 md:px-3 py-1 text-xs md:text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-all duration-300 hover:bg-primary/40"
                     >
                       {tool}
                     </span>
@@ -124,10 +122,13 @@ const Projects = () => {
 
                 <Button
                   onClick={() => navigate(`/projects/${project.slug}`)}
-                  className="group bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+                  className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden"
                 >
-                  View Case Study
-                  <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                  <span className="relative z-10 flex items-center">
+                    View Case Study
+                    <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                  <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                 </Button>
               </div>
             </div>
@@ -138,10 +139,13 @@ const Projects = () => {
           <Button
             onClick={() => navigate('/projects')}
             size="lg"
-            className="group bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+            className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden"
           >
-            View All Projects
-            <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+            <span className="relative z-10 flex items-center">
+              View All Projects
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
+            <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
           </Button>
         </div>
       </div>
