@@ -7,10 +7,10 @@ import CustomCursor from "./components/CustomCursor";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
-import ResearchPaper from "./pages/ResearchPaper";
+import ResearchPaper from "./pages/ResearchPost";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
-import ProjectDetails from "./pages/ProjectDetails";
+import ProjectDetails from "./pages/ProjectPost";
 import Projects from "./pages/Projects";
 import Certifications from "./pages/Certifications";
 

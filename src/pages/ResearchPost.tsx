@@ -3,26 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import paper from "@/data/papers";
+
 
 const ResearchPaper = () => {
   const { slug } = useParams();
   const heroRef = useRef<HTMLDivElement>(null);
-
-  // Demo content - in a real app, this would be fetched based on the slug
-  const paper = {
-    title: "Exploring AI in Education: A Comparative Study",
-    abstract: "This paper explores the potential of AI in question paper generation using models like LSA, Word2Vec, and Seq2Seq to achieve better accuracy and automation. The study compares different approaches and presents a comprehensive analysis of their effectiveness in educational contexts.",
-    authors: ["George Bobby", "Dr. Jayapandiyan N"],
-    publishedDate: "March 2024",
-    publication: "Springer",
-    technologies: ["AI", "NLP", "LSA", "Word2Vec", "Seq2Seq", "Python", "TensorFlow"],
-    sections: {
-      problem: "Traditional question paper generation is time-consuming and may not cover all learning objectives effectively.",
-      methodology: "We implemented and compared three different approaches: LSA, Word2Vec, and Seq2Seq models.",
-      results: "The Seq2Seq model showed a 15% improvement in question relevance compared to traditional methods.",
-      conclusion: "AI-powered question generation shows promising results for automating and improving educational assessment.",
-    },
-  };
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -65,7 +51,7 @@ const ResearchPaper = () => {
           <p>{paper.abstract}</p>
 
           <div className="flex flex-wrap gap-2 my-8">
-            {paper.technologies.map((tech) => (
+            {paper.tags.map((tech) => (
               <span
                 key={tech}
                 className="px-3 py-1 bg-secondary/50 rounded-full text-sm hover:bg-secondary transition-colors"
