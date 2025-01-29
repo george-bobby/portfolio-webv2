@@ -4,10 +4,10 @@ import Projects from "@/components/Projects";
 import Research from "@/components/Research";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
-import WorkApproach from "@/components/WorkApproach";
 import WorkExperience from "@/components/WorkExperience";
 import Certifications from "@/components/Certifications";
 import BlogSection from "@/components/BlogSection";
+// import WorkApproach from "@/components/WorkApproach";
 // import Navigation from "@/components/Navigation";
 // import Footer from "@/components/Footer";
 
@@ -20,7 +20,7 @@ const Index = () => {
       <About />
       <Projects />
       <Skills />
-      <WorkApproach />
+      {/* <WorkApproach /> */}
       <WorkExperience />
       <Certifications />
       <BlogSection />
