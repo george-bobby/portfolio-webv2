@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { blogPosts } from "@/data/blogPosts";
+import { blogPosts } from "@/data/posts";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const BlogSection = () => {
         if (!sectionRef.current) return;
 
         const cards = cardsRef.current;
-        
+
         gsap.fromTo(
             cards,
             {

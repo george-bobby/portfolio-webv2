@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { blogPosts } from "@/data/blogPosts";
+import { blogPosts } from "@/data/posts";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,7 +15,7 @@ const Blog = () => {
         if (!containerRef.current) return;
 
         const cards = cardsRef.current;
-        
+
         gsap.fromTo(
             cards,
             {

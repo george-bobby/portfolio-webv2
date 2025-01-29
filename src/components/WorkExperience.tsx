@@ -40,9 +40,8 @@ const WorkExperience = () => {
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
-              className={`relative mb-12 md:w-1/2 ${
-                index % 2 === 0 ? "md:pr-12 md:ml-auto" : "md:pl-12"
-              }`}
+              className={`relative mb-12 md:w-1/2 ${index % 2 === 0 ? "md:pr-12 md:ml-auto" : "md:pl-12"
+                }`}
             >
               {/* Timeline dot */}
               <div className="absolute left-0 md:left-0 w-4 h-4 bg-primary rounded-full transform -translate-x-1/2 top-6" />
