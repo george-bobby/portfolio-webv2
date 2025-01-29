@@ -12,11 +12,12 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import ProjectDetails from "./pages/ProjectDetails";
 import Projects from "./pages/Projects";
+import Certifications from "./pages/Certifications";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 1 minute
+      staleTime: 60 * 1000,
       retry: 1,
     },
   },
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<ProjectDetails />} />
+          <Route path="/certifications" element={<Certifications />} />
         </Routes>
         <Footer />
       </BrowserRouter>

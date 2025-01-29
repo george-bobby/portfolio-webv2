@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Github, Linkedin, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link, useLocation } from "react-router-dom";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,52 +16,60 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
-    }
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
+
+  const navItems = [
+    { path: "/", label: "Home" },
+    { path: "/projects", label: "Projects" },
+    { path: "/blog", label: "Blog" },
+    { path: "/research", label: "Research" },
+    { path: "/certifications", label: "Certifications" },
+  ];
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-background/80 backdrop-blur-md py-4" : "py-6"
-        }`}
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        isScrolled ? "bg-background/80 backdrop-blur-md py-4" : "py-6"
+      }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="text-2xl font-heading font-bold text-foreground">
+          <Link to="/" className="text-2xl font-heading font-bold text-foreground">
             Portfolio
-          </a>
+          </Link>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
 
           {/* Navigation and social icons container */}
           <div
-            className={`${isOpen ? "flex" : "hidden"
-              } lg:flex absolute lg:relative top-full left-0 w-full lg:w-auto bg-background lg:bg-transparent flex-col lg:flex-row items-center gap-6 p-4 lg:p-0`}
+            className={`${
+              isOpen ? "flex" : "hidden"
+            } lg:flex absolute lg:relative top-full left-0 w-full lg:w-auto bg-background lg:bg-transparent flex-col lg:flex-row items-center gap-6 p-4 lg:p-0`}
           >
             {/* Navigation links */}
             <div className="flex flex-col lg:flex-row items-center gap-4">
-              {["About", "Projects", "Contact"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item.toLowerCase())}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`text-muted-foreground hover:text-foreground transition-colors ${
+                    isActive(item.path) ? "text-foreground font-medium" : ""
+                  }`}
+                  onClick={() => setIsOpen(false)}
                 >
-                  {item}
-                </button>
+                  {item.label}
+                </Link>
               ))}
             </div>
 

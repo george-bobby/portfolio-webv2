@@ -1,44 +1,46 @@
 import { motion } from "framer-motion";
-import { BadgeCheckIcon, CalendarIcon, DownloadIcon, ExternalLinkIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { certifications } from "@/data/certifications";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { BadgeCheckIcon, CalendarIcon, DownloadIcon, ExternalLinkIcon } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Certifications = () => {
-  // Only show first 2 certifications on homepage
-  const displayedCertifications = certifications.slice(0, 2);
-
   return (
-    <section className="py-20 px-4 md:px-6 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.05)_25%,rgba(68,68,68,.05)_75%,transparent_75%,transparent)]">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-6xl mx-auto"
-      >
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Certifications</h2>
-          <p className="text-muted-foreground">Credentials that showcase my skills and expertise.</p>
-        </div>
+    <div className="min-h-screen pt-24 pb-16 px-4">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+            My Certifications
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            A comprehensive collection of my professional certifications and achievements
+          </p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {displayedCertifications.map((cert, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {certifications.map((cert, index) => (
             <motion.div
               key={cert.id}
               initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                {cert.image && (
+                  <div className="relative h-48 overflow-hidden rounded-t-lg">
+                    <img
+                      src={cert.image}
+                      alt={cert.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                  </div>
+                )}
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BadgeCheckIcon className="w-5 h-5 text-primary" />
@@ -97,21 +99,8 @@ const Certifications = () => {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center mt-12"
-        >
-          <Button asChild size="lg">
-            <Link to="/certifications">
-              View All Certifications
-            </Link>
-          </Button>
-        </motion.div>
-      </motion.div>
-    </section>
+      </div>
+    </div>
   );
 };
 
