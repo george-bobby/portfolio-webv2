@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import paper from "@/data/papers";
-
+import papers from "@/data/papers";
 
 const ResearchPaper = () => {
   const { slug } = useParams();
   const heroRef = useRef<HTMLDivElement>(null);
+  const paper = papers.find((p) => p.slug === slug);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -26,6 +26,14 @@ const ResearchPaper = () => {
       }
     );
   }, []);
+
+  if (!paper) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-xl font-bold">
+        Research Paper not found
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

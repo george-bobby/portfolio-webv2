@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CustomCursor from "./components/CustomCursor";
+import CustomCursor from "./components/Cursor";
 import Navigation from "@/components/Header";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
@@ -13,6 +13,7 @@ import BlogPost from "./pages/BlogPost";
 import ProjectDetails from "./pages/ProjectPost";
 import Projects from "./pages/Projects";
 import Certifications from "./pages/Certifications";
+import Research from "./pages/Papers";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +34,7 @@ const App = () => (
         <Navigation />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/research" element={<Research />} />
           <Route path="/research/:slug" element={<ResearchPaper />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />

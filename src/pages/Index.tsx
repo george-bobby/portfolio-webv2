@@ -4,8 +4,8 @@ import Projects from "@/components/Project";
 import Research from "@/components/Research";
 import Skills from "@/components/Skill";
 import Contact from "@/components/Contact";
-import Certifications from "@/components/Certifications";
-import BlogSection from "@/components/BlogSection";
+import Certifications from "@/components/Certification";
+import BlogSection from "@/components/Blog";
 
 
 const Index = () => {

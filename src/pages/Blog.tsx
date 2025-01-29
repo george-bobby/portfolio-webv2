@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { blogPosts } from "@/data/posts";
+import { blogPosts } from "@/data/blogs";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

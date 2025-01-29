@@ -16,7 +16,7 @@ import {
   Timer
 } from "lucide-react";
 import educationData from "@/data/education";
-import workData from "@/data/works";
+import workData from "@/data/experience";
 
 const About = () => {
 
