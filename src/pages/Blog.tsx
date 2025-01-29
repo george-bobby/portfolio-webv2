@@ -1,113 +1,105 @@
-import { useEffect, useState, useCallback } from "react";
-import { BlogPost, fetchRSSFeed } from "@/lib/rss";
-import BlogCard from "@/components/BlogCard";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect, useRef } from "react";
+import { blogPosts } from "@/data/blogPosts";
+import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Blog = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTag, setSelectedTag] = useState("all");
-  const [allTags, setAllTags] = useState<string[]>([]);
+    const navigate = useNavigate();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const cardsRef = useRef<HTMLDivElement[]>([]);
 
-  const loadPosts = async () => {
-    try {
-      console.log("Loading blog posts...");
-      const fetchedPosts = await fetchRSSFeed();
-      setPosts(fetchedPosts);
+    useEffect(() => {
+        if (!containerRef.current) return;
 
-      // Extract unique tags
-      const tags = Array.from(
-        new Set(
-          fetchedPosts.flatMap((post) => post.categories || []).filter(Boolean)
-        )
-      );
-      setAllTags(tags);
-      console.log("Blog posts loaded successfully");
-    } catch (error) {
-      console.error("Error loading blog posts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const cards = cardsRef.current;
+        
+        gsap.fromTo(
+            cards,
+            {
+                opacity: 0,
+                y: 50,
+            },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top center+=100",
+                    toggleActions: "play none none reverse",
+                }
+            }
+        );
+    }, []);
 
-  const filteredPosts = posts.filter((post) => {
-    const postTitle = post.title?.toLowerCase() || "";
-    const searchTermLower = searchTerm.toLowerCase();
-    const matchesSearch = postTitle.includes(searchTermLower);
-    const matchesTag = selectedTag === "all" || post.categories?.includes(selectedTag);
-    return matchesSearch && matchesTag;
-  });
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    };
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
-
-  if (loading) {
     return (
-      <div className="container py-20">
-        <div className="space-y-8">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="space-y-4">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-20 w-full" />
+        <div className="min-h-screen bg-background">
+            <div ref={containerRef} className="container py-20">
+                <h1 className="text-4xl md:text-5xl font-heading font-bold mb-12">
+                    Blog Posts
+                </h1>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {blogPosts.map((post, index) => (
+                        <div
+                            key={post.id}
+                            ref={(el) => el && (cardsRef.current[index] = el)}
+                            className="group relative overflow-hidden rounded-lg bg-card transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                            onClick={() => navigate(`/blog/${post.slug}`)}
+                        >
+                            <div className="aspect-video overflow-hidden">
+                                <img
+                                    src={post.image}
+                                    alt={post.title}
+                                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                />
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                    <span>{formatDate(post.date)}</span>
+                                    <span>•</span>
+                                    <span>{post.readingTime}</span>
+                                </div>
+                                <h2 className="text-2xl font-heading font-bold tracking-tight">
+                                    {post.title}
+                                </h2>
+                                <p className="text-muted-foreground line-clamp-2">
+                                    {post.description}
+                                </p>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm text-muted-foreground">
+                                        By {post.author}
+                                    </span>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {post.tags.map((tag) => (
+                                        <span
+                                            key={tag}
+                                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                        </div>
+                    ))}
+                </div>
             </div>
-          ))}
         </div>
-      </div>
     );
-  }
-
-  return (
-    <div className="container py-20">
-      <h1 className="text-4xl font-heading font-bold mb-12">Blog Posts</h1>
-
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        <div className="flex-1">
-          <Input
-            placeholder="Search posts..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
-          />
-        </div>
-        <div className="w-full sm:w-48">
-          <Select value={selectedTag} onValueChange={setSelectedTag}>
-            <SelectTrigger>
-              <SelectValue placeholder="Filter by tag" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All tags</SelectItem>
-              {allTags.map((tag) => (
-                <SelectItem key={tag} value={tag}>
-                  {tag}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="grid gap-8">
-        {filteredPosts.map((post) => (
-          <BlogCard key={post.guid} post={post} />
-        ))}
-        {filteredPosts.length === 0 && (
-          <p className="text-center text-muted-foreground">
-            No posts found matching your criteria.
-          </p>
-        )}
-      </div>
-    </div>
-  );
 };
 
 export default Blog;
