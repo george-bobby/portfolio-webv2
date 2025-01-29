@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
-import { certifications } from "@/data/certifications";
+import { certifications } from "@/data/certs";
 
 const Certifications = () => {
   // Only show first 2 certifications on homepage
@@ -77,7 +77,7 @@ const Certifications = () => {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  
+
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>

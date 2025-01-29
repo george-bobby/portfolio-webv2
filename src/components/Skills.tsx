@@ -1,9 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  Code, Database, Cloud, PenTool, Server, Laptop, Rocket,
-  GitBranch, Layers, FrameIcon, Type, Terminal, Database as DbIcon
-} from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Tooltip,
@@ -12,6 +8,10 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 
+import {
+  Code, Database, Cloud, PenTool, Server, Laptop, Rocket,
+  GitBranch, Layers, FrameIcon, Type, Terminal, Database as DbIcon
+} from "lucide-react";
 type Skill = {
   name: string;
   icon: React.ReactNode;
@@ -19,7 +19,6 @@ type Skill = {
   useCase: string;
   category: string;
 };
-
 const skills: Skill[] = [
   {
     name: "Next.js",
@@ -106,6 +105,7 @@ const skills: Skill[] = [
     category: "Languages",
   },
 ];
+
 
 const Skills = () => {
   const [isHovered, setIsHovered] = useState(false);

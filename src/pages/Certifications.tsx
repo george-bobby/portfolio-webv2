@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { certifications } from "@/data/certifications";
+import { certifications } from "@/data/certs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BadgeCheckIcon, CalendarIcon, DownloadIcon, ExternalLinkIcon } from "lucide-react";
@@ -79,7 +79,7 @@ const Certifications = () => {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  
+
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
