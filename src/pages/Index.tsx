@@ -8,11 +8,14 @@ import WorkApproach from "@/components/WorkApproach";
 import WorkExperience from "@/components/WorkExperience";
 import Certifications from "@/components/Certifications";
 import BlogSection from "@/components/BlogSection";
-import Bookings from "@/components/Bookings";
+// import Navigation from "@/components/Navigation";
+// import Footer from "@/components/Footer";
+
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* <Navigation /> */}
       <Hero />
       <About />
       <Projects />
@@ -22,8 +25,8 @@ const Index = () => {
       <Certifications />
       <BlogSection />
       <Research />
-      <Bookings />
       <Contact />
+      {/* <Footer /> */}
     </div>
   );
 };
