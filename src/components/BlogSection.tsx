@@ -1,42 +1,13 @@
-import { useEffect, useRef } from "react";
-import { blogPosts } from "@/data/posts";
+import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { blogPosts } from "@/data/posts";
 
 const BlogSection = () => {
     const navigate = useNavigate();
-    const sectionRef = useRef<HTMLElement>(null);
-    const cardsRef = useRef<HTMLDivElement[]>([]);
-
-    useEffect(() => {
-        if (!sectionRef.current) return;
-
-        const cards = cardsRef.current;
-
-        gsap.fromTo(
-            cards,
-            {
-                opacity: 0,
-                y: 50,
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top center+=100",
-                    toggleActions: "play none none reverse",
-                }
-            }
-        );
-    }, []);
+    const featuredPost = blogPosts[0];
+    const gridPosts = blogPosts.slice(1, 5);
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("en-US", {
@@ -46,56 +17,136 @@ const BlogSection = () => {
         });
     };
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5
+            }
+        }
+    };
+
     return (
-        <section ref={sectionRef} className="py-20 bg-background">
+        <section className="py-20 bg-background">
             <div className="container px-4 mx-auto">
-                <h2 className="text-4xl font-heading font-bold mb-12">Latest Blog Posts</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
-                    {blogPosts.slice(0, 4).map((post, index) => (
-                        <div
-                            key={post.id}
-                            ref={(el) => el && (cardsRef.current[index] = el)}
-                            className="group relative overflow-hidden rounded-lg bg-card transition-all duration-300 hover:scale-[1.02]"
-                            onClick={() => navigate(`/blog/${post.slug}`)}
-                        >
-                            <div className="aspect-video overflow-hidden">
+                <motion.h2
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="text-4xl font-heading font-bold mb-12"
+                >
+                    Latest Blog Posts
+                </motion.h2>
+
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="flex flex-col lg:flex-row gap-8 mb-12"
+                >
+                    {/* Featured Post */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="lg:w-2/5" // Reduced from 1/2 to 2/5
+                        onClick={() => navigate(`/blog/${featuredPost.slug}`)}
+                    >
+                        <div className="group relative h-full overflow-hidden rounded-lg bg-card border border-border transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5">
+                            <div className="aspect-[16/14] overflow-hidden"> {/* Adjusted aspect ratio */}
                                 <img
-                                    src={post.image}
-                                    alt={post.title}
+                                    src={featuredPost.image}
+                                    alt={featuredPost.title}
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                             </div>
-                            <div className="p-6 space-y-4">
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                    <span>{formatDate(post.date)}</span>
-                                    <span>•</span>
-                                    <span>{post.readingTime}</span>
-                                </div>
-                                <h3 className="text-2xl font-heading font-bold tracking-tight">
-                                    {post.title}
-                                </h3>
-                                <p className="text-muted-foreground line-clamp-2">
-                                    {post.description}
-                                </p>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm text-muted-foreground">By {post.author}</span>
-                                </div>
-                                <div className="flex flex-wrap gap-2">
-                                    {post.tags.map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
+                            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background/95 via-background/80 to-transparent">
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                        <span>{formatDate(featuredPost.date)}</span>
+                                        <span>•</span>
+                                        <span>{featuredPost.readingTime}</span>
+                                    </div>
+                                    <h3 className="text-2xl font-heading font-bold tracking-tight text-white">
+                                        {featuredPost.title}
+                                    </h3>
+                                    <p className="text-muted-foreground line-clamp-2">
+                                        {featuredPost.description}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {featuredPost.tags.map((tag) => (
+                                            <span
+                                                key={tag}
+                                                className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         </div>
-                    ))}
-                </div>
-                <div className="text-center">
+                    </motion.div>
+
+                    {/* Grid Posts */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="lg:w-3/5 grid grid-cols-1 sm:grid-cols-2 gap-6" // Increased from 1/2 to 3/5
+                    >
+                        {gridPosts.map((post) => (
+                            <div
+                                key={post.id}
+                                className="group relative overflow-hidden rounded-lg bg-card border border-border transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+                                onClick={() => navigate(`/blog/${post.slug}`)}
+                            >
+                                <div className="aspect-video overflow-hidden">
+                                    <img
+                                        src={post.image}
+                                        alt={post.title}
+                                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                </div>
+                                <div className="p-4 space-y-2">
+                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                        <span>{formatDate(post.date)}</span>
+                                        <span>•</span>
+                                        <span>{post.readingTime}</span>
+                                    </div>
+                                    <h3 className="text-lg font-heading font-bold tracking-tight line-clamp-2">
+                                        {post.title}
+                                    </h3>
+                                    <div className="flex flex-wrap gap-1">
+                                        {post.tags.slice(0, 2).map((tag) => (
+                                            <span
+                                                key={tag}
+                                                className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </motion.div>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="text-center"
+                >
                     <Button
                         size="lg"
                         onClick={() => navigate("/blog")}
@@ -104,7 +155,7 @@ const BlogSection = () => {
                         View All Posts
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Button>
-                </div>
+                </motion.div>
             </div>
         </section>
     );

@@ -2,10 +2,20 @@ import { useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { projects } from "@/data/projects";
 
-const ProjectDetails = () => {
+const Projects = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const project = projects.find((p) => p.slug === slug);
+
+  if (!project) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-xl font-bold">
+        Project not found
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background py-20">
@@ -21,43 +31,33 @@ const ProjectDetails = () => {
 
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-            Project Title
+            {project.title}
           </h1>
 
           <div className="aspect-video w-full bg-secondary/20 rounded-lg mb-12">
             <img
-              src="/placeholder.svg"
-              alt="Project"
+              src={project.image}
+              alt={project.title}
               className="w-full h-full object-cover rounded-lg"
             />
           </div>
 
           <div className="prose prose-invert max-w-none">
             <h2>Overview</h2>
-            <p>
-              This is a detailed description of the project, including its goals,
-              challenges, and outcomes. The content will be dynamically loaded
-              based on the project slug.
-            </p>
+            <p>{project.overview}</p>
 
             <h2>Challenges</h2>
             <ul>
-              <li>Challenge 1: Description of the first challenge faced</li>
-              <li>Challenge 2: Description of the second challenge faced</li>
-              <li>Challenge 3: Description of the third challenge faced</li>
+              {project.challenges.map((challenge, index) => (
+                <li key={index}>{challenge}</li>
+              ))}
             </ul>
 
             <h2>Solution</h2>
-            <p>
-              Detailed explanation of how the challenges were addressed and what
-              technologies were used to implement the solution.
-            </p>
+            <p>{project.solution}</p>
 
             <h2>Outcome</h2>
-            <p>
-              Description of the project's impact, including any metrics or
-              testimonials that demonstrate its success.
-            </p>
+            <p>{project.outcome}</p>
           </div>
         </div>
       </div>
@@ -65,4 +65,4 @@ const ProjectDetails = () => {
   );
 };
 
-export default ProjectDetails;
+export default Projects;
