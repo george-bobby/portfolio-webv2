@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { projects } from "@/data/projects";
 
-const Projects = () => {
+const ProjectPost = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const project = projects.find((p) => p.slug === slug);
@@ -65,4 +65,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default ProjectPost;

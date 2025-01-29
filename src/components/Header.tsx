@@ -35,10 +35,10 @@ const Navigation = () => {
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
-    { path: "/projects", label: "Projects", icon: FolderKanban },
+    { path: "/project", label: "Projects", icon: FolderKanban },
     { path: "/blog", label: "Blog", icon: BookOpen },
     { path: "/research", label: "Research", icon: FlaskConical },
-    { path: "/certifications", label: "Certifications", icon: Award },
+    { path: "/certification", label: "Certifications", icon: Award },
   ];
 
   const menuVariants = {

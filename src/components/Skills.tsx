@@ -83,7 +83,7 @@ const Skills = () => {
   useEffect(() => {
     const duplicateSkills = (marqueeElement: HTMLDivElement) => {
       const originalContent = marqueeElement.innerHTML;
-      marqueeElement.innerHTML += originalContent;
+      marqueeElement.innerHTML = originalContent + originalContent; // Duplicate content
     };
 
     if (marqueeRef1.current) duplicateSkills(marqueeRef1.current);
@@ -116,33 +116,37 @@ const Skills = () => {
 
         <div className="relative overflow-hidden py-12 flex flex-col gap-16">
           {/* First Marquee Row */}
-          <div ref={marqueeRef1} className="flex gap-8 w-max animate-marquee">
-            {firstHalf.map((skill, index) => (
-              <div
-                key={`${skill.name}-${index}`}
-                className="flex flex-col items-center gap-2 min-w-[120px] hover:scale-105 transition-transform duration-300 cursor-pointer"
-              >
-                <div className="p-4 rounded-xl bg-card border border-primary/10 hover:bg-primary/10">
-                  {skill.icon}
+          <div className="overflow-hidden">
+            <div ref={marqueeRef1} className="flex gap-8 w-max animate-marquee">
+              {firstHalf.map((skill, index) => (
+                <div
+                  key={`${skill.name}-${index}`}
+                  className="flex flex-col items-center gap-2 min-w-[120px] hover:scale-105 transition-transform duration-300 cursor-pointer"
+                >
+                  <div className="p-4 rounded-xl bg-card border border-primary/10 hover:bg-primary/10">
+                    {skill.icon}
+                  </div>
+                  <span className="text-sm font-medium">{skill.name}</span>
                 </div>
-                <span className="text-sm font-medium">{skill.name}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Second Marquee Row */}
-          <div ref={marqueeRef2} className="flex gap-8 w-max animate-marquee-reverse">
-            {secondHalf.map((skill, index) => (
-              <div
-                key={`${skill.name}-${index}`}
-                className="flex flex-col items-center gap-2 min-w-[120px] hover:scale-105 transition-transform duration-300 cursor-pointer"
-              >
-                <div className="p-4 rounded-xl bg-card border border-primary/10 hover:bg-primary/10">
-                  {skill.icon}
+          <div className="overflow-hidden">
+            <div ref={marqueeRef2} className="flex gap-8 w-max animate-marquee-reverse">
+              {secondHalf.map((skill, index) => (
+                <div
+                  key={`${skill.name}-${index}`}
+                  className="flex flex-col items-center gap-2 min-w-[120px] hover:scale-105 transition-transform duration-300 cursor-pointer"
+                >
+                  <div className="p-4 rounded-xl bg-card border border-primary/10 hover:bg-primary/10">
+                    {skill.icon}
+                  </div>
+                  <span className="text-sm font-medium">{skill.name}</span>
                 </div>
-                <span className="text-sm font-medium">{skill.name}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 

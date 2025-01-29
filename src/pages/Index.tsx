@@ -1,11 +1,11 @@
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Projects from "@/components/Project";
-import Research from "@/components/Research";
-import Skills from "@/components/Skill";
+import Projects from "@/components/Projects";
+import Research from "@/components/Researches";
+import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
-import Certifications from "@/components/Certification";
-import BlogSection from "@/components/Blog";
+import Certifications from "@/components/Certifications";
+import BlogSection from "@/components/Blogs";
 
 
 const Index = () => {

@@ -7,13 +7,13 @@ import CustomCursor from "./components/Cursor";
 import Navigation from "@/components/Header";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
-import ResearchPaper from "./pages/ResearchPost";
+import ResearchPost from "./pages/ResearchPost";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
-import ProjectDetails from "./pages/ProjectPost";
-import Projects from "./pages/Projects";
-import Certifications from "./pages/Certifications";
-import Research from "./pages/Papers";
+import ProjectPost from "./pages/ProjectPost";
+import Projects from "./pages/Project";
+import Certifications from "./pages/Certification";
+import Research from "./pages/Research";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,12 +35,12 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/research" element={<Research />} />
-          <Route path="/research/:slug" element={<ResearchPaper />} />
+          <Route path="/research/:slug" element={<ResearchPost />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:slug" element={<ProjectDetails />} />
-          <Route path="/certifications" element={<Certifications />} />
+          <Route path="/project" element={<Projects />} />
+          <Route path="/project/:slug" element={<ProjectPost />} />
+          <Route path="/certification" element={<Certifications />} />
         </Routes>
         <Footer />
       </BrowserRouter>

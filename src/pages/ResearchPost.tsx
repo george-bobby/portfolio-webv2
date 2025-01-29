@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import papers from "@/data/papers";
 
-const ResearchPaper = () => {
+const ResearchPost = () => {
   const { slug } = useParams();
   const heroRef = useRef<HTMLDivElement>(null);
   const paper = papers.find((p) => p.slug === slug);
@@ -86,4 +86,4 @@ const ResearchPaper = () => {
   );
 };
 
-export default ResearchPaper;
+export default ResearchPost;
