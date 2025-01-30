@@ -1,26 +1,38 @@
+import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/utils/utils";
-import { motion } from "framer-motion";
 import papers from "@/data/papers";
+import { fadeInUp, staggerContainer, cardHover } from "@/utils/animations";
 
 const Research = () => {
     return (
         <section className="py-20 px-4">
             <div className="container max-w-6xl mx-auto">
-                <h2 className="text-4xl font-heading font-bold text-center mb-12">Research</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <motion.h2 
+                    variants={fadeInUp}
+                    initial="initial"
+                    animate="animate"
+                    className="text-4xl font-heading font-bold text-center mb-12"
+                >
+                    Research
+                </motion.h2>
+                <motion.div 
+                    variants={staggerContainer}
+                    initial="initial"
+                    animate="animate"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                >
                     {papers.map((paper, index) => (
                         <motion.div
                             key={paper.slug}
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: index * 0.2 }}
+                            variants={fadeInUp}
+                            whileHover={cardHover}
                         >
                             <Card
                                 className={cn(
-                                    "bg-secondary/30 backdrop-blur-lg border-secondary/50 hover:bg-secondary/40 transition-all duration-300 hover:scale-[1.02] group"
+                                    "bg-secondary/30 backdrop-blur-lg border-secondary/50 hover:bg-secondary/40 transition-all duration-300"
                                 )}
                             >
                                 <div className="h-40 bg-gray-300 rounded-t-lg flex items-center justify-center">
@@ -55,7 +67,7 @@ const Research = () => {
                             </Card>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
