@@ -78,16 +78,16 @@ const Projects = () => {
   }, []);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="relative h-screen overflow-hidden bg-gradient-to-br from-background via-background/90 to-background"
     >
-      <div 
+      <div
         ref={projectsRef}
         className="flex h-full"
       >
         {projects.map((project) => (
-          <div 
+          <div
             key={project.id}
             className="relative w-screen h-full flex items-center justify-center p-4 md:p-8 shrink-0"
           >
@@ -100,7 +100,7 @@ const Projects = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              
+
               <div className="p-4 md:p-8 transform transition-all duration-500">
                 <h3 className="text-2xl md:text-3xl font-heading font-bold mb-2 md:mb-4 group-hover:text-primary transition-colors">
                   {project.title}
@@ -108,7 +108,7 @@ const Projects = () => {
                 <p className="text-sm md:text-base text-muted-foreground mb-4 md:mb-6 line-clamp-2 group-hover:line-clamp-none transition-all">
                   {project.description}
                 </p>
-                
+
                 <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-8">
                   {project.tools.map((tool) => (
                     <span
@@ -121,7 +121,7 @@ const Projects = () => {
                 </div>
 
                 <Button
-                  onClick={() => navigate(`/projects/${project.slug}`)}
+                  onClick={() => navigate(`/project/${project.slug}`)}
                   className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center">

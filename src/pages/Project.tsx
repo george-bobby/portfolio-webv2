@@ -113,7 +113,7 @@ const Projects = () => {
                 </div>
 
                 <Button
-                  onClick={() => navigate(`/projects/${project.slug}`)}
+                  onClick={() => navigate(`/project/${project.slug}`)}
                   className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden w-full"
                 >
                   <span className="relative z-10 flex items-center justify-center">
