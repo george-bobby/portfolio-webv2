@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -7,39 +7,21 @@ import { projects } from "@/data/projects";
 
 const Projects = () => {
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+  // Simplified animations for better performance
+  const fadeInUp = {
+    initial: prefersReducedMotion ? {} : { opacity: 0, y: 20 },
+    animate: prefersReducedMotion ? {} : { opacity: 1, y: 0 },
+    transition: { duration: 0.3 }
   };
 
   return (
     <div className="min-h-screen bg-background py-20">
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          {...fadeInUp}
+          transition={{ duration: 0.3 }}
           className="flex items-center mb-12"
         >
           <Button
@@ -53,42 +35,36 @@ const Projects = () => {
         </motion.div>
 
         <motion.h1
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          {...fadeInUp}
+          transition={{ duration: 0.3, delay: 0.1 }}
           className="text-4xl md:text-5xl font-heading font-bold mb-8"
         >
           Our Projects
         </motion.h1>
 
         <motion.p
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          {...fadeInUp}
+          transition={{ duration: 0.3, delay: 0.2 }}
           className="text-muted-foreground max-w-2xl mb-16"
         >
           Explore our portfolio of innovative projects spanning various technologies and industries.
           Each project showcases our commitment to excellence and cutting-edge solutions.
         </motion.p>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {projects.map((project) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
             <motion.div
               key={project.id}
-              variants={cardVariants}
-              whileHover={{ y: -5 }}
-              className="project-card group relative bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-secondary/30 transition-all duration-500"
+              {...fadeInUp}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="group relative bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-secondary/30 transition-all duration-500"
             >
               <div className="relative h-48 md:h-56 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
@@ -105,7 +81,7 @@ const Projects = () => {
                   {project.tools.map((tool) => (
                     <span
                       key={tool}
-                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-all duration-300 hover:bg-primary/40"
+                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-colors duration-300 hover:bg-primary/40"
                     >
                       {tool}
                     </span>
@@ -125,7 +101,7 @@ const Projects = () => {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

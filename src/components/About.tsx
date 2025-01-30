@@ -221,33 +221,6 @@ const About = () => {
             </div>
           </motion.div>
         </div>
-
-        {/* Contact Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
-        >
-          <div className="flex justify-center gap-4">
-            <Button
-              variant="outline"
-              className="group hover:border-primary hover:bg-primary/10 transition-all duration-300"
-              onClick={() => window.location.href = "mailto:your.email@example.com"}
-            >
-              <Mail className="w-5 h-5 mr-2 group-hover:text-primary" />
-              Email Me
-            </Button>
-            <Button
-              variant="outline"
-              className="group hover:border-primary hover:bg-primary/10 transition-all duration-300"
-              onClick={() => window.open("https://linkedin.com", "_blank")}
-            >
-              <Linkedin className="w-5 h-5 mr-2 group-hover:text-primary" />
-              Connect on LinkedIn
-            </Button>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

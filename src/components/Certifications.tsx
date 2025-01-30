@@ -14,7 +14,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 import { certifications } from "@/data/certs";
 
 const Certifications = () => {
-  // Only show first 2 certifications on homepage
   const displayedCertifications = certifications.slice(0, 2);
 
   return (

@@ -11,6 +11,9 @@ import {
   Terminal,
   Globe,
   Cloud,
+  Mail,
+  Linkedin,
+  Briefcase,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -32,20 +35,18 @@ const Hero = () => {
   useEffect(() => {
     // Generate random positions and sizes for the icons once
     const positions = Array.from({ length: 10 }).map(() => ({
-      top: Math.random() * 100, // Top percentage
-      left: Math.random() * 100, // Left percentage
-      size: Math.random() * 50 + 40, // Icon size between 40px to 90px
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      size: Math.random() * 50 + 40,
     }));
     setIconPositions(positions);
 
     const ctx = gsap.context(() => {
-      // Split text for letter animations
       const titleText = new SplitType(headingRef.current!, {
         types: "chars",
         tagName: "span",
       });
 
-      // Letter hover animation
       titleText.chars?.forEach((char) => {
         char.addEventListener("mouseenter", () => {
           gsap.to(char, {
@@ -66,17 +67,15 @@ const Hero = () => {
         });
       });
 
-      // Floating icons animation
       gsap.to(".floating-icon", {
-        y: "-=30", // Float up by 30px
-        duration: 3, // Duration for the animation
-        repeat: -1, // Infinite repeat
-        yoyo: true, // Reverse animation
-        ease: "power1.inOut", // Smooth floating
-        stagger: 0.3, // Delay between icons
+        y: "-=30",
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+        stagger: 0.3,
       });
 
-      // Initial animations
       const tl = gsap.timeline();
 
       tl.from(headingRef.current, {
@@ -113,9 +112,8 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center"
+      className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center px-4"
     >
-      {/* Floating Icons */}
       <div className="absolute inset-0 pointer-events-none">
         {iconPositions.map((position, index) => {
           const Icon = [
@@ -147,34 +145,30 @@ const Hero = () => {
         })}
       </div>
 
-      {/* Content */}
       <div className="relative z-10">
         <h1
           ref={headingRef}
-          className="text-5xl md:text-7xl font-heading font-bold mb-6"
+          className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6"
         >
           Hi, I'm <span className="text-primary">George Bobby</span>.
           <br />
-          Let's Build Something Extraordinary.
+          Let's Build Something <span className="whitespace-nowrap">Extraordinary.</span>
         </h1>
-        <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button
-            size="lg"
-            className="group relative overflow-hidden hover:scale-105 transition-transform duration-300"
-            onClick={() =>
-              document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            <span className="relative z-10">View My Work</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div
+          ref={buttonsRef}
+          className="flex flex-wrap gap-4 justify-center items-center"
+        >
+          <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.location.href = "mailto:your.email@example.com"}>
+            <Mail className="w-5 h-5 group-hover:text-primary" />
+            <span className="relative z-10">Email Me</span>
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="group relative overflow-hidden hover:scale-105 transition-transform duration-300"
-          >
-            <span className="relative z-10">Download Resume</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <Button size="lg" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}>
+            <Briefcase className="w-5 h-5 text-white group-hover:text-gray-300" />
+            <span className="relative z-10">View My Work</span>
+          </Button>
+          <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.open("https://linkedin.com", "_blank")}>
+            <Linkedin className="w-5 h-5 group-hover:text-primary" />
+            <span className="relative z-10">Connect on LinkedIn</span>
           </Button>
         </div>
       </div>
@@ -183,21 +177,16 @@ const Hero = () => {
         ref={scrollIndicatorRef}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
       >
-        <div
-          ref={scrollIndicatorRef}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        <span
+          className="text-sm text-muted-foreground cursor-pointer"
+          onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
         >
-          <span
-            className="text-sm text-muted-foreground cursor-pointer"
-            onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
-          >
-            Scroll
-          </span>
-          <ArrowDown
-            className="w-6 h-6 text-primary animate-bounce cursor-pointer"
-            onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
-          />
-        </div>
+          Scroll
+        </span>
+        <ArrowDown
+          className="w-6 h-6 text-primary animate-bounce cursor-pointer"
+          onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
+        />
       </div>
     </section>
   );
