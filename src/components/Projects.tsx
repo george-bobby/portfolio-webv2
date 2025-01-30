@@ -1,98 +1,91 @@
-import { useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { CustomButton } from "@/components/ui/custom-button";
+import { BUTTON_ICONS } from "@/constants/buttons";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const projects = [
-  {
-    id: 1,
-    title: "AI-Powered Healthcare Platform",
-    description: "A revolutionary healthcare platform that leverages artificial intelligence for early disease detection and personalized treatment recommendations.",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-    tools: ["React", "TensorFlow", "Python", "AWS"],
-    slug: "ai-healthcare"
-  },
-  {
-    id: 2,
-    title: "Smart Home Automation System",
-    description: "An IoT-based home automation system that provides intelligent control over household devices with advanced energy management.",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-    tools: ["React Native", "Node.js", "MongoDB", "IoT"],
-    slug: "smart-home"
-  },
-  {
-    id: 3,
-    title: "E-Learning Platform",
-    description: "A comprehensive e-learning platform featuring interactive courses, real-time collaboration, and AI-powered personalized learning paths.",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    tools: ["Next.js", "TypeScript", "PostgreSQL", "WebRTC"],
-    slug: "e-learning"
-  }
-];
+import { projects } from "@/data/projects";
 
 const Projects = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const projectsRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const projects = projectsRef.current;
-    if (!section || !projects) return;
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        pin: true,
-        scrub: 1,
-        snap: 1 / (projects.children.length - 1),
-        end: () => `+=${section.offsetWidth * (projects.children.length - 1)}`,
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
       }
-    });
+    }
+  };
 
-    tl.to(projects, {
-      xPercent: -100 * (projects.children.length - 1),
-      ease: "none",
-    });
-
-    Array.from(projects.children).forEach((project) => {
-      gsap.from(project, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 1,
-        scrollTrigger: {
-          trigger: project,
-          start: "left center",
-          toggleActions: "play none none reverse",
-        },
-      });
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
-    <section 
-      ref={sectionRef}
-      className="relative h-screen overflow-hidden bg-gradient-to-br from-background via-background/90 to-background"
-    >
-      <div 
-        ref={projectsRef}
-        className="flex h-full"
-      >
-        {projects.map((project) => (
-          <div 
-            key={project.id}
-            className="relative w-screen h-full flex items-center justify-center p-4 md:p-8 shrink-0"
+    <div className="min-h-screen bg-background py-20">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center mb-12"
+        >
+          <CustomButton
+            onClick={() => navigate('/')}
+            variant="ghost"
+            className="group"
+            icon={BUTTON_ICONS.arrowLeft}
+            iconPosition="left"
           >
-            <div className="relative w-full max-w-[90vw] md:max-w-6xl h-[60vh] md:h-[70vh] bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm group hover:bg-secondary/30 transition-all duration-500">
-              <div className="relative h-[50%] md:h-[60%] overflow-hidden">
+            Back Home
+          </CustomButton>
+        </motion.div>
+
+        <motion.h1
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-4xl md:text-5xl font-heading font-bold mb-8"
+        >
+          Our Projects
+        </motion.h1>
+
+        <motion.p
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-muted-foreground max-w-2xl mb-16"
+        >
+          Explore our portfolio of innovative projects spanning various technologies and industries.
+          Each project showcases our commitment to excellence and cutting-edge solutions.
+        </motion.p>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {projects.map((project) => (
+            <motion.div
+              key={project.id}
+              variants={cardVariants}
+              whileHover={{ y: -5 }}
+              className="project-card group relative bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-secondary/30 transition-all duration-500"
+            >
+              <div className="relative h-48 md:h-56 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
@@ -100,56 +93,40 @@ const Projects = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              
-              <div className="p-4 md:p-8 transform transition-all duration-500">
-                <h3 className="text-2xl md:text-3xl font-heading font-bold mb-2 md:mb-4 group-hover:text-primary transition-colors">
+
+              <div className="p-6">
+                <h3 className="text-xl md:text-2xl font-heading font-bold mb-3 group-hover:text-primary transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-sm md:text-base text-muted-foreground mb-4 md:mb-6 line-clamp-2 group-hover:line-clamp-none transition-all">
+                <p className="text-muted-foreground mb-6 line-clamp-3">
                   {project.description}
                 </p>
-                
-                <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-8">
+
+                <div className="flex flex-wrap gap-2 mb-6">
                   {project.tools.map((tool) => (
                     <span
                       key={tool}
-                      className="px-2 md:px-3 py-1 text-xs md:text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-all duration-300 hover:bg-primary/40"
+                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-all duration-300 hover:bg-primary/40"
                     >
                       {tool}
                     </span>
                   ))}
                 </div>
 
-                <Button
+                <CustomButton
                   onClick={() => navigate(`/projects/${project.slug}`)}
-                  className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden"
+                  className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden w-full"
+                  icon={BUTTON_ICONS.arrowRight}
+                  iconPosition="right"
                 >
-                  <span className="relative z-10 flex items-center">
-                    View Case Study
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                  <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                </Button>
+                  View Case Study
+                </CustomButton>
               </div>
-            </div>
-          </div>
-        ))}
-
-        <div className="relative w-screen h-full flex items-center justify-center shrink-0">
-          <Button
-            onClick={() => navigate('/projects')}
-            size="lg"
-            className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center">
-              View All Projects
-              <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-            </span>
-            <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-          </Button>
-        </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-    </section>
+    </div>
   );
 };
 
