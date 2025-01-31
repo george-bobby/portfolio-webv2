@@ -1,192 +1,195 @@
+import { Button } from "@/components/ui/button";
+import {
+  ArrowDown,
+  Database,
+  PenTool,
+  Figma,
+  Code,
+  Cpu,
+  Layers,
+  Server,
+  Terminal,
+  Globe,
+  Cloud,
+  Mail,
+  Linkedin,
+  Briefcase,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Database, PenTool, Figma, Code, Cpu, Layers, Server, Terminal, Globe, Cloud } from "lucide-react";
+import SplitType from "split-type";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const icons = [Database, PenTool, Figma, Code, Cpu, Layers, Server, Terminal, Globe, Cloud];
+const Hero = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
-// Generate random color within a pleasing range
-const getRandomColor = () => {
-  const hue = Math.random() * 360;
-  return `hsla(${hue}, 80%, 60%, 0.2)`;
-};
-
-const FloatingIcons = () => {
-  const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [iconPositions, setIconPositions] = useState(
-    Array.from({ length: icons.length }).map(() => ({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      size: Math.random() * 120 + 160,
-      color: getRandomColor(),
-    }))
+  const [iconPositions, setIconPositions] = useState<{ top: number; left: number; size: number }[]>(
+    []
   );
 
   useEffect(() => {
-    iconRefs.current.forEach((icon, index) => {
-      if (icon) {
-        // Create more organic floating movement
-        gsap.to(icon, {
-          y: "random(-120, 120)",
-          x: "random(-120, 120)",
-          rotation: "random(-15, 15)",
-          duration: "random(6, 8)",
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: index * 0.2,
-        });
+    // Generate random positions and sizes for the icons once
+    const positions = Array.from({ length: 10 }).map(() => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      size: Math.random() * 50 + 40,
+    }));
+    setIconPositions(positions);
 
-        // Add subtle continuous rotation
-        gsap.to(icon, {
-          rotation: "random(-20, 20)",
-          duration: "random(4, 6)",
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: index * 0.1,
-        });
-
-        // Parallax effect
-        gsap.to(icon, {
-          y: (index % 2 === 0 ? 1 : -1) * 150,
-          ease: "none",
-          scrollTrigger: {
-            trigger: icon,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-      }
-    });
-  }, []);
-
-  const handleHoverStart = (index: number) => {
-    const icon = iconRefs.current[index];
-    if (!icon) return;
-
-    gsap.killTweensOf(icon);
-
-    // Create a more dramatic hover effect
-    gsap.to(icon, {
-      scale: 1.5,
-      rotation: "random(-30, 30)",
-      duration: 0.4,
-      ease: "elastic.out(1, 0.3)",
-    });
-
-    // Add multiple layered effects
-    icon.style.filter = `
-            drop-shadow(0 0 20px rgba(var(--color-primary), 0.4))
-            drop-shadow(0 0 40px rgba(var(--color-primary), 0.2))
-            brightness(1.2)
-        `;
-
-    const iconElement = icon.querySelector('svg');
-    if (iconElement) {
-      gsap.to(iconElement, {
-        stroke: "var(--color-primary)",
-        fill: "rgba(var(--color-primary), 0.15)",
-        duration: 0.3,
+    const ctx = gsap.context(() => {
+      const titleText = new SplitType(headingRef.current!, {
+        types: "chars",
+        tagName: "span",
       });
 
-      // Add pulsing animation
-      gsap.to(iconElement, {
-        scale: 1.1,
-        duration: 0.8,
+      titleText.chars?.forEach((char) => {
+        char.addEventListener("mouseenter", () => {
+          gsap.to(char, {
+            scale: 1.4,
+            color: "#9333EA",
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        });
+
+        char.addEventListener("mouseleave", () => {
+          gsap.to(char, {
+            scale: 1,
+            color: "inherit",
+            duration: 0.3,
+            ease: "power2.in",
+          });
+        });
+      });
+
+      gsap.to(".floating-icon", {
+        y: "-=30",
+        duration: 3,
         repeat: -1,
         yoyo: true,
-        ease: "sine.inOut",
+        ease: "power1.inOut",
+        stagger: 0.3,
       });
-    }
 
-    // Add ripple effect
-    const ripple = document.createElement('div');
-    ripple.className = 'absolute inset-0 rounded-full';
-    ripple.style.border = '2px solid var(--color-primary)';
-    ripple.style.opacity = '0';
-    icon.appendChild(ripple);
+      const tl = gsap.timeline();
 
-    gsap.to(ripple, {
-      scale: 1.5,
-      opacity: 0,
-      duration: 1,
-      ease: "power1.out",
-      onComplete: () => ripple.remove(),
-    });
-  };
+      tl.from(headingRef.current, {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      })
+        .from(
+          buttonsRef.current,
+          {
+            y: 20,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.5"
+        )
+        .from(
+          scrollIndicatorRef.current,
+          {
+            y: 20,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.5"
+        );
+    }, sectionRef);
 
-  const handleHoverEnd = (index: number) => {
-    const icon = iconRefs.current[index];
-    if (!icon) return;
-
-    // Smooth transition back
-    gsap.to(icon, {
-      scale: 1,
-      rotation: 0,
-      duration: 0.5,
-      ease: "elastic.out(1, 0.5)",
-      clearProps: "filter",
-      onComplete: () => {
-        // Resume original animations
-        gsap.to(icon, {
-          y: "random(-120, 120)",
-          x: "random(-120, 120)",
-          rotation: "random(-15, 15)",
-          duration: "random(6, 8)",
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      }
-    });
-
-    const iconElement = icon.querySelector('svg');
-    if (iconElement) {
-      gsap.killTweensOf(iconElement);
-      gsap.to(iconElement, {
-        stroke: "currentColor",
-        fill: "none",
-        scale: 1,
-        duration: 0.3,
-      });
-    }
-  };
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className="absolute inset-0">
-      {iconPositions.map((position, index) => {
-        const IconComponent = icons[index % icons.length];
+    <section
+      ref={sectionRef}
+      className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center px-4"
+    >
+      <div className="absolute inset-0 pointer-events-none">
+        {iconPositions.map((position, index) => {
+          const Icon = [
+            Database,
+            PenTool,
+            Figma,
+            Code,
+            Cpu,
+            Layers,
+            Server,
+            Terminal,
+            Globe,
+            Cloud,
+          ][index % 10];
 
-        return (
-          <div
-            key={index}
-            ref={(el) => (iconRefs.current[index] = el)}
-            className="absolute text-primary opacity-40 transition-all duration-300 cursor-pointer"
-            style={{
-              top: `${position.top}%`,
-              left: `${position.left}%`,
-              width: `${position.size}px`,
-              height: `${position.size}px`,
-              transform: "translate(-50%, -50%)",
-              background: `radial-gradient(circle at center, ${position.color}, transparent 70%)`,
-            }}
-            onMouseEnter={() => handleHoverStart(index)}
-            onMouseLeave={() => handleHoverEnd(index)}
-          >
-            <IconComponent
-              size="100%"
-              strokeWidth={1}
-              className="transition-all duration-300"
+          return (
+            <Icon
+              key={index}
+              className="floating-icon text-primary opacity-20 absolute"
+              style={{
+                top: `${position.top}%`,
+                left: `${position.left}%`,
+                transform: `translate(-50%, -50%)`,
+                width: `${position.size}px`,
+                height: `${position.size}px`,
+              }}
             />
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+
+      <div className="relative z-10">
+        <h1
+          ref={headingRef}
+          className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6"
+        >
+          Hi, I'm <span className="text-primary">George Bobby</span>.
+          <br />
+          Let's Build Something <span className="whitespace-nowrap">Extraordinary.</span>
+        </h1>
+        <div
+          ref={buttonsRef}
+          className="flex flex-wrap gap-4 justify-center items-center"
+        >
+          <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.location.href = "mailto:your.email@example.com"}>
+            <Mail className="w-5 h-5 group-hover:text-primary" />
+            <span className="relative z-10">Email Me</span>
+          </Button>
+          <Button size="lg" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}>
+            <Briefcase className="w-5 h-5 text-white group-hover:text-gray-300" />
+            <span className="relative z-10">View My Work</span>
+          </Button>
+          <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.open("https://linkedin.com", "_blank")}>
+            <Linkedin className="w-5 h-5 group-hover:text-primary" />
+            <span className="relative z-10">Connect on LinkedIn</span>
+          </Button>
+        </div>
+      </div>
+
+      <div
+        ref={scrollIndicatorRef}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+      >
+        <span
+          className="text-sm text-muted-foreground cursor-pointer"
+          onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
+        >
+          Scroll
+        </span>
+        <ArrowDown
+          className="w-6 h-6 text-primary animate-bounce cursor-pointer"
+          onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
+        />
+      </div>
+    </section>
   );
 };
 
-export default FloatingIcons;
+export default Hero;
