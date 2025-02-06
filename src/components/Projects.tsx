@@ -38,7 +38,7 @@ const Projects = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  // const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [showViewAll, setShowViewAll] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -51,7 +51,6 @@ const Projects = () => {
 
     container.style.width = `${totalPanels * 100}%`;
 
-    // Horizontal Scroll Animation
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -60,8 +59,7 @@ const Projects = () => {
         end: `+=${panelWidth * (totalPanels - 1)}`,
         scrub: 1,
         onUpdate: (self) => {
-          // Hide "Scroll for More" after scrolling starts
-          // setShowScrollIndicator(self.progress < 0.1);
+          setShowViewAll(self.progress > 0.95);
         }
       }
     });
@@ -100,6 +98,14 @@ const Projects = () => {
 
                 <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
                   <div className="transform translate-y-10 group-hover:translate-y-0 transition-transform duration-500">
+                    <Button
+                      onClick={() => navigate(`/project/${project.slug}`)}
+                      size="lg"
+                      className="group/btn bg-primary/20 hover:bg-primary backdrop-blur-sm mb-5"
+                    >
+                      <span>View Case Study</span>
+                      <ArrowRight className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
+                    </Button>
                     <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50">
                       {project.title}
                     </h3>
@@ -117,47 +123,25 @@ const Projects = () => {
                         </span>
                       ))}
                     </div>
-
-                    <Button
-                      onClick={() => navigate(`/project/${project.slug}`)}
-                      size="lg"
-                      className="group/btn bg-primary/20 hover:bg-primary backdrop-blur-sm"
-                    >
-                      <span>View Case Study</span>
-                      <ArrowRight className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
-                    </Button>
                   </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-        {/* Scroll Down Indicator - Only Visible Initially */}
-        {/* {showScrollIndicator && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 text-center animate-bounce">
-            <ChevronDown className="w-8 h-8 text-primary/50" />
-            <div className="text-sm text-primary/50 mt-2">Scroll for more</div>
-          </div>
-        )} */}
-      </section>
-
-      {/* View All Projects Section */}
-      {/* <section className="h-screen flex items-center justify-center bg-gradient-to-b from-background to-background/90">
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50">
-            Discover More Projects
-          </h2>
+        {showViewAll && (
           <Button
-            onClick={() => navigate('/projects')}
-            size="lg"
-            className="group bg-primary/20 hover:bg-primary backdrop-blur-sm"
+            onClick={() => navigate("/projects")}
+            className="fixed bottom-16 left-1/2 transform -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-lg shadow-lg transition-opacity"
           >
-            <span>View All Projects</span>
-            <ArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
+            View All
           </Button>
+        )}
+        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-center text-muted-foreground animate-bounce">
+          <ChevronDown className="w-6 h-6" />
+          <p className="text-sm">Scroll to view more</p>
         </div>
-      </section> */}
+      </section>
     </>
   );
 };

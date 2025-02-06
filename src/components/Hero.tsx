@@ -158,10 +158,10 @@ const Hero = () => {
           ref={buttonsRef}
           className="flex flex-wrap gap-4 justify-center items-center"
         >
-          <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.location.href = "mailto:your.email@example.com"}>
+          {/* <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.location.href = "mailto:your.email@example.com"}>
             <Mail className="w-5 h-5 group-hover:text-primary" />
             <span className="relative z-10">Email Me</span>
-          </Button>
+          </Button> */}
           <Button size="lg" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}>
             <Briefcase className="w-5 h-5 text-white group-hover:text-gray-300" />
             <span className="relative z-10">View My Work</span>
