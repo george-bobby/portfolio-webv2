@@ -1,5 +1,5 @@
 import { Github, Linkedin, Twitter, Mail, Phone } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useToast } from "@/components/ui/use-toast";
@@ -7,7 +7,6 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
 import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -65,50 +64,56 @@ const Footer = () => {
   };
 
   useEffect(() => {
+    if (!footerRef.current) return;
+
     const ctx = gsap.context(() => {
-      // Parallax background layers
-      const layers = parallaxBgRef.current?.querySelectorAll('.parallax-layer');
-      layers?.forEach((layer, i) => {
-        const depth = (i + 1) * 0.1;
-        gsap.to(layer, {
-          y: `-${50 * depth}%`,
-          ease: "none",
+      if (parallaxBgRef.current) {
+        const layers = parallaxBgRef.current.querySelectorAll('.parallax-layer');
+        layers?.forEach((layer, i) => {
+          const depth = (i + 1) * 0.1;
+          gsap.to(layer, {
+            y: `-${50 * depth}%`,
+            ease: "none",
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        });
+      }
+
+      const floatingElements = document.querySelectorAll('.floating-element');
+      if (floatingElements.length > 0) {
+        gsap.to(".floating-element", {
+          y: -20,
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+          stagger: {
+            amount: 1,
+            from: "random",
+          },
+        });
+      }
+
+      if (contentRef.current && socialsRef.current) {
+        gsap.from([contentRef.current, socialsRef.current], {
           scrollTrigger: {
             trigger: footerRef.current,
             start: "top bottom",
-            end: "bottom top",
-            scrub: true,
+            toggleActions: "play none none reverse",
           },
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: "power3.out",
         });
-      });
-
-      // Floating animations for decorative elements
-      gsap.to(".floating-element", {
-        y: -20,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-        stagger: {
-          amount: 1,
-          from: "random",
-        },
-      });
-
-      // Content animations on scroll
-      gsap.from([contentRef.current, socialsRef.current], {
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top bottom",
-          toggleActions: "play none none reverse",
-        },
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-      });
-    }, footerRef);
+      }
+    });
 
     return () => ctx.revert();
   }, []);
@@ -154,6 +159,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Contact Form Section */}
           <motion.div
+            ref={contentRef}
             initial="hidden"
             animate="visible"
             variants={containerVariants}
@@ -218,8 +224,8 @@ const Footer = () => {
           </motion.div>
 
           {/* Social Links and Contact Info */}
-          <div className="space-y-8">
-            <div ref={socialsRef} className="space-y-4">
+          <div ref={socialsRef} className="space-y-8">
+            <div className="space-y-4">
               <h3 className="text-lg font-semibold">Connect With Me</h3>
               <div className="flex gap-4">
                 {[
