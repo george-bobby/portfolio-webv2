@@ -133,7 +133,7 @@ const Projects = () => {
         {showViewAll && (
           <Button
             onClick={() => navigate("/project")}
-            className="group relative bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden fixed bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
+            className="group relative bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
           >
             View All Projects
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
