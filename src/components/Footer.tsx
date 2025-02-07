@@ -1,33 +1,25 @@
-import { Github, Linkedin, Twitter, ArrowUp, Mail, Phone } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, Phone } from "lucide-react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "./ui/button";
-import { useToast } from "@/utils/use-toast";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
   const { toast } = useToast();
   const footerRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const socialsRef = useRef<HTMLDivElement>(null);
-  const backToTopRef = useRef<HTMLButtonElement>(null);
   const copyrightRef = useRef<HTMLParagraphElement>(null);
   const parallaxBgRef = useRef<HTMLDivElement>(null);
-  const skillsRef = useRef<HTMLDivElement>(null);
-
-  const scrollToTop = () => {
-    gsap.to(window, {
-      duration: 1.5,
-      scrollTo: {
-        y: 0,
-        autoKill: false
-      },
-      ease: "power3.inOut",
-    });
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("george.bobby@example.com");
@@ -35,6 +27,41 @@ const Footer = () => {
       title: "Email copied to clipboard",
       description: "You can now paste it anywhere!",
     });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      formData.append("access_key", "563e657c-2024-43e0-aef1-585384939075");
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast({
+          title: "Message sent!",
+          description: "Thank you for your message. I'll get back to you soon.",
+        });
+        (e.target as HTMLFormElement).reset();
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -69,7 +96,7 @@ const Footer = () => {
       });
 
       // Content animations on scroll
-      gsap.from([contentRef.current, socialsRef.current, skillsRef.current], {
+      gsap.from([contentRef.current, socialsRef.current], {
         scrollTrigger: {
           trigger: footerRef.current,
           start: "top bottom",
@@ -85,6 +112,27 @@ const Footer = () => {
 
     return () => ctx.revert();
   }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
 
   return (
     <footer ref={footerRef} className="relative py-20 overflow-hidden bg-background">
@@ -103,100 +151,118 @@ const Footer = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* CTA Section */}
-        <div ref={contentRef} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50">
-            Let's Create Something Amazing
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            I'm always excited to collaborate on new projects and ideas
-          </p>
-          <Button
-            size="lg"
-            className="group relative overflow-hidden hover:scale-105 transition-all duration-300"
-            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Contact Form Section */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="space-y-6"
           >
-            <span className="relative z-10">Get in Touch</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-          </Button>
-        </div>
+            <motion.h2 variants={itemVariants} className="text-2xl font-heading font-bold">
+              Get in Touch
+            </motion.h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+              <input type="hidden" name="subject" value="New Contact Form Submission" />
+              <input type="hidden" name="redirect" value="false" />
 
-        {/* Quick Links */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {/* Social Links */}
-          <div ref={socialsRef} className="flex flex-col items-center md:items-start gap-4">
-            <h3 className="text-lg font-semibold mb-2">Connect With Me</h3>
-            <div className="flex gap-4">
-              {[
-                { icon: Github, href: "https://github.com", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={href}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110"
-                  aria-label={label}
+              <motion.div variants={itemVariants}>
+                <Input
+                  name="name"
+                  placeholder="Your Name"
+                  required
+                  disabled={isSubmitting}
+                  className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Input
+                  name="email"
+                  type="email"
+                  placeholder="Your Email"
+                  required
+                  disabled={isSubmitting}
+                  className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Textarea
+                  name="message"
+                  placeholder="Your Message"
+                  required
+                  disabled={isSubmitting}
+                  className="min-h-[150px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting}
                 >
-                  <Icon className="w-6 h-6" />
-                </a>
-              ))}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    "Send Message"
+                  )}
+                </Button>
+              </motion.div>
+            </form>
+          </motion.div>
+
+          {/* Social Links and Contact Info */}
+          <div className="space-y-8">
+            <div ref={socialsRef} className="space-y-4">
+              <h3 className="text-lg font-semibold">Connect With Me</h3>
+              <div className="flex gap-4">
+                {[
+                  { icon: Github, href: "https://github.com", label: "GitHub" },
+                  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+                ].map(({ icon: Icon, href, label }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110"
+                    aria-label={label}
+                  >
+                    <Icon className="w-6 h-6" />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Contact Info</h3>
+              <button
+                onClick={copyEmail}
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group"
+              >
+                <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                george.bobby@example.com
+              </button>
+              <a
+                href="tel:+1234567890"
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group"
+              >
+                <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                +1 (234) 567-890
+              </a>
             </div>
           </div>
-
-          {/* Contact Info */}
-          <div className="flex flex-col items-center md:items-start gap-4">
-            <h3 className="text-lg font-semibold mb-2">Contact Info</h3>
-            <button
-              onClick={copyEmail}
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group"
-            >
-              <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              george.bobby@example.com
-            </button>
-            <a
-              href="tel:+1234567890"
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group"
-            >
-              <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              +1 (234) 567-890
-            </a>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex flex-col items-center md:items-start gap-4">
-            <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
-            <div className="flex flex-col gap-2">
-              {[
-                { href: "#", label: "Home" },
-                { href: "#projects", label: "Projects" },
-                { href: "#about", label: "About" },
-                { href: "#contact", label: "Contact" },
-              ].map(({ href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="text-muted-foreground hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left"
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Copyright and Back to Top */}
-        <div className="flex flex-col items-center gap-6 pt-8 border-t border-border/50">
-          <button
-            ref={backToTopRef}
-            onClick={scrollToTop}
-            className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
-          >
-            <ArrowUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
-            Back to Top
-          </button>
+        {/* Copyright */}
+        <div className="flex flex-col items-center gap-6 pt-8 mt-12 border-t border-border/50">
           <p ref={copyrightRef} className="text-sm text-muted-foreground text-center">
             © {new Date().getFullYear()} George Bobby. All rights reserved.
             <span className="block md:inline md:ml-4">

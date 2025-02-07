@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CustomCursor from "./components/Cursor";
 import Navigation from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import Index from "./pages/Index";
 import ResearchPost from "./pages/ResearchPost";
 import Blog from "./pages/Blog";
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/project/:slug" element={<ProjectPost />} />
           <Route path="/certification" element={<Certifications />} />
         </Routes>
+        <BackToTop />
         <Footer />
       </BrowserRouter>
     </TooltipProvider>
