@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import {
   ArrowDown,
@@ -27,20 +28,17 @@ const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+  const iconsContainerRef = useRef<HTMLDivElement>(null);
 
-  const [iconPositions, setIconPositions] = useState<{ top: number; left: number; size: number }[]>(
-    []
-  );
-
-  useEffect(() => {
-    // Generate random positions and sizes for the icons once
-    const positions = Array.from({ length: 10 }).map(() => ({
+  const [iconPositions] = useState(() =>
+    Array.from({ length: 10 }).map(() => ({
       top: Math.random() * 100,
       left: Math.random() * 100,
       size: Math.random() * 50 + 40,
-    }));
-    setIconPositions(positions);
+    }))
+  );
 
+  useEffect(() => {
     const ctx = gsap.context(() => {
       const titleText = new SplitType(headingRef.current!, {
         types: "chars",
@@ -67,14 +65,19 @@ const Hero = () => {
         });
       });
 
-      gsap.to(".floating-icon", {
-        y: "-=30",
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-        stagger: 0.3,
-      });
+      const floatingIcons = gsap.utils.toArray(".floating-icon");
+      if (floatingIcons.length > 0) {
+        floatingIcons.forEach((icon, index) => {
+          gsap.to(icon, {
+            y: "-=30",
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+            delay: index * 0.2,
+          });
+        });
+      }
 
       const tl = gsap.timeline();
 
@@ -114,7 +117,7 @@ const Hero = () => {
       ref={sectionRef}
       className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center px-4"
     >
-      <div className="absolute inset-0 pointer-events-none">
+      <div ref={iconsContainerRef} className="absolute inset-0 pointer-events-none">
         {iconPositions.map((position, index) => {
           const Icon = [
             Database,
@@ -158,10 +161,6 @@ const Hero = () => {
           ref={buttonsRef}
           className="flex flex-wrap gap-4 justify-center items-center"
         >
-          {/* <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.location.href = "mailto:your.email@example.com"}>
-            <Mail className="w-5 h-5 group-hover:text-primary" />
-            <span className="relative z-10">Email Me</span>
-          </Button> */}
           <Button size="lg" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}>
             <Briefcase className="w-5 h-5 text-white group-hover:text-gray-300" />
             <span className="relative z-10">View My Work</span>
