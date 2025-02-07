@@ -39,33 +39,42 @@ const Hero = () => {
   );
 
   useEffect(() => {
+    // Make sure all refs are available
+    if (!sectionRef.current || !headingRef.current || !buttonsRef.current || !scrollIndicatorRef.current) {
+      return;
+    }
+
     const ctx = gsap.context(() => {
+      // Split text animation
       const titleText = new SplitType(headingRef.current!, {
         types: "chars",
         tagName: "span",
       });
 
-      titleText.chars?.forEach((char) => {
-        char.addEventListener("mouseenter", () => {
-          gsap.to(char, {
-            scale: 1.4,
-            color: "#9333EA",
-            duration: 0.3,
-            ease: "power2.out",
+      if (titleText.chars) {
+        titleText.chars.forEach((char) => {
+          char.addEventListener("mouseenter", () => {
+            gsap.to(char, {
+              scale: 1.4,
+              color: "#9333EA",
+              duration: 0.3,
+              ease: "power2.out",
+            });
+          });
+
+          char.addEventListener("mouseleave", () => {
+            gsap.to(char, {
+              scale: 1,
+              color: "inherit",
+              duration: 0.3,
+              ease: "power2.in",
+            });
           });
         });
+      }
 
-        char.addEventListener("mouseleave", () => {
-          gsap.to(char, {
-            scale: 1,
-            color: "inherit",
-            duration: 0.3,
-            ease: "power2.in",
-          });
-        });
-      });
-
-      const floatingIcons = gsap.utils.toArray(".floating-icon");
+      // Floating icons animation
+      const floatingIcons = gsap.utils.toArray<HTMLElement>(".floating-icon");
       if (floatingIcons.length > 0) {
         floatingIcons.forEach((icon, index) => {
           gsap.to(icon, {
@@ -79,6 +88,7 @@ const Hero = () => {
         });
       }
 
+      // Initial animations timeline
       const tl = gsap.timeline();
 
       tl.from(headingRef.current, {
@@ -107,9 +117,9 @@ const Hero = () => {
           },
           "-=0.5"
         );
-    }, sectionRef);
+    }, sectionRef); // Scope GSAP animations to section
 
-    return () => ctx.revert();
+    return () => ctx.revert(); // Cleanup
   }, []);
 
   return (
