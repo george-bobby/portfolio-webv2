@@ -15,6 +15,7 @@ import ProjectPost from "./pages/ProjectPost";
 import Projects from "./pages/Project";
 import Certifications from "./pages/Certification";
 import Research from "./pages/Research";
+import { Analytics } from '@vercel/analytics/react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,7 @@ const App = () => (
         </Routes>
         <BackToTop />
         <Footer />
+        <Analytics />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
