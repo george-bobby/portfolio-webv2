@@ -129,18 +129,22 @@ const Projects = () => {
             </div>
           ))}
         </div>
+
         {showViewAll && (
           <Button
-            onClick={() => navigate("/projects")}
-            className="fixed bottom-16 left-1/2 transform -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-lg shadow-lg transition-opacity"
+            onClick={() => navigate("/project")}
+            className="group relative bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden fixed bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
           >
-            View All
+            View All Projects
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </Button>
         )}
-        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-center text-muted-foreground animate-bounce">
+        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-center text-muted-foreground flex items-center gap-2">
           <ChevronDown className="w-6 h-6" />
-          <p className="text-sm">Scroll to view more</p>
+          <p className="text-sm">Scroll Down for More</p>
         </div>
+
+
       </section>
     </>
   );

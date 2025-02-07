@@ -4,7 +4,7 @@ import Projects from "@/components/Projects";
 import Research from "@/components/Researches";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
-import Certifications from "@/components/Certifications";
+// import Certifications from "@/components/Certifications";
 import BlogSection from "@/components/Blogs";
 
 
@@ -15,7 +15,7 @@ const Index = () => {
       <About />
       <Projects />
       <Skills />
-      <Certifications />
+      {/* <Certifications /> */}
       <BlogSection />
       <Research />
       <Contact />
