@@ -1,3 +1,26 @@
+
+import { 
+  SiNeo4J, 
+  SiAtlassian, 
+  SiClickup, 
+  SiSelenium, 
+  SiPagerduty,
+  SiMicrosoft,
+  SiOracle,
+  SiPython,
+  SiWordpress,
+  SiCisco,
+  SiJava
+} from 'react-icons/si';
+import { 
+  BsFillKanbanFill,
+  BsGraphUp,
+  BsBook,
+  BsBuilding,
+  BsAward
+} from 'react-icons/bs';
+import { IconType } from 'react-icons';
+
 export type Certification = {
   id: string;
   title: string;
@@ -6,7 +29,7 @@ export type Certification = {
   description: string;
   skills: string[];
   detailsUrl: string;
-  image?: string;
+  icon: IconType;
 };
 
 export const certifications: Certification[] = [
@@ -23,7 +46,7 @@ export const certifications: Certification[] = [
     ],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/neo4j-logo.svg",
+    icon: SiNeo4J,
   },
   {
     id: "aha-product-mgmt-2024",
@@ -35,7 +58,7 @@ export const certifications: Certification[] = [
     skills: ["Product Strategies", "Product Management", "Product Development"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/aha-logo.svg",
+    icon: BsFillKanbanFill,
   },
   {
     id: "atlassian-agile-2024",
@@ -47,7 +70,7 @@ export const certifications: Certification[] = [
     skills: ["Project Management", "Jira", "Product Development"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/atlassian-logo.svg",
+    icon: SiAtlassian,
   },
   {
     id: "clickup-expert-2024",
@@ -58,7 +81,7 @@ export const certifications: Certification[] = [
     skills: ["Product Strategies", "ClickUp", "Product Management"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/clickup-logo.svg",
+    icon: SiClickup,
   },
   {
     id: "lambdatest-automation-2024",
@@ -69,7 +92,7 @@ export const certifications: Certification[] = [
     skills: ["Selenium", "Test Automation", "Software Testing"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/lambdatest-logo.svg",
+    icon: SiSelenium,
   },
   {
     id: "pagerduty-devops-2024",
@@ -81,7 +104,7 @@ export const certifications: Certification[] = [
     skills: ["CI/CD", "Infrastructure as Code", "DevOps"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/pagerduty-logo.svg",
+    icon: SiPagerduty,
   },
   {
     id: "microsoft-ai-2024",
@@ -93,7 +116,7 @@ export const certifications: Certification[] = [
     skills: ["NLP", "Generative AI", "Artificial Intelligence"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/microsoft-logo.svg",
+    icon: SiMicrosoft,
   },
   {
     id: "snovio-sales-2024",
@@ -104,7 +127,7 @@ export const certifications: Certification[] = [
     skills: ["Social Media Marketing", "Product Marketing", "Market Research"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/snovio-logo.svg",
+    icon: BsGraphUp,
   },
   {
     id: "iiba-product-mgmt-2024",
@@ -116,7 +139,7 @@ export const certifications: Certification[] = [
     skills: ["Product Strategies", "Project Management", "Product Management"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/iiba-logo.svg",
+    icon: BsBook,
   },
   {
     id: "nestle-entrepreneurship-2024",
@@ -128,7 +151,7 @@ export const certifications: Certification[] = [
     skills: ["Entrepreneurship", "Project Management", "Public Speaking"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/nestle-logo.svg",
+    icon: BsBuilding,
   },
   {
     id: "oracle-java-2024",
@@ -139,7 +162,7 @@ export const certifications: Certification[] = [
     skills: ["Java"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/oracle-logo.svg",
+    icon: SiOracle,
   },
   {
     id: "nptel-project-mgmt-2024",
@@ -150,7 +173,7 @@ export const certifications: Certification[] = [
     skills: ["Project Management"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/nptel-logo.svg",
+    icon: BsAward,
   },
   {
     id: "lt-data-analytics-2023",
@@ -161,7 +184,7 @@ export const certifications: Certification[] = [
     skills: ["Python", "NumPy", "Data Analysis", "Pandas"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/lt-logo.svg",
+    icon: SiPython,
   },
   {
     id: "udemy-wordpress-2023",
@@ -172,7 +195,7 @@ export const certifications: Certification[] = [
     skills: ["WordPress", "Web Development", "SEO Audits"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/udemy-logo.svg",
+    icon: SiWordpress,
   },
   {
     id: "cisco-networking-2023",
@@ -184,7 +207,7 @@ export const certifications: Certification[] = [
     skills: ["Packet Tracer", "Cloud Computing", "Cisco Networking"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    image: "/cisco-logo.svg",
+    icon: SiCisco,
   },
 ];
 

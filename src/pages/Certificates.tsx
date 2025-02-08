@@ -1,8 +1,9 @@
+
 import { motion } from "framer-motion";
 import { certifications } from "@/data/certificates";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BadgeCheckIcon, CalendarIcon, DownloadIcon, ExternalLinkIcon } from "lucide-react";
+import { BadgeCheckIcon, CalendarIcon, ExternalLinkIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Certifications = () => {
@@ -32,15 +33,9 @@ const Certifications = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                {cert.image && (
-                  <div className="relative h-48 overflow-hidden rounded-t-lg">
-                    <img
-                      src={cert.image}
-                      alt={cert.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                  </div>
-                )}
+                <div className="relative h-48 overflow-hidden rounded-t-lg bg-primary/5 flex items-center justify-center">
+                  <cert.icon className="w-24 h-24 text-primary/80 transition-transform duration-300 group-hover:scale-110" />
+                </div>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BadgeCheckIcon className="w-5 h-5 text-primary" />
@@ -65,21 +60,6 @@ const Certifications = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
-                  {/* <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="outline" size="icon" asChild>
-                          <a href={cert.downloadUrl} download>
-                            <DownloadIcon className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Download Certificate</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider> */}
-
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
