@@ -2,12 +2,12 @@ import { useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { projects } from "@/data/projects";
+import { projectsdata } from "@/data/projects";
 
 const ProjectPost = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const project = projects.find((p) => p.slug === slug);
+  const project = projectsdata.find((p) => p.slug === slug);
 
   if (!project) {
     return (
