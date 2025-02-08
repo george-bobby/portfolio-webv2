@@ -10,7 +10,7 @@ const workData = [
       "Helped in the development of Talisma Social, an automation platform for social media posting",
       "Compared and analyzed various social media automation tools",
     ],
-    tools: ["React", "Node.js", "MongoDB", "Express", "REST APIs"],
+    tools: ["React", "Next.js", "MongoDB", "Express", "REST APIs"],
   },
   {
     company: "UI Tooltip",
