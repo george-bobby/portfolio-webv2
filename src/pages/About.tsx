@@ -61,8 +61,14 @@ const About = () => {
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-20">
                     <h2 className="text-4xl font-heading font-bold mb-12 text-center">About Me</h2>
                     <div className="grid md:grid-cols-2 gap-8">
-                        <AboutCard title="Who I Am" description="I'm a passionate developer with a keen eye for design and a love for creating seamless user experiences. With expertise in modern web technologies, I bring ideas to life through clean code and creative solutions." />
-                        <AboutCard title="What I Do" description="I specialize in building modern web applications using cutting-edge technologies. From responsive designs to complex web applications, I focus on creating efficient and scalable solutions that meet business needs." />
+                        <AboutCard
+                            title="Who I Am"
+                            description="I’m a B.Tech Computer Science student specializing in AI & ML with a 3.89 CGPA, committed to excellence in technology. Passionate about software engineering, I focus on frontend development, the MERN stack, and machine learning to build impactful solutions."
+                        />
+                        <AboutCard
+                            title="What I Do"
+                            description="I specialize in developing scalable web applications and integrating AI-driven solutions. With expertise in the MERN stack and machine learning, I create seamless user experiences while optimizing system performance and efficiency."
+                        />
                     </div>
                 </motion.div>
                 <div className="grid md:grid-cols-2 gap-8 mb-20">

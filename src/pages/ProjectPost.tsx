@@ -23,18 +23,18 @@ const ProjectPost = () => {
         <Button
           variant="ghost"
           onClick={() => navigate(-1)}
-          className="mb-8 hover:bg-secondary/20"
+          className="mb-12 hover:bg-secondary/20"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Projects
         </Button>
 
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
+        <div className="max-w-4xl mx-auto space-y-16">
+          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-12">
             {project.title}
           </h1>
 
-          <div className="aspect-video w-full bg-secondary/20 rounded-lg mb-12">
+          <div className="aspect-video w-full bg-secondary/20 rounded-lg mb-16">
             <img
               src={project.image}
               alt={project.title}
@@ -42,22 +42,30 @@ const ProjectPost = () => {
             />
           </div>
 
-          <div className="prose prose-invert max-w-none">
-            <h2>Overview</h2>
-            <p>{project.overview}</p>
+          <div className="prose prose-invert max-w-none space-y-12">
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold mb-8">Overview</h2>
+              <p className="text-lg">{project.overview}</p>
+            </div>
 
-            <h2>Challenges</h2>
-            <ul>
-              {project.challenges.map((challenge, index) => (
-                <li key={index}>{challenge}</li>
-              ))}
-            </ul>
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold mb-8">Challenges</h2>
+              <ul className="space-y-4">
+                {project.challenges.map((challenge, index) => (
+                  <li key={index} className="text-lg">{challenge}</li>
+                ))}
+              </ul>
+            </div>
 
-            <h2>Solution</h2>
-            <p>{project.solution}</p>
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold mb-8">Solution</h2>
+              <p className="text-lg">{project.solution}</p>
+            </div>
 
-            <h2>Outcome</h2>
-            <p>{project.outcome}</p>
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold mb-8">Outcome</h2>
+              <p className="text-lg">{project.outcome}</p>
+            </div>
           </div>
         </div>
       </div>

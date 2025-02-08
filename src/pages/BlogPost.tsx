@@ -15,54 +15,59 @@ const BlogPost = () => {
 
     if (!post) {
         return (
-            <div className="container py-20 text-center">
+            <div className="container min-h-screen flex flex-col items-center justify-center">
                 <h1 className="text-4xl font-heading font-bold mb-8">Post not found</h1>
                 <Button onClick={() => navigate("/blog")}>Back to Blog</Button>
             </div>
         );
     }
 
+    const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
     return (
         <article className="min-h-screen bg-background">
-            <div className="container py-20">
+            <div className="container py-24">
                 <Button
                     variant="ghost"
-                    className="mb-8"
+                    className="mb-12 hover:bg-secondary/20 transition-colors"
                     onClick={() => navigate("/blog")}
                 >
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Blog
                 </Button>
 
-                <div className="max-w-4xl mx-auto">
-                    <div className="aspect-video overflow-hidden rounded-lg mb-8">
+                <div className="max-w-4xl mx-auto space-y-16">
+                    <div className="aspect-video overflow-hidden rounded-xl shadow-lg">
                         <img
                             src={post.image}
                             alt={post.title}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover transition-transform hover:scale-105 duration-700"
                         />
                     </div>
 
-                    <div className="space-y-4 mb-8">
-                        <h1 className="text-4xl md:text-5xl font-heading font-bold">
+                    <div className="space-y-6">
+                        <h1 className="text-4xl md:text-5xl font-heading font-bold leading-tight">
                             {post.title}
                         </h1>
+
                         <div className="flex flex-wrap gap-4 text-muted-foreground">
-                            <span>{new Date(post.date).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                            })}</span>
+                            <span>{formattedDate}</span>
                             <span>•</span>
                             <span>{post.readingTime}</span>
                             <span>•</span>
                             <span>By {post.author}</span>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+
+                        <div className="flex flex-wrap gap-3">
                             {post.tags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                                    className="text-sm bg-primary/10 text-primary px-4 py-1.5 rounded-full
+                    hover:bg-primary/20 transition-colors cursor-pointer"
                                 >
                                     {tag}
                                 </span>
@@ -70,23 +75,17 @@ const BlogPost = () => {
                         </div>
                     </div>
 
-                    <div className="prose prose-invert max-w-none">
-                        <p className="text-lg leading-relaxed">
+                    <div className="prose prose-invert prose-lg max-w-none space-y-12">
+                        <p className="text-xl leading-relaxed text-muted-foreground">
                             {post.description}
                         </p>
-                        <div className="mt-8">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            </p>
-                            <h2 className="text-2xl font-bold mt-8 mb-4">Key Takeaways</h2>
-                            <ul className="list-disc pl-6 space-y-2">
-                                <li>First important point about {post.tags[0]}</li>
-                                <li>Second key concept related to the topic</li>
-                                <li>Third major takeaway from this article</li>
-                            </ul>
-                            <p className="mt-6">
-                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
+
+                        <div className="space-y-12">
+                            {post.content.split('\n\n').map((paragraph, index) => (
+                                <p key={index} className="text-lg leading-relaxed">
+                                    {paragraph}
+                                </p>
+                            ))}
                         </div>
                     </div>
                 </div>
