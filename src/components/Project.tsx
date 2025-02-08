@@ -4,37 +4,12 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { projectsdata } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  {
-    id: 1,
-    title: "AI-Powered Healthcare Platform",
-    description: "A revolutionary healthcare platform leveraging AI for early disease detection and personalized treatment.",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-    tools: ["React", "TensorFlow", "Python", "AWS"],
-    slug: "ai-healthcare"
-  },
-  {
-    id: 2,
-    title: "Smart Home Automation System",
-    description: "An IoT-based home automation system providing intelligent control over household devices with advanced energy management.",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-    tools: ["React Native", "Node.js", "MongoDB", "IoT"],
-    slug: "smart-home"
-  },
-  {
-    id: 3,
-    title: "E-Learning Platform",
-    description: "A comprehensive e-learning platform featuring interactive courses, real-time collaboration, and AI-powered personalized learning paths.",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-    tools: ["Next.js", "TypeScript", "PostgreSQL", "WebRTC"],
-    slug: "e-learning"
-  }
-];
-
 const Project = () => {
+  const projects = projectsdata.slice(0, 3);
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();

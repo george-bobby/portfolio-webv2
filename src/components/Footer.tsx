@@ -3,9 +3,9 @@ import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Database, PenTool, Figma, Code, Cpu, Layers, Server, Terminal, Globe, Cloud } from "lucide-react";
 import gsap from "gsap";
-import ContactForm from "./footer/ContactForm";
-import SocialLinks from "./footer/SocialLinks";
-import ContactInfo from "./footer/ContactInfo";
+import ContactForm from "./elements/ContactForm";
+import SocialLinks from "./elements/SocialLinks";
+import ContactInfo from "./elements/ContactInfo";
 
 const Footer = () => {
   const iconsContainerRef = useRef<HTMLDivElement>(null);

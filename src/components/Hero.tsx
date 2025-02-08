@@ -1,25 +1,10 @@
 import { Button } from "@/components/ui/button";
-import {
-  ArrowDown,
-  Database,
-  PenTool,
-  Figma,
-  Code,
-  Cpu,
-  Layers,
-  Server,
-  Terminal,
-  Globe,
-  Cloud,
-  Mail,
-  Download,
-  Briefcase,
-  Github,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ArrowDown, Github, Download } from "lucide-react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
+import FloatingIcons from "./elements/FloatingIcons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,24 +13,13 @@ const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const iconsContainerRef = useRef<HTMLDivElement>(null);
-
-  const [iconPositions] = useState(() =>
-    Array.from({ length: 10 }).map(() => ({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      size: Math.random() * 50 + 40,
-    }))
-  );
 
   useEffect(() => {
-    // Make sure all refs are available
     if (!sectionRef.current || !headingRef.current || !buttonsRef.current || !scrollIndicatorRef.current) {
       return;
     }
 
     const ctx = gsap.context(() => {
-      // Split text animation
       const titleText = new SplitType(headingRef.current!, {
         types: "chars",
         tagName: "span",
@@ -73,22 +47,6 @@ const Hero = () => {
         });
       }
 
-      // Floating icons animation
-      const floatingIcons = gsap.utils.toArray<HTMLElement>(".floating-icon");
-      if (floatingIcons.length > 0) {
-        floatingIcons.forEach((icon, index) => {
-          gsap.to(icon, {
-            y: "-=30",
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "power1.inOut",
-            delay: index * 0.2,
-          });
-        });
-      }
-
-      // Initial animations timeline
       const tl = gsap.timeline();
 
       tl.from(headingRef.current, {
@@ -117,9 +75,9 @@ const Hero = () => {
           },
           "-=0.5"
         );
-    }, sectionRef); // Scope GSAP animations to section
+    }, sectionRef);
 
-    return () => ctx.revert(); // Cleanup
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -127,36 +85,7 @@ const Hero = () => {
       ref={sectionRef}
       className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center px-4"
     >
-      <div ref={iconsContainerRef} className="absolute inset-0 pointer-events-none">
-        {iconPositions.map((position, index) => {
-          const Icon = [
-            Database,
-            PenTool,
-            Figma,
-            Code,
-            Cpu,
-            Layers,
-            Server,
-            Terminal,
-            Globe,
-            Cloud,
-          ][index % 10];
-
-          return (
-            <Icon
-              key={index}
-              className="floating-icon text-primary opacity-20 absolute"
-              style={{
-                top: `${position.top}%`,
-                left: `${position.left}%`,
-                transform: `translate(-50%, -50%)`,
-                width: `${position.size}px`,
-                height: `${position.size}px`,
-              }}
-            />
-          );
-        })}
-      </div>
+      <FloatingIcons />
 
       <div className="relative z-10">
         <h1

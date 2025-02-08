@@ -37,7 +37,7 @@ const Navigation = () => {
     { path: "/", label: "Home", icon: Home },
     { path: "/projects", label: "Projects", icon: FolderKanban },
     { path: "/blog", label: "Blog", icon: BookOpen },
-    { path: "/certification", label: "Certifications", icon: Award },
+    { path: "/certificates", label: "Certificates", icon: Award },
     { path: "/about", label: "About", icon: User },
   ];
 

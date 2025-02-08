@@ -13,7 +13,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import ProjectPost from "./pages/ProjectPost";
 import Projects from "./pages/Projects";
-import Certifications from "./pages/Certification";
+import Certifications from "./pages/Certificates";
 import About from "./pages/About";
 import { Analytics } from '@vercel/analytics/react';
 
@@ -42,7 +42,7 @@ const App = () => {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/project/:slug" element={<ProjectPost />} />
-            <Route path="/certification" element={<Certifications />} />
+            <Route path="/certificates" element={<Certifications />} />
           </Routes>
           <BackToTop />
           <Footer />

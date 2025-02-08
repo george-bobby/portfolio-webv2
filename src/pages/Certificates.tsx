@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { certifications } from "@/data/certs";
+import { certifications } from "@/data/certificates";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BadgeCheckIcon, CalendarIcon, DownloadIcon, ExternalLinkIcon } from "lucide-react";
