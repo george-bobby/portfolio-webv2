@@ -16,9 +16,9 @@ const Certifications = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">My Certifications</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          {/* <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             A curated list of my certifications showcasing my professional growth and skills.
-          </p>
+          </p> */}
         </motion.div>
 
         <div className="space-y-6">
