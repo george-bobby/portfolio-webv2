@@ -3,9 +3,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { projects } from "@/data/projects";
+import { projectsdata } from "@/data/projects";
 
 const Projects = () => {
+  const projects = projectsdata;
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
 
