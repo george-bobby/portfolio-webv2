@@ -19,7 +19,6 @@ export const blogPosts: BlogPost[] = [
       "Learn the essential best practices for building responsive and maintainable websites using Tailwind CSS, including tips for optimization and component organization.",
     date: "2024-03-15",
     author: "Sarah Johnson",
-    // image: "https://source.unsplash.com/photo-1488590528505-98d2b5aba04b",
     image: `https://placehold.co/600x400?text=${encodeURIComponent(
       "Mastering Tailwind CSS"
     )}`,

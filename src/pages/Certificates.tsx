@@ -65,7 +65,7 @@ const Certifications = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
-                  <TooltipProvider>
+                  {/* <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button variant="outline" size="icon" asChild>
@@ -78,7 +78,7 @@ const Certifications = () => {
                         <p>Download Certificate</p>
                       </TooltipContent>
                     </Tooltip>
-                  </TooltipProvider>
+                  </TooltipProvider> */}
 
                   <TooltipProvider>
                     <Tooltip>

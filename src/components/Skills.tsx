@@ -103,16 +103,16 @@ const Skills = () => {
           transition={{ duration: 0.5 }}
           className="text-4xl font-heading font-bold mb-4"
         >
-          Technologies I Use
+          Tools and Frameworks that Power my Creations
         </motion.h2>
-        <motion.p
+        {/* <motion.p
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-muted-foreground mb-12"
         >
           Tools and frameworks that power my creations
-        </motion.p>
+        </motion.p> */}
 
         <div className="relative overflow-hidden py-12 flex flex-col gap-16">
           {/* First Marquee Row */}

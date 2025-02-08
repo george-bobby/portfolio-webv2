@@ -45,14 +45,14 @@ const Research = () => {
           >
             Research Papers
           </motion.h2>
-          <motion.p
+          {/* <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-xl text-muted-foreground max-w-2xl"
           >
             Exploring the intersection of AI, blockchain, and education through academic research.
-          </motion.p>
+          </motion.p> */}
         </div>
 
         <motion.div
@@ -96,7 +96,7 @@ const Research = () => {
                   <div className="space-y-2">
                     <div className="flex items-start gap-3">
                       <Book className="w-5 h-5 mt-1 text-primary shrink-0" />
-                      <h3 className="text-xl font-heading font-bold">
+                      <h3 className="text-base font-heading font-bold">
                         {paper.title}
                       </h3>
                     </div>

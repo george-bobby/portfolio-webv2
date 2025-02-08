@@ -1,25 +1,35 @@
-import exp from "constants";
-
-  const educationData = [
-    {
-      school: "Stanford University",
-      degree: "Master of Science in Computer Science",
-      duration: "2020 - 2022",
-      gpa: "3.9/4.0",
-      location: "Stanford, CA",
-      courses: ["Artificial Intelligence", "Machine Learning", "Cloud Computing"],
-      achievements: ["Dean's List", "Research Assistant", "Merit Scholarship"]
-    },
-    {
-      school: "MIT",
-      degree: "Bachelor of Science in Software Engineering",
-      duration: "2016 - 2020",
-      gpa: "3.8/4.0",
-      location: "Cambridge, MA",
-      courses: ["Data Structures", "Algorithms", "Web Development"],
-      achievements: ["Top Graduate", "Academic Excellence Award"]
-    }
+const educationData = [
+  {
+    school: "Christ University, Bangalore",
+    degree: "Bachelor of Technology in Computer Science with AI and ML",
+    duration: "August 2022 - August 2026",
+    gpa: "3.89/4.0",
+    location: "Bangalore, India",
+    courses: [
+      "Machine Learning",
+      "Neural Networks",
+      "Blockchain Technology",
+      "Cloud Computing",
+    ],
+    achievements: [
+      "2x Merit Scholaship",
+      "IIIC Student Head",
+      "FutureForge Hackathon Winner",
+    ],
+  },
+  {
+    school: "Jawahar Navodaya Vidyalaya (JNV)",
+    degree: "Higher Secondary Education",
+    duration: "June 2014 - March 2022",
+    gpa: "9.5/10.0",
+    location: "Kerala, India",
+    courses: ["Mathematics", "Physics", "Computer Science", "Biology"],
+    achievements: [
+      "NCC Lans Corporal",
+      "School Captain",
+      "Science Fair Winner",
+    ],
+  },
 ];
-  
 
 export default educationData;

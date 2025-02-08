@@ -5,43 +5,187 @@ export type Certification = {
   date: string;
   description: string;
   skills: string[];
-  downloadUrl: string;
   detailsUrl: string;
   image?: string;
 };
 
 export const certifications: Certification[] = [
   {
-    id: "oracle-2024",
-    title: "Oracle Academy 2024",
+    id: "neo4j-2024",
+    title: "Neo4j Database Certified Professional",
+    issuer: "Neo4j",
+    date: "December 2024",
+    description: "Certification in Graph Databases, RAG, and Data Analysis.",
+    skills: [
+      "Data Analysis",
+      "Graph Databases",
+      "Retrieval-Augmented Generation (RAG)",
+    ],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/neo4j-logo.svg",
+  },
+  {
+    id: "aha-product-mgmt-2024",
+    title: "Aha! Product Management Certification",
+    issuer: "Aha!",
+    date: "September 2024",
+    description:
+      "Product management certification covering product strategies and development.",
+    skills: ["Product Strategies", "Product Management", "Product Development"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/aha-logo.svg",
+  },
+  {
+    id: "atlassian-agile-2024",
+    title: "Atlassian Agile Project Management Certification",
+    issuer: "Atlassian",
+    date: "September 2024",
+    description:
+      "Certification in Agile methodologies, Jira, and project management.",
+    skills: ["Project Management", "Jira", "Product Development"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/atlassian-logo.svg",
+  },
+  {
+    id: "clickup-expert-2024",
+    title: "ClickUp Expert Certification",
+    issuer: "ClickUp",
+    date: "September 2024",
+    description: "Certification in ClickUp product management strategies.",
+    skills: ["Product Strategies", "ClickUp", "Product Management"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/clickup-logo.svg",
+  },
+  {
+    id: "lambdatest-automation-2024",
+    title: "LambdaTest Test Automation Certification",
+    issuer: "LambdaTest",
+    date: "September 2024",
+    description: "Certification in test automation using Selenium.",
+    skills: ["Selenium", "Test Automation", "Software Testing"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/lambdatest-logo.svg",
+  },
+  {
+    id: "pagerduty-devops-2024",
+    title: "PagerDuty DevOps Professional Certification",
+    issuer: "PagerDuty",
+    date: "September 2024",
+    description:
+      "Certification in CI/CD, Infrastructure as Code, and DevOps practices.",
+    skills: ["CI/CD", "Infrastructure as Code", "DevOps"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/pagerduty-logo.svg",
+  },
+  {
+    id: "microsoft-ai-2024",
+    title: "Career Essentials in Generative AI",
+    issuer: "Microsoft & LinkedIn",
+    date: "July 2024",
+    description:
+      "Certification covering NLP, Generative AI, and Artificial Intelligence.",
+    skills: ["NLP", "Generative AI", "Artificial Intelligence"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/microsoft-logo.svg",
+  },
+  {
+    id: "snovio-sales-2024",
+    title: "From Lead Generation to Closing Deals",
+    issuer: "Snov.io",
+    date: "June 2024",
+    description: "Certification in lead generation and product marketing.",
+    skills: ["Social Media Marketing", "Product Marketing", "Market Research"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/snovio-logo.svg",
+  },
+  {
+    id: "iiba-product-mgmt-2024",
+    title: "Product Management First Steps",
+    issuer: "IIBA Mumbai Chapter",
+    date: "May 2024",
+    description:
+      "Introductory certification in product management and marketing.",
+    skills: ["Product Strategies", "Project Management", "Product Management"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/iiba-logo.svg",
+  },
+  {
+    id: "nestle-entrepreneurship-2024",
+    title: "Idea Generation & Successful Entrepreneurship",
+    issuer: "Nestlé",
+    date: "April 2024",
+    description:
+      "Certification covering entrepreneurship, communication, and project management.",
+    skills: ["Entrepreneurship", "Project Management", "Public Speaking"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/nestle-logo.svg",
+  },
+  {
+    id: "oracle-java-2024",
+    title: "Java Programming Oracle Academy",
     issuer: "Oracle",
-    date: "2024",
-    description: "Java Programming certification from Oracle Academy",
-    skills: ["Java", "OOP", "Database"],
-    downloadUrl: "#",
-    detailsUrl: "#",
-    image: "/placeholder.svg"
+    date: "April 2024",
+    description: "Java Programming certification from Oracle Academy.",
+    skills: ["Java"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/oracle-logo.svg",
   },
   {
-    id: "product-mgmt",
-    title: "Product Management Academy",
-    issuer: "Product School",
-    date: "2024",
-    description: "Comprehensive product management certification",
-    skills: ["Product Strategy", "Agile", "User Research"],
-    downloadUrl: "#",
-    detailsUrl: "#",
-    image: "/placeholder.svg"
+    id: "nptel-project-mgmt-2024",
+    title: "Project Management Certification",
+    issuer: "NPTEL",
+    date: "April 2024",
+    description: "Certification covering project management fundamentals.",
+    skills: ["Project Management"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/nptel-logo.svg",
   },
   {
-    id: "aws-cloud",
-    title: "AWS Cloud Practitioner",
-    issuer: "Amazon Web Services",
-    date: "2024",
-    description: "Cloud computing and AWS services certification",
-    skills: ["AWS", "Cloud Architecture", "DevOps"],
-    downloadUrl: "#",
-    detailsUrl: "#",
-    image: "/placeholder.svg"
-  }
+    id: "lt-data-analytics-2023",
+    title: "Programming For Data Analytics",
+    issuer: "L&T Technology Services",
+    date: "November 2023",
+    description: "Certification in Python, Pandas, and data analytics.",
+    skills: ["Python", "NumPy", "Data Analysis", "Pandas"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/lt-logo.svg",
+  },
+  {
+    id: "udemy-wordpress-2023",
+    title: "Complete WordPress Website Developer Course",
+    issuer: "Udemy",
+    date: "October 2023",
+    description: "Certification in WordPress development and SEO strategies.",
+    skills: ["WordPress", "Web Development", "SEO Audits"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/udemy-logo.svg",
+  },
+  {
+    id: "cisco-networking-2023",
+    title: "Cisco Networking Basics",
+    issuer: "Cisco",
+    date: "September 2023",
+    description:
+      "Certification in networking fundamentals and Cisco Packet Tracer.",
+    skills: ["Packet Tracer", "Cloud Computing", "Cisco Networking"],
+    detailsUrl:
+      "https://www.linkedin.com/in/george-bobby/details/certifications/",
+    image: "/cisco-logo.svg",
+  },
 ];
+
+export default certifications;
