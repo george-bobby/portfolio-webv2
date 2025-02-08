@@ -5,19 +5,20 @@ import {
   SiClickup, 
   SiSelenium, 
   SiPagerduty,
-  SiMicrosoftoffice, // Changed from SiMicrosoft
+  SiMicrosoft, // Changed back since SiMicrosoftoffice doesn't exist
   SiOracle,
   SiPython,
   SiWordpress,
   SiCisco,
-  SiOpenjdk // Changed from SiJava
+  SiOpenjdk // This one exists
 } from 'react-icons/si';
 import { 
   BsFillKanbanFill,
   BsGraphUp,
   BsBook,
   BsBuilding,
-  BsAward
+  BsAward,
+  BsWindow // Added as a fallback icon
 } from 'react-icons/bs';
 import { IconType } from 'react-icons';
 
@@ -116,7 +117,7 @@ export const certifications: Certification[] = [
     skills: ["NLP", "Generative AI", "Artificial Intelligence"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    icon: SiMicrosoftoffice,
+    icon: SiMicrosoft,
   },
   {
     id: "snovio-sales-2024",
