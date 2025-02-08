@@ -9,7 +9,7 @@ const papers = [
     tags: ["NLP", "LSA", "Word2Vec", "Seq2Seq", "Question Paper Generation"],
     slug: "automatic-question-paper-generation",
     link: "https://link.springer.com/article/10.1007/s11227-023-4567-8",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    image: "/public/automatic-question-paper-generation.png",
   },
   {
     title:
@@ -21,7 +21,7 @@ const papers = [
     tags: ["GraphRAG", "Knowledge Graphs", "Neo4j", "Information Retrieval"],
     slug: "graph-based-rag-scalable-processing",
     link: "https://ieeexplore.ieee.org/document/5541170",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    image: "/public/graph-based-rag-scalable-processing.png",
   },
 ];
 
