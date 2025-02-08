@@ -34,7 +34,7 @@ const projects = [
   }
 ];
 
-const Projects = () => {
+const Project = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -150,4 +150,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default Project;

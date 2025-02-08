@@ -196,9 +196,9 @@ const Footer = () => {
               <h3 className="text-2xl font-semibold">Connect With Me</h3>
               <div className="flex justify-center gap-4">
                 {[
-                  { icon: Github, href: "https://github.com", label: "GitHub" },
-                  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                  { icon: Twitter, href: "https://twitter.com", label: "Twitter" }
+                  { icon: Github, href: "https://github.com/george-bobby", label: "GitHub" },
+                  { icon: Linkedin, href: "https://linkedin.com/in/george-bobby", label: "LinkedIn" },
+                  { icon: Twitter, href: "https://twitter.com/georgebobby_", label: "Twitter" }
                 ].map(({ icon: Icon, href, label }) => (
                   <motion.a
                     key={href}
@@ -224,23 +224,23 @@ const Footer = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
-                  navigator.clipboard.writeText("george.bobby@example.com");
+                  navigator.clipboard.writeText("mailto.georgebobby@gmail.com");
                   toast({ description: "Email copied!" });
                 }}
                 className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-3 bg-primary/20 hover:bg-primary text-white w-full px-5 py-3 rounded-lg backdrop-blur-sm"
               >
                 <Mail className="w-6 h-6" />
-                <span className="text-lg">george.bobby@example.com</span>
+                <span className="text-base">mailto.georgebobby@gmail.com</span>
               </motion.button>
 
               <motion.a
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                href="tel:+1234567890"
+                href="tel:+919746095420"
                 className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-3 bg-primary/20 hover:bg-primary text-white w-full px-5 py-3 rounded-lg backdrop-blur-sm"
               >
                 <Phone className="w-6 h-6" />
-                <span className="text-lg">+1 (234) 567-890</span>
+                <span className="text-base">+919746095420</span>
               </motion.a>
             </div>
           </motion.div>

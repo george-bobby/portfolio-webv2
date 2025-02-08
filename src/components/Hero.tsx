@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   ArrowDown,
@@ -13,8 +12,9 @@ import {
   Globe,
   Cloud,
   Mail,
-  Linkedin,
+  Download,
   Briefcase,
+  Github,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -171,13 +171,22 @@ const Hero = () => {
           ref={buttonsRef}
           className="flex flex-wrap gap-4 justify-center items-center"
         >
-          <Button size="lg" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}>
-            <Briefcase className="w-5 h-5 text-white group-hover:text-gray-300" />
-            <span className="relative z-10">View My Work</span>
+          <Button
+            size="lg"
+            className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2"
+            onClick={() => window.open("https://github.com/george-bobby/", "_blank")}
+          >
+            <Github className="w-5 h-5 text-white group-hover:text-gray-300" />
+            <span className="relative z-10">View on GitHub</span>
           </Button>
-          <Button size="lg" variant="outline" className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2" onClick={() => window.open("https://linkedin.com", "_blank")}>
-            <Linkedin className="w-5 h-5 group-hover:text-primary" />
-            <span className="relative z-10">Connect on LinkedIn</span>
+          <Button
+            size="lg"
+            variant="outline"
+            className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2"
+            onClick={() => window.open("https://drive.google.com/file/d/1w4ijqOQZ0H0P1J4brWwQfOyEZkr5IttU/view?usp=drive_link", "_blank")}
+          >
+            <Download className="w-5 h-5 group-hover:text-primary" />
+            <span className="relative z-10">Download CV</span>
           </Button>
         </div>
       </div>

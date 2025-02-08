@@ -9,7 +9,7 @@ import {
   Home,
   FolderKanban,
   BookOpen,
-  FlaskConical,
+  User,
   Award,
   Download
 } from "lucide-react";
@@ -35,10 +35,10 @@ const Navigation = () => {
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
-    { path: "/project", label: "Projects", icon: FolderKanban },
+    { path: "/projects", label: "Projects", icon: FolderKanban },
     { path: "/blog", label: "Blog", icon: BookOpen },
-    { path: "/research", label: "Research", icon: FlaskConical },
     { path: "/certification", label: "Certifications", icon: Award },
+    { path: "/about", label: "About", icon: User },
   ];
 
   const menuVariants = {
@@ -140,30 +140,21 @@ const Navigation = () => {
                   className="flex items-center gap-6"
                   variants={itemVariants}
                 >
-                  <div className="flex items-center gap-4">
-                    {[
-                      { icon: Github, href: "https://github.com" },
-                      { icon: Linkedin, href: "https://linkedin.com" },
-                      { icon: Twitter, href: "https://twitter.com" }
-                    ].map(({ icon: Icon, href }) => (
-                      <a
-                        key={href}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-foreground transition-colors duration-300 hover:scale-110 transform"
-                      >
-                        <Icon className="h-5 w-5" />
-                      </a>
-                    ))}
-                  </div>
                   <Button
                     variant="default"
                     className="relative group overflow-hidden flex items-center gap-2"
+                    asChild
                   >
-                    <span className="relative z-10">Download CV</span>
-                    <Download className="h-4 w-4 relative z-10 transition-transform duration-300 group-hover:translate-y-0.5" />
-                    <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                    <a
+                      href="https://www.linkedin.com/in/george-bobby/"
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="flex items-center gap-2"
+                    >
+                      <Linkedin className="h-4 w-4 relative z-10 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      <span className="relative z-10">Connect</span>
+                      <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                    </a>
                   </Button>
                 </motion.div>
               </motion.div>

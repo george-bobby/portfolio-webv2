@@ -149,10 +149,6 @@ const Skills = () => {
             </div>
           </div>
         </div>
-
-        <motion.div className="text-center mt-12">
-          <Button size="lg">Explore My Full Tech Stack</Button>
-        </motion.div>
       </div>
     </section>
   );

@@ -9,13 +9,12 @@ import Navigation from "@/components/Header";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 import Index from "./pages/Index";
-import ResearchPost from "./pages/ResearchPost";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import ProjectPost from "./pages/ProjectPost";
-import Projects from "./pages/Project";
+import Projects from "./pages/Projects";
 import Certifications from "./pages/Certification";
-import Research from "./pages/Research";
+import About from "./pages/About";
 import { Analytics } from '@vercel/analytics/react';
 
 const queryClient = new QueryClient({
@@ -38,11 +37,10 @@ const App = () => {
           <Navigation />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/research" element={<Research />} />
-            <Route path="/research/:slug" element={<ResearchPost />} />
+            <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/project" element={<Projects />} />
+            <Route path="/projects" element={<Projects />} />
             <Route path="/project/:slug" element={<ProjectPost />} />
             <Route path="/certification" element={<Certifications />} />
           </Routes>

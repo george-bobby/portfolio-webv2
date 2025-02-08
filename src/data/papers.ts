@@ -8,16 +8,8 @@ const papers = [
     publication: "Springer",
     tags: ["Tensorflow", "NLP", "LSA", "Word2Vec", "Seq2Seq"],
     slug: "ai-education-comparative-study",
-    sections: {
-      problem:
-        "Traditional question paper generation is time-consuming and may not cover all learning objectives effectively.",
-      methodology:
-        "We implemented and compared three different approaches: LSA, Word2Vec, and Seq2Seq models.",
-      results:
-        "The Seq2Seq model showed a 15% improvement in question relevance compared to traditional methods.",
-      conclusion:
-        "AI-powered question generation shows promising results for automating and improving educational assessment.",
-    },
+    link: "https://link.springer.com/article/10.1007/s11227-023-4567-8",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
   },
   {
     title: "GraphRAG and Blockchain: Enhancing Data Integrity and Retrieval",
@@ -28,16 +20,8 @@ const papers = [
     publication: "IEEE Xplore",
     tags: ["GraphRAG", "Blockchain", "Neo4j", "Smart Contracts", "LLMs"],
     slug: "graphrag-blockchain-data-integrity",
-    sections: {
-      problem:
-        "Existing retrieval systems lack transparency and are susceptible to data manipulation, limiting trust in AI-driven applications.",
-      methodology:
-        "We propose a hybrid approach combining GraphRAG for efficient knowledge retrieval and blockchain for data integrity verification.",
-      results:
-        "Our approach reduces data tampering risks by 40% and improves retrieval accuracy in decentralized AI applications.",
-      conclusion:
-        "The integration of GraphRAG and blockchain enhances security, reliability, and efficiency in AI-powered knowledge systems.",
-    },
+    link: "https://ieeexplore.ieee.org/document/5541170",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
   },
 ];
 
