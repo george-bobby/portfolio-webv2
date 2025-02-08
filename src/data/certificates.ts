@@ -5,12 +5,12 @@ import {
   SiClickup, 
   SiSelenium, 
   SiPagerduty,
-  SiMicrosoft,
+  SiMicrosoftoffice, // Changed from SiMicrosoft
   SiOracle,
   SiPython,
   SiWordpress,
   SiCisco,
-  SiJava
+  SiOpenjdk // Changed from SiJava
 } from 'react-icons/si';
 import { 
   BsFillKanbanFill,
@@ -116,7 +116,7 @@ export const certifications: Certification[] = [
     skills: ["NLP", "Generative AI", "Artificial Intelligence"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    icon: SiMicrosoft,
+    icon: SiMicrosoftoffice,
   },
   {
     id: "snovio-sales-2024",
@@ -162,7 +162,7 @@ export const certifications: Certification[] = [
     skills: ["Java"],
     detailsUrl:
       "https://www.linkedin.com/in/george-bobby/details/certifications/",
-    icon: SiOracle,
+    icon: SiOpenjdk,
   },
   {
     id: "nptel-project-mgmt-2024",
