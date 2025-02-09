@@ -1,8 +1,10 @@
+
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { blogPosts } from "@/data/posts";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
 
 const BlogPost = () => {
     const { slug } = useParams();
@@ -75,18 +77,14 @@ const BlogPost = () => {
                         </div>
                     </div>
 
-                    <div className="prose prose-invert prose-lg max-w-none space-y-12">
-                        <p className="text-xl leading-relaxed text-muted-foreground">
+                    <div className="prose prose-invert prose-lg max-w-none">
+                        <p className="text-xl leading-relaxed text-muted-foreground mb-12">
                             {post.description}
                         </p>
 
-                        <div className="space-y-12">
-                            {post.content.split('\n\n').map((paragraph, index) => (
-                                <p key={index} className="text-lg leading-relaxed">
-                                    {paragraph}
-                                </p>
-                            ))}
-                        </div>
+                        <ReactMarkdown className="space-y-6">
+                            {post.content}
+                        </ReactMarkdown>
                     </div>
                 </div>
             </div>
