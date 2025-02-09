@@ -16,6 +16,7 @@ import Projects from "./pages/Projects";
 import Certifications from "./pages/Certificates";
 import About from "./pages/About";
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +47,7 @@ const App = () => {
           </Routes>
           <BackToTop />
           <Footer />
+          <SpeedInsights />
           <Analytics debug={process.env.NODE_ENV === 'development'} />
         </BrowserRouter>
       </TooltipProvider>
