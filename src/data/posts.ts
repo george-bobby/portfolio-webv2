@@ -20,9 +20,7 @@ export const blogPosts: BlogPost[] = [
       "Learn the essential best practices for building responsive and maintainable websites using Tailwind CSS, including tips for optimization and component organization.",
     date: "2024-03-15",
     author: "Sarah Johnson",
-    image: `https://placehold.co/600x400?text=${encodeURIComponent(
-      "Mastering Tailwind CSS"
-    )}`,
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     readingTime: "5 min read",
     content: `# Mastering Tailwind CSS: Best Practices for Modern Web Development
 
@@ -71,9 +69,7 @@ Remember to always consider accessibility and performance while building your co
       "Explore the latest features in Next.js 13, including the new App Router, Server Components, and improved data fetching patterns.",
     date: "2024-03-10",
     author: "Michael Chen",
-    image: `https://placehold.co/600x400?text=${encodeURIComponent(
-      "Next.js 13 Features"
-    )}`,
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
     readingTime: "7 min read",
     content: `# Next.js 13: A Deep Dive into New Features
 
@@ -137,9 +133,7 @@ These features represent just the beginning of what's possible with Next.js 13. 
       "Learn advanced techniques for optimizing your Next.js applications, including code splitting, lazy loading, and image optimization.",
     date: "2024-03-05",
     author: "Emma Davis",
-    image: `https://placehold.co/600x400?text=${encodeURIComponent(
-      "Next.js Performance Optimization"
-    )}`,
+    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
     readingTime: "6 min read",
     content: `# Performance Optimization Techniques in Next.js
 
@@ -210,9 +204,7 @@ Remember, performance optimization is an ongoing process. Regularly audit your a
       "Master the art of web animations using GSAP (GreenSock Animation Platform) with practical examples and tips.",
     date: "2024-02-28",
     author: "Alex Turner",
-    image: `https://placehold.co/600x400?text=${encodeURIComponent(
-      "GSAP Animations Guide"
-    )}`,
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
     readingTime: "8 min read",
     content: `# Creating Stunning Animations with GSAP
 
@@ -285,9 +277,7 @@ Remember to always test your animations on various devices and optimize for perf
       "A comprehensive guide to implementing dark mode in your web applications using Tailwind CSS and best practices.",
     date: "2024-02-20",
     author: "Lisa Wang",
-    image: `https://placehold.co/600x400?text=${encodeURIComponent(
-      "Tailwind CSS Dark Mode"
-    )}`,
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
     readingTime: "4 min read",
     content: `# Implementing Dark Mode with Tailwind CSS
 
@@ -364,9 +354,7 @@ Remember to maintain accessibility standards and provide a seamless user experie
       "Learn how to create engaging and interactive hover effects using modern CSS techniques and JavaScript.",
     date: "2024-02-15",
     author: "David Smith",
-    image: `https://placehold.co/600x400?text=${encodeURIComponent(
-      "Custom Hover Effects"
-    )}`,
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
     readingTime: "5 min read",
     content: `# Creating Custom Hover Effects with CSS and JavaScript
 

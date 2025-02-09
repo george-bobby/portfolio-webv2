@@ -4,7 +4,7 @@ export const projectsdata = [
     title: "Scalable E-Commerce Platform for CaraExim",
     description:
       "Designed and optimized a scalable e-commerce platform using the MERN stack, aiding deployment and maintenance.",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc",
     tools: ["MongoDB", "Express.js", "React", "Node.js"],
     slug: "caraexim-ecommerce",
     overview:
@@ -25,7 +25,7 @@ export const projectsdata = [
     title: "Cluster: University Collaboration Platform",
     description:
       "Implemented AI-driven features for personalized project recommendations and academic collaborations.",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c",
     tools: ["Next.js", "MongoDB", "AI Models"],
     slug: "cluster-platform",
     overview:
@@ -46,7 +46,7 @@ export const projectsdata = [
     title: "Graphy: Virtual Assistant Using GraphRAG",
     description:
       "Developed a virtual assistant with Retrieval Augmented Generation (RAG) and Next.js, featuring a secure document management system.",
-    image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
     tools: ["Neo4j", "Next.js", "LLM", "GraphRAG"],
     slug: "graphy-virtual-assistant",
     overview:
@@ -66,7 +66,7 @@ export const projectsdata = [
     title: "Eventtts: Event Management App for CHRIST University",
     description:
       "Developed a Next.js event management web app with a timetable, calendar, and nested events.",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678",
     tools: ["Next.js", "MongoDB"],
     slug: "eventtts-management",
     overview:
@@ -86,7 +86,7 @@ export const projectsdata = [
     title: "QnsAI: Automated Question Paper Generation",
     description:
       "Implemented customizable question paper generation using Fine-Tuned Llama 3.2, supporting multiple input formats.",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
     tools: ["Llama 3.2", "JavaScript", "QTI", "YouTube API"],
     slug: "qnsai-auto-question",
     overview:
@@ -106,7 +106,7 @@ export const projectsdata = [
     title: "Carbo: AI Carbon Footprint Analyzer and Chatbot",
     description:
       "Developed an AI-powered platform analyzing carbon footprints with a chatbot for sustainability insights.",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9",
     tools: ["Next.js", "Gemini AI", "LangChain", "MongoDB"],
     slug: "carbo-carbon-analyzer",
     overview:
