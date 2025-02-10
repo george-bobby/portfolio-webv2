@@ -11,10 +11,9 @@ const Projects = () => {
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
 
-  // Simplified animations for better performance
-  const fadeInUp = {
-    initial: prefersReducedMotion ? {} : { opacity: 0, y: 20 },
-    animate: prefersReducedMotion ? {} : { opacity: 1, y: 0 },
+  const fadeInUp = prefersReducedMotion ? {} : {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
     transition: { duration: 0.3 }
   };
 
@@ -23,7 +22,6 @@ const Projects = () => {
       <div className="container mx-auto px-4">
         <motion.div
           {...fadeInUp}
-          transition={{ duration: 0.3 }}
           className="flex items-center mb-12"
         >
           <Button
@@ -38,7 +36,6 @@ const Projects = () => {
 
         <motion.h1
           {...fadeInUp}
-          transition={{ duration: 0.3, delay: 0.1 }}
           className="text-4xl md:text-5xl font-heading font-bold mb-8"
         >
           Projects
@@ -49,17 +46,18 @@ const Projects = () => {
             <motion.div
               key={project.id}
               {...fadeInUp}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="group relative bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-secondary/30 transition-all duration-500"
+              transition={{ duration: 0.3, delay: Math.min(index * 0.1, 0.3) }}
+              className="group relative bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-secondary/30 transition-colors"
             >
               <div className="relative h-48 md:h-56 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform will-change-transform group-hover:scale-105"
                   loading="lazy"
+                  decoding="async"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
 
               <div className="p-6">
@@ -74,7 +72,7 @@ const Projects = () => {
                   {project.tools.map((tool) => (
                     <span
                       key={tool}
-                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-colors duration-300 hover:bg-primary/40"
+                      className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transition-colors hover:bg-primary/40"
                     >
                       {tool}
                     </span>
@@ -83,13 +81,12 @@ const Projects = () => {
 
                 <Button
                   onClick={() => navigate(`/project/${project.slug}`)}
-                  className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden w-full"
+                  className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-colors w-full overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center justify-center">
                     View Case Study
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </span>
-                  <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                 </Button>
               </div>
             </motion.div>

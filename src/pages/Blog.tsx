@@ -21,9 +21,9 @@ const Blog = () => {
         <div className="min-h-screen bg-background py-20">
             <div className="container mx-auto px-4">
                 <motion.div
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
                     className="flex items-center mb-12"
                 >
                     <Button
@@ -37,35 +37,32 @@ const Blog = () => {
                 </motion.div>
 
                 <motion.h1
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
                     className="text-4xl md:text-5xl font-heading font-bold mb-12"
                 >
                     Blog Posts
                 </motion.h1>
 
-                <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                >
-                    {blogPosts.map((post) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {blogPosts.map((post, index) => (
                         <motion.div
                             key={post.id}
-                            initial={{ opacity: 0, y: 50 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="group relative bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-secondary/30 transition-all duration-500"
+                            transition={{ duration: 0.3, delay: Math.min(index * 0.1, 0.3) }}
+                            className="group relative bg-secondary/20 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-secondary/30 transition-colors"
                         >
                             <div className="relative h-48 md:h-56 overflow-hidden">
                                 <img
                                     src={post.image}
                                     alt={post.title}
-                                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                                    className="w-full h-full object-cover transition-transform will-change-transform group-hover:scale-105"
                                     loading="lazy"
+                                    decoding="async"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
                             <div className="p-6 space-y-4">
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -88,7 +85,7 @@ const Blog = () => {
                                     {post.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transform transition-all duration-300 hover:bg-primary/40"
+                                            className="px-3 py-1 text-sm bg-primary/20 text-primary-foreground rounded-full transition-colors hover:bg-primary/40"
                                         >
                                             {tag}
                                         </span>
@@ -96,18 +93,17 @@ const Blog = () => {
                                 </div>
                                 <Button
                                     onClick={() => navigate(`/blog/${post.slug}`)}
-                                    className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden w-full"
+                                    className="group relative bg-primary/20 hover:bg-primary text-primary-foreground transition-colors w-full"
                                 >
                                     <span className="relative z-10 flex items-center justify-center">
                                         Read More
-                                        <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                                        <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                                     </span>
-                                    <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                                 </Button>
                             </div>
                         </motion.div>
                     ))}
-                </motion.div>
+                </div>
             </div>
         </div>
     );
