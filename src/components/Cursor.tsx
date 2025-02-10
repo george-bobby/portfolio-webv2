@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { cn } from "@/utils/tw-merge";
@@ -21,10 +22,10 @@ const CustomCursor = () => {
     const updatePosition = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
 
-      // Smooth transitions using GSAP
-      gsap.to(cursor, { x: x - 6, y: y - 6, duration: 0.1 });
-      gsap.to(follower, { x: x - 10, y: y - 10, duration: 0.2 });
-      gsap.to(trail, { x: x - 15, y: y - 15, duration: 0.4 });
+      // Faster transitions for better performance
+      gsap.to(cursor, { x: x - 8, y: y - 8, duration: 0.1 });
+      gsap.to(follower, { x: x - 12, y: y - 12, duration: 0.15 });
+      gsap.to(trail, { x: x - 16, y: y - 16, duration: 0.2 });
     };
 
     const handleIdleState = () => {
@@ -33,38 +34,37 @@ const CustomCursor = () => {
 
       idleTimerRef.current = window.setTimeout(() => {
         setIsIdle(true);
-        gsap.to(cursor, { scale: 1.2, opacity: 0.5, duration: 0.4 });
+        gsap.to(cursor, { scale: 1.2, opacity: 0.7, duration: 0.3 });
       }, 3000);
     };
 
     const handleHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // Add null check and ensure target is an HTMLElement
       if (!target || !(target instanceof HTMLElement)) return;
 
       const tagName = target.tagName.toLowerCase();
 
       const cursorStyles: Record<string, any> = {
-        a: { scale: 1.5, backgroundColor: "rgba(147, 51, 234, 0.4)" },
-        button: { scale: 1.5, backgroundColor: "rgba(147, 51, 234, 0.4)" },
+        a: { scale: 1.5, backgroundColor: "rgba(147, 51, 234, 0.6)" },
+        button: { scale: 1.5, backgroundColor: "rgba(147, 51, 234, 0.6)" },
         img: { scale: 1.3, borderColor: "rgba(147, 51, 234, 0.8)" },
-        p: { width: "3px", height: "24px", backgroundColor: "rgb(147, 51, 234)" },
-        h1: { width: "3px", height: "24px", backgroundColor: "rgb(147, 51, 234)" },
+        p: { width: "4px", height: "24px", backgroundColor: "rgb(147, 51, 234)" },
+        h1: { width: "4px", height: "24px", backgroundColor: "rgb(147, 51, 234)" },
       };
 
       if (cursorStyles[tagName]) {
-        gsap.to(cursor, { ...cursorStyles[tagName], duration: 0.3 });
+        gsap.to(cursor, { ...cursorStyles[tagName], duration: 0.2 });
       }
     };
 
     const resetCursor = () => {
       gsap.to(cursor, {
-        scale: 2,
-        width: "12px",
-        height: "12px",
-        backgroundColor: "rgba(147, 51, 234, 0.2)",
-        borderColor: "rgba(147, 51, 234, 0.5)",
-        duration: 0.3,
+        scale: 1,
+        width: "16px",
+        height: "16px",
+        backgroundColor: "rgba(147, 51, 234, 0.4)",
+        borderColor: "rgba(147, 51, 234, 0.8)",
+        duration: 0.2,
       });
     };
 
@@ -72,7 +72,7 @@ const CustomCursor = () => {
       gsap.fromTo(
         cursor,
         { scale: 0.8 },
-        { scale: 1, duration: 0.2, ease: "power2.out" }
+        { scale: 1, duration: 0.15, ease: "power2.out" }
       );
     };
 
@@ -98,17 +98,17 @@ const CustomCursor = () => {
       <div
         ref={cursorRef}
         className={cn(
-          "fixed pointer-events-none z-50 w-3 h-3 rounded-full bg-primary/20 border border-primary/50 mix-blend-difference scale-100",
-          isIdle && "opacity-50"
+          "fixed pointer-events-none z-50 w-4 h-4 rounded-full bg-primary/40 border-2 border-primary/80 mix-blend-difference scale-100",
+          isIdle && "opacity-70"
         )}
       />
       <div
         ref={followerRef}
-        className="fixed pointer-events-none z-40 w-5 h-5 rounded-full bg-primary/10 mix-blend-difference transition-transform"
+        className="fixed pointer-events-none z-40 w-6 h-6 rounded-full bg-primary/20 mix-blend-difference transition-transform"
       />
       <div
         ref={trailRef}
-        className="fixed pointer-events-none z-30 w-8 h-8 rounded-full bg-primary/5 mix-blend-difference transition-transform"
+        className="fixed pointer-events-none z-30 w-8 h-8 rounded-full bg-primary/10 mix-blend-difference transition-transform"
       />
     </>
   );
