@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -42,15 +43,6 @@ const Projects = () => {
         >
           Projects
         </motion.h1>
-
-        {/* <motion.p
-          {...fadeInUp}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          className="text-muted-foreground max-w-2xl mb-16"
-        >
-          Explore our portfolio of innovative projects spanning various technologies and industries.
-          Each project showcases our commitment to excellence and cutting-edge solutions.
-        </motion.p> */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
