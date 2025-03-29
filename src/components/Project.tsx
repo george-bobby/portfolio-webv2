@@ -1,5 +1,4 @@
-
-import { useRef, useEffect, useState, useCallback, useMemo } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -10,23 +9,11 @@ import { projectsdata } from "@/data/projects";
 gsap.registerPlugin(ScrollTrigger);
 
 const Project = () => {
-  // Only use first 3 projects to reduce DOM elements
-  const projects = useMemo(() => projectsdata.slice(0, 3), []);
+  const projects = projectsdata.slice(0, 3);
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [showViewAll, setShowViewAll] = useState(false);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  const animationRef = useRef<gsap.core.Timeline | null>(null);
-
-  // Debounced scroll handler to prevent performance issues
-  const handleScrollUpdate = useCallback((self: any) => {
-    if (self.progress > 0.95 && !showViewAll) {
-      setShowViewAll(true);
-    } else if (self.progress <= 0.95 && showViewAll) {
-      setShowViewAll(false);
-    }
-  }, [showViewAll]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -37,13 +24,8 @@ const Project = () => {
     const totalPanels = projects.length;
     const panelWidth = window.innerWidth;
 
-    // Set width once - avoid layout thrashing
     container.style.width = `${totalPanels * 100}%`;
-    
-    // Add will-change to optimize for animations
-    container.style.willChange = "transform";
 
-    // Reduce animation complexity
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -51,42 +33,21 @@ const Project = () => {
         start: "top top",
         end: `+=${panelWidth * (totalPanels - 1)}`,
         scrub: 1,
-        onUpdate: handleScrollUpdate,
-        fastScrollEnd: true,
-        preventOverlaps: true
+        onUpdate: (self) => {
+          setShowViewAll(self.progress > 0.95);
+        }
       }
     });
 
     tl.to(container, {
       x: `-${(totalPanels - 1) * panelWidth}px`,
       ease: "none",
-      overwrite: true
     });
 
-    animationRef.current = tl;
-    scrollTriggerRef.current = ScrollTrigger.getAll().pop() || null;
-
-    // Clean up function
     return () => {
-      // Remove will-change to free up resources
-      if (container) {
-        container.style.willChange = "auto";
-      }
-      
-      // Kill specific ScrollTrigger instance
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
-      
-      // Kill the timeline
-      if (animationRef.current) {
-        animationRef.current.kill();
-      }
-      
-      // As a safety measure, kill all instances
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [projects.length, handleScrollUpdate]);
+  }, []);
 
   return (
     <>
@@ -94,11 +55,7 @@ const Project = () => {
         ref={sectionRef}
         className="relative h-screen overflow-hidden bg-gradient-to-br from-background via-background/90 to-background"
       >
-        <div 
-          ref={containerRef} 
-          className="flex h-full absolute top-0 left-0"
-          style={{ willChange: "transform" }}
-        >
+        <div ref={containerRef} className="flex h-full absolute top-0 left-0">
           {projects.map((project, index) => (
             <div
               key={project.id}
@@ -110,9 +67,6 @@ const Project = () => {
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-all duration-500 scale-105 group-hover:scale-100"
-                    loading="lazy"
-                    decoding="async"
-                    fetchpriority="low"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/70 to-background/90" />
                 </div>
@@ -153,8 +107,8 @@ const Project = () => {
 
         {showViewAll && (
           <Button
-            onClick={() => navigate("/projects")}
-            className="absolute group bg-primary/50 hover:bg-primary text-primary-foreground transition-colors duration-300 bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
+            onClick={() => navigate("/project")}
+            className="group relative bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
           >
             View All Projects
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -164,6 +118,8 @@ const Project = () => {
           <ChevronDown className="w-6 h-6" />
           <p className="text-sm">Scroll Down for More</p>
         </div>
+
+
       </section>
     </>
   );
