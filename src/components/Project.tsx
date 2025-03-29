@@ -1,12 +1,11 @@
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { projectsdata } from "@/data/projects";
-import { useMemo } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +17,7 @@ const Project = () => {
   const navigate = useNavigate();
   const [showViewAll, setShowViewAll] = useState(false);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const animationRef = useRef<gsap.core.Timeline | null>(null);
 
   // Debounced scroll handler to prevent performance issues
   const handleScrollUpdate = useCallback((self: any) => {
@@ -43,6 +43,7 @@ const Project = () => {
     // Add will-change to optimize for animations
     container.style.willChange = "transform";
 
+    // Reduce animation complexity
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -50,15 +51,19 @@ const Project = () => {
         start: "top top",
         end: `+=${panelWidth * (totalPanels - 1)}`,
         scrub: 1,
-        onUpdate: handleScrollUpdate
+        onUpdate: handleScrollUpdate,
+        fastScrollEnd: true,
+        preventOverlaps: true
       }
     });
 
     tl.to(container, {
       x: `-${(totalPanels - 1) * panelWidth}px`,
       ease: "none",
+      overwrite: true
     });
 
+    animationRef.current = tl;
     scrollTriggerRef.current = ScrollTrigger.getAll().pop() || null;
 
     // Clean up function
@@ -68,10 +73,17 @@ const Project = () => {
         container.style.willChange = "auto";
       }
       
-      // Kill scroll trigger to prevent memory leaks
+      // Kill specific ScrollTrigger instance
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
       }
+      
+      // Kill the timeline
+      if (animationRef.current) {
+        animationRef.current.kill();
+      }
+      
+      // As a safety measure, kill all instances
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [projects.length, handleScrollUpdate]);
@@ -100,6 +112,7 @@ const Project = () => {
                     className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-all duration-500 scale-105 group-hover:scale-100"
                     loading="lazy"
                     decoding="async"
+                    fetchpriority="low"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/70 to-background/90" />
                 </div>
