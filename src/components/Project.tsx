@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
@@ -68,9 +67,6 @@ const Project = () => {
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-all duration-500 scale-105 group-hover:scale-100"
-                    loading="lazy"
-                    decoding="async"
-                    fetchPriority="low"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/70 to-background/90" />
                 </div>
