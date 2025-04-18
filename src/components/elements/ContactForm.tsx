@@ -49,72 +49,69 @@ const ContactForm = () => {
     <div className="w-full px-6">
       <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50 mb-6">Get in Touch</h2>
 
-      <div className="bg-secondary/10 rounded-xl p-6 border border-secondary/20 hover:border-primary/30 transition-all duration-300 h-[calc(100%-4rem)]">
-        <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-auto">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="p-1.5 bg-primary/10 rounded-md">
-                <User className="w-4 h-4 text-primary" />
+      <div className="bg-secondary/10 rounded-xl p-8 border border-secondary/20 hover:border-primary/30 transition-all duration-300 h-[calc(100%-4rem)]">
+        <form onSubmit={handleSubmit} className="space-y-8 w-full max-w-md mx-auto">
+          <div>
+            <div className="relative group">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-primary z-10">
+                <User className="w-5 h-5 text-primary/70 group-hover:text-primary transition-colors duration-300" />
               </div>
-              <label htmlFor="name" className="text-sm font-medium">Your Name</label>
+              <Input
+                id="name"
+                name="name"
+                placeholder="Your Name"
+                required
+                disabled={isSubmitting}
+                className="bg-secondary/5 rounded-md pl-11 pr-4 py-3 border border-transparent hover:border-primary/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 hover:bg-secondary/10"
+              />
             </div>
-            <Input
-              id="name"
-              name="name"
-              placeholder="Enter your full name"
-              required
-              disabled={isSubmitting}
-              className="bg-secondary/5 rounded-md px-4 py-2 border-0 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-            />
           </div>
 
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="p-1.5 bg-primary/10 rounded-md">
-                <Mail className="w-4 h-4 text-primary" />
+          <div>
+            <div className="relative group">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-primary z-10">
+                <Mail className="w-5 h-5 text-primary/70 group-hover:text-primary transition-colors duration-300" />
               </div>
-              <label htmlFor="email" className="text-sm font-medium">Your Email</label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Your Email Address"
+                required
+                disabled={isSubmitting}
+                className="bg-secondary/5 rounded-md pl-11 pr-4 py-3 border border-transparent hover:border-primary/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 hover:bg-secondary/10"
+              />
             </div>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter your email address"
-              required
-              disabled={isSubmitting}
-              className="bg-secondary/5 rounded-md px-4 py-2 border-0 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-            />
           </div>
 
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="p-1.5 bg-primary/10 rounded-md">
-                <MessageSquare className="w-4 h-4 text-primary" />
+          <div>
+            <div className="relative group">
+              <div className="absolute left-3 top-4 text-primary z-10">
+                <MessageSquare className="w-5 h-5 text-primary/70 group-hover:text-primary transition-colors duration-300" />
               </div>
-              <label htmlFor="message" className="text-sm font-medium">Your Message</label>
+              <Textarea
+                id="message"
+                name="message"
+                placeholder="Your Message"
+                required
+                disabled={isSubmitting}
+                className="min-h-[140px] bg-secondary/5 rounded-md pl-11 pr-4 py-3 border border-transparent hover:border-primary/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 hover:bg-secondary/10"
+              />
             </div>
-            <Textarea
-              id="message"
-              name="message"
-              placeholder="What would you like to discuss?"
-              required
-              disabled={isSubmitting}
-              className="min-h-[100px] bg-secondary/5 rounded-md px-4 py-2 border-0 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-            />
           </div>
 
           <div className="pt-2">
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full group relative overflow-hidden transition-all duration-300 bg-primary/20 hover:bg-primary text-primary-foreground rounded-md"
+              className="w-full group relative overflow-hidden transition-all duration-300 bg-primary/20 hover:bg-primary hover:shadow-md hover:shadow-primary/10 text-primary-foreground rounded-md py-3"
             >
               {isSubmitting ? (
                 <Loader2 className="animate-spin w-5 h-5" />
               ) : (
                 <>
-                  <span>Send Message</span>
-                  <Send className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
+                  <span className="font-medium">Send Message</span>
+                  <Send className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </Button>
