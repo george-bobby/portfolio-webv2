@@ -4,12 +4,11 @@ import { FaGithub } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import SplitType from "split-type";
 import FloatingIcons from "./elements/FloatingIcons";
 import { useIsMobile } from "@/utils/use-mobile";
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -57,215 +56,30 @@ const Hero = () => {
     }
 
     const ctx = gsap.context(() => {
-      // Projects to Products connector animation
-      const projectsElement = headingRef.current?.querySelector('.projects-products-connector');
-      const projectsSpan = headingRef.current?.querySelector('.group:first-of-type');
-      const productsSpan = headingRef.current?.querySelector('.group:last-of-type');
-
-      if (projectsElement && projectsSpan && productsSpan && !isMobile) {
-        // Create the SVG arrow path
-        const createArrowPath = () => {
-          // Get positions
-          const projectsRect = projectsSpan.getBoundingClientRect();
-          const productsRect = productsSpan.getBoundingClientRect();
-
-          // Calculate control points for the curve
-          const startX = projectsRect.right - projectsRect.left;
-          const endX = productsRect.left - projectsRect.left;
-          const controlX = (startX + endX) / 2;
-          const controlY = -40; // Curve height above the text
-
-          // Create SVG path
-          const svgWidth = endX;
-          const svgHeight = Math.abs(controlY) * 2;
-
-          // Create SVG element
-          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-          svg.setAttribute('width', `${svgWidth}px`);
-          svg.setAttribute('height', `${svgHeight}px`);
-          svg.setAttribute('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
-          svg.style.position = 'absolute';
-          svg.style.top = `${controlY}px`;
-          svg.style.left = `${startX}px`;
-          svg.style.overflow = 'visible';
-
-          // Create path
-          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('d', `M0,${Math.abs(controlY)} Q${controlX - startX},0 ${endX - startX},${Math.abs(controlY)}`);
-          path.setAttribute('stroke', '#9333EA');
-          path.setAttribute('stroke-width', '2');
-          path.setAttribute('fill', 'none');
-          path.setAttribute('marker-end', 'url(#arrowhead)');
-          path.style.strokeDasharray = '5,5';
-
-          // Create defs for filters and markers
-          const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-
-          // Add glow effect to the path
-          const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
-          filter.setAttribute('id', 'glow');
-          filter.setAttribute('x', '-20%');
-          filter.setAttribute('y', '-20%');
-          filter.setAttribute('width', '140%');
-          filter.setAttribute('height', '140%');
-
-          const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
-          feGaussianBlur.setAttribute('stdDeviation', '3');
-          feGaussianBlur.setAttribute('result', 'blur');
-
-          const feColorMatrix = document.createElementNS('http://www.w3.org/2000/svg', 'feColorMatrix');
-          feColorMatrix.setAttribute('in', 'blur');
-          feColorMatrix.setAttribute('type', 'matrix');
-          feColorMatrix.setAttribute('values', '0 0 0 0 0.576 0 0 0 0 0.2 0 0 0 0 0.917 0 0 0 0.7 0');
-
-          filter.appendChild(feGaussianBlur);
-          filter.appendChild(feColorMatrix);
-          defs.appendChild(filter);
-
-          path.setAttribute('filter', 'url(#glow)');
-
-          // Create arrowhead marker
-          const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
-          marker.setAttribute('id', 'arrowhead');
-          marker.setAttribute('markerWidth', '10');
-          marker.setAttribute('markerHeight', '7');
-          marker.setAttribute('refX', '9');
-          marker.setAttribute('refY', '3.5');
-          marker.setAttribute('orient', 'auto');
-
-          const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-          polygon.setAttribute('points', '0 0, 10 3.5, 0 7');
-          polygon.setAttribute('fill', '#9333EA');
-
-          marker.appendChild(polygon);
-          defs.appendChild(marker);
-          svg.appendChild(defs);
-          svg.appendChild(path);
-
-          // Clear previous SVG if exists
-          while (projectsElement.firstChild) {
-            projectsElement.removeChild(projectsElement.firstChild);
-          }
-
-          projectsElement.appendChild(svg);
-
-          // Animate the path
-          gsap.fromTo(path,
-            { strokeDashoffset: 1000 },
-            { strokeDashoffset: 0, duration: 1, ease: "power2.out" }
-          );
-
-          // Add floating icons along the path
-          const addFloatingIcons = () => {
-            const icons = [
-              { icon: '💡', color: '#9333EA' },
-              { icon: '⚙️', color: '#6366F1' },
-              { icon: '🚀', color: '#EC4899' },
-              { icon: '✨', color: '#F59E0B' },
-              { icon: '📱', color: '#10B981' }
-            ];
-
-            icons.forEach((item, index) => {
-              const iconElement = document.createElement('div');
-              iconElement.textContent = item.icon;
-              iconElement.style.position = 'absolute';
-              iconElement.style.fontSize = '20px';
-              iconElement.style.opacity = '0';
-              iconElement.style.filter = 'drop-shadow(0 0 3px ' + item.color + ')';
-              iconElement.style.zIndex = '20';
-
-              projectsElement.appendChild(iconElement);
-
-              // Position along the path and animate
-              gsap.to(iconElement, {
-                opacity: 1,
-                scale: 1.2,
-                motionPath: {
-                  path: path,
-                  align: path,
-                  alignOrigin: [0.5, 0.5],
-                  autoRotate: true,
-                  start: 0,
-                  end: 1
-                },
-                duration: 1.5,
-                delay: 0.1 + (index * 0.15),
-                ease: "power2.inOut",
-                onComplete: () => {
-                  // Add a little pop effect at the end
-                  if (index === icons.length - 1) {
-                    gsap.to(productsSpan, {
-                      scale: 1.2,
-                      color: '#9333EA',
-                      duration: 0.3,
-                      yoyo: true,
-                      repeat: 1,
-                      ease: "back.out(2)"
-                    });
-                  }
-
-                  gsap.to(iconElement, {
-                    opacity: 0,
-                    scale: 1.5,
-                    duration: 0.3,
-                    delay: 0.2,
-                    onComplete: () => {
-                      iconElement.remove();
-                    }
-                  });
-                }
-              });
-            });
-          };
-
-          // Add icons with a slight delay
-          setTimeout(addFloatingIcons, 300);
-        };
-
-        // Initial creation
-        createArrowPath();
-
-        // Update on window resize
-        const handleResize = () => {
-          createArrowPath();
-        };
-
-        window.addEventListener('resize', handleResize);
-        ctx.add(() => {
-          window.removeEventListener('resize', handleResize);
-        });
-
-        // Add hover effect to the words
-        projectsSpan.addEventListener('mouseenter', createArrowPath);
-        productsSpan.addEventListener('mouseenter', createArrowPath);
-      }
-
       // Split text animation - only on desktop for better performance
       if (!isMobile) {
-        // Animate the first part of the heading ("Hi, I'm George Bobby")
-        const firstLine = headingRef.current?.querySelector('span.text-primary')?.parentElement;
-        if (firstLine) {
-          const firstLineText = new SplitType(firstLine, {
-            types: "chars",
-            tagName: "span",
+        const titleText = new SplitType(headingRef.current!, {
+          types: "chars",
+          tagName: "span",
+        });
+
+        if (titleText.chars) {
+          // Initial animation for each character
+          gsap.from(titleText.chars, {
+            opacity: 0,
+            y: 20, // Simplified animation
+            stagger: 0.02, // Faster stagger
+            duration: 0.6,
+            ease: "back.out(1.7)",
+            delay: 0.2
           });
 
-          if (firstLineText.chars) {
-            // Initial animation for each character
-            gsap.from(firstLineText.chars, {
-              opacity: 0,
-              y: 20,
-              stagger: 0.02,
-              duration: 0.6,
-              ease: "back.out(1.7)",
-              delay: 0.2
-            });
-
-            // Interactive hover effect
-            firstLineText.chars.forEach((char) => {
+          // Interactive hover effect - only add to desktop
+          if (!isMobile) {
+            titleText.chars.forEach((char) => {
               char.addEventListener("mouseenter", () => {
                 gsap.to(char, {
-                  scale: 1.2,
+                  scale: 1.2, // Reduced scale for better performance
                   color: "#9333EA",
                   duration: 0.2,
                   ease: "power2.out"
@@ -282,30 +96,6 @@ const Hero = () => {
               });
             });
           }
-        }
-
-        // Animate the second line words (except Projects and Products which are handled separately)
-        const secondLine = headingRef.current?.querySelector('span.mt-4');
-        if (secondLine) {
-          const secondLineWords = secondLine.childNodes;
-
-          // Animate each text node
-          secondLineWords.forEach((node) => {
-            if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
-              const text = node.textContent;
-              const span = document.createElement('span');
-              span.textContent = text;
-              node.parentNode?.replaceChild(span, node);
-
-              gsap.from(span, {
-                opacity: 0,
-                y: 20,
-                duration: 0.6,
-                ease: "back.out(1.7)",
-                delay: 0.4
-              });
-            }
-          });
         }
       } else {
         // Simple animation for mobile
@@ -412,23 +202,7 @@ const Hero = () => {
         >
           Hi, I'm <span className="text-primary">George Bobby</span>.
           <br />
-          <span className="mt-4 md:mt-6 lg:mt-8 inline-block relative">
-            Turning
-            <span className="relative inline-block group cursor-pointer">
-              <span className="text-primary-400 transition-colors duration-300 group-hover:text-primary relative">
-                Projects
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-              </span>
-              <span className="projects-products-connector absolute opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-            </span>
-            Into
-            <span className="relative inline-block group cursor-pointer">
-              <span className="text-primary-400 transition-colors duration-300 group-hover:text-primary relative">
-                Products
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-              </span>
-            </span>
-          </span>
+          <span className="mt-4 md:mt-6 lg:mt-8 inline-block">Turning Projects Into Products</span>
         </h1>
         <div
           ref={buttonsRef}
