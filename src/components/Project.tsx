@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
@@ -5,6 +6,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { projectsdata } from "@/data/projects";
+import { useIsMobile } from "@/utils/use-mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +16,7 @@ const Project = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [showViewAll, setShowViewAll] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -21,62 +24,59 @@ const Project = () => {
 
     if (!section || !container) return;
 
+    // Set container width for horizontal scrolling on desktop
     const totalPanels = projects.length;
     const panelWidth = window.innerWidth;
+    container.style.width = isMobile ? "100%" : `${totalPanels * 100}%`;
 
-    // Set width once instead of in animation
-    container.style.width = `${totalPanels * 100}%`;
-
-    // Create a context to improve performance
-    const ctx = gsap.context(() => {
-      // Use a simpler ScrollTrigger configuration
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          pin: true,
-          start: "top top",
-          end: `+=${panelWidth * (totalPanels - 1)}`,
-          scrub: 0.5, // Reduced scrub time for better performance
-          onUpdate: (self) => {
-            // Only update state when needed
-            const shouldShowViewAll = self.progress > 0.95;
-            if (showViewAll !== shouldShowViewAll) {
-              setShowViewAll(shouldShowViewAll);
+    let ctx = gsap.context(() => {
+      // Only create ScrollTrigger for desktop
+      if (!isMobile) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            pin: true,
+            start: "top top",
+            end: `+=${panelWidth * (totalPanels - 1)}`,
+            scrub: 0.5,
+            onUpdate: (self) => {
+              const shouldShowViewAll = self.progress > 0.95;
+              if (showViewAll !== shouldShowViewAll) {
+                setShowViewAll(shouldShowViewAll);
+              }
             }
           }
-        }
-      });
+        });
 
-      // Use transform for better performance
-      tl.to(container, {
-        x: `-${(totalPanels - 1) * panelWidth}px`,
-        ease: "none",
-        force3D: true, // Force 3D acceleration
-      });
+        tl.to(container, {
+          x: `-${(totalPanels - 1) * panelWidth}px`,
+          ease: "none",
+          force3D: true,
+        });
+      }
     }, section);
 
-    // Clean up function
     return () => {
-      ctx.revert(); // More efficient cleanup
+      ctx.revert();
     };
-  }, []);
+  }, [isMobile, projects.length, showViewAll]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen overflow-hidden bg-gradient-to-br from-background via-background/90 to-background will-change-transform"
+      className={`relative ${isMobile ? '' : 'h-screen'} overflow-hidden bg-gradient-to-br from-background via-background/90 to-background will-change-transform`}
     >
       <div
         ref={containerRef}
-        className="flex h-full absolute top-0 left-0 will-change-transform"
+        className={`${isMobile ? 'flex flex-col gap-8 py-12 px-4' : 'flex h-full absolute top-0 left-0'} will-change-transform`}
         style={{ willChange: "transform" }}
       >
         {projects.map((project, index) => (
           <div
             key={project.id}
-            className={`w-screen h-full flex items-center justify-center project-${index}`}
+            className={`${isMobile ? 'w-full' : 'w-screen h-full'} flex items-center justify-center project-${index}`}
           >
-            <div className="w-[90vw] h-[80vh] relative bg-secondary/10 rounded-2xl overflow-hidden hover:bg-secondary/20 transition-all duration-500 group">
+            <div className={`${isMobile ? 'w-full h-[60vh]' : 'w-[90vw] h-[80vh]'} relative bg-secondary/10 rounded-2xl overflow-hidden hover:bg-secondary/20 transition-all duration-500 group`}>
               <div className="absolute inset-0">
                 <img
                   src={project.image}
@@ -121,7 +121,7 @@ const Project = () => {
         ))}
       </div>
 
-      {showViewAll && (
+      {showViewAll && !isMobile && (
         <Button
           onClick={() => navigate("/project")}
           className="group absolute bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
@@ -130,10 +130,23 @@ const Project = () => {
           <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
         </Button>
       )}
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-center text-muted-foreground flex items-center gap-2">
-        <ChevronDown className="w-6 h-6" />
-        <p className="text-sm">Scroll Down for More</p>
-      </div>
+      
+      {isMobile && (
+        <Button
+          onClick={() => navigate("/project")}
+          className="group mx-auto my-6 block bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
+        >
+          View All Projects
+          <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+        </Button>
+      )}
+      
+      {!isMobile && (
+        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-center text-muted-foreground flex items-center gap-2">
+          <ChevronDown className="w-6 h-6" />
+          <p className="text-sm">Scroll Down for More</p>
+        </div>
+      )}
     </section>
   );
 };
