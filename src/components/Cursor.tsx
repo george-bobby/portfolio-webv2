@@ -2,8 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { cn } from "@/utils/tw-merge";
+import { useIsMobile } from "@/utils/use-mobile";
 
 const CustomCursor = () => {
+  const isMobile = useIsMobile();
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
   const trailRef = useRef<HTMLDivElement>(null);
@@ -11,12 +13,16 @@ const CustomCursor = () => {
   const idleTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
+    // Skip if we're on mobile
+    if (isMobile) return;
+
     const cursor = cursorRef.current;
     const follower = followerRef.current;
     const trail = trailRef.current;
 
     if (!cursor || !follower || !trail) return;
 
+    // Hide the default cursor on desktop
     document.body.style.cursor = "none";
 
     const updatePosition = (e: MouseEvent) => {
@@ -83,15 +89,25 @@ const CustomCursor = () => {
     document.addEventListener("click", handleClick);
 
     return () => {
+      // Restore default cursor
       document.body.style.cursor = "auto";
+
+      // Clean up event listeners
       document.removeEventListener("mousemove", updatePosition);
       document.removeEventListener("mousemove", handleIdleState);
       document.removeEventListener("mouseenter", handleHover, true);
       document.removeEventListener("mouseleave", resetCursor, true);
       document.removeEventListener("click", handleClick);
+
+      // Clear any pending timers
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Don't render custom cursor on mobile devices
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>

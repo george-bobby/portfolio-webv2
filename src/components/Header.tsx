@@ -3,23 +3,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
-  Github,
-  Linkedin,
-  Twitter,
   Home,
   FolderKanban,
   BookOpen,
   User,
   Award,
-  Download
+  Linkedin
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
+import { useIsMobile } from "@/utils/use-mobile";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
+  const isDesktop = !isMobile;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,7 +74,7 @@ const Navigation = () => {
             to="/"
             className="text-2xl font-heading font-bold text-foreground relative group"
           >
-            <span className="relative z-10">Portfolio</span>
+            <span className="relative z-10">&lt;George/&gt;</span>
             <span className="absolute inset-x-0 bottom-0 h-2 bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           </Link>
 
@@ -99,7 +99,7 @@ const Navigation = () => {
           </Button>
 
           <AnimatePresence>
-            {(isOpen || window.innerWidth >= 1024) && (
+            {(isOpen || isDesktop) && (
               <motion.div
                 variants={menuVariants}
                 initial="hidden"
