@@ -2,15 +2,16 @@
 import { BlogPost } from './types';
 
 export const hoverEffects: BlogPost = {
-  id: "6",
-  slug: "custom-hover-effects",
-  title: "Creating Custom Hover Effects with CSS and JavaScript",
-  description: "Learn how to create engaging and interactive hover effects using modern CSS techniques and JavaScript.",
-  date: "2024-02-15",
-  author: "David Smith",
-  image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-  readingTime: "10 min read",
-  content: `# Creating Custom Hover Effects with CSS and JavaScript
+	id: '6',
+	slug: 'custom-hover-effects',
+	title: 'Creating Custom Hover Effects with CSS and JavaScript',
+	description:
+		'Learn how to create engaging and interactive hover effects using modern CSS techniques and JavaScript.',
+	date: '2024-02-15',
+	author: 'George Bobby',
+	image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+	readingTime: '10 min read',
+	content: `# Creating Custom Hover Effects with CSS and JavaScript
 
 Hover effects can significantly enhance user experience and add personality to your website. Let's explore various creative techniques for implementing custom hover effects, from basic transitions to advanced interactive animations.
 
@@ -205,5 +206,5 @@ const handleHover = debounce((e) => {
 4. Validate accessibility features
 
 Remember to keep accessibility in mind and ensure your hover effects don't interfere with usability. The best hover effects enhance the user experience without compromising functionality or performance.`,
-  tags: ["CSS", "JavaScript", "Web Development", "UI/UX"],
+	tags: ['CSS', 'JavaScript', 'Web Development', 'UI/UX'],
 };

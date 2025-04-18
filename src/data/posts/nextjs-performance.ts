@@ -1,16 +1,16 @@
-
 import { BlogPost } from './types';
 
 export const nextjsPerformance: BlogPost = {
-  id: "3",
-  slug: "nextjs-performance-optimization",
-  title: "Performance Optimization Techniques in Next.js",
-  description: "Learn advanced techniques for optimizing your Next.js applications, including code splitting, lazy loading, and image optimization.",
-  date: "2024-03-05",
-  author: "Emma Davis",
-  image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-  readingTime: "12 min read",
-  content: `# Performance Optimization Techniques in Next.js
+	id: '3',
+	slug: 'nextjs-performance-optimization',
+	title: 'Performance Optimization Techniques in Next.js',
+	description:
+		'Learn advanced techniques for optimizing your Next.js applications, including code splitting, lazy loading, and image optimization.',
+	date: '2024-03-05',
+	author: 'George Bobby',
+	image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7',
+	readingTime: '12 min read',
+	content: `# Performance Optimization Techniques in Next.js
 
 Optimizing performance in Next.js applications is crucial for providing the best user experience. Let's explore various techniques to enhance your app's performance and dive deep into implementation details.
 
@@ -262,5 +262,5 @@ export default function Page() {
 \`\`\`
 
 Remember, performance optimization is an ongoing process. Regularly audit your application and make necessary improvements based on real user metrics and feedback.`,
-  tags: ["Next.js", "Performance", "Web Development", "JavaScript"],
+	tags: ['Next.js', 'Performance', 'Web Development', 'JavaScript'],
 };

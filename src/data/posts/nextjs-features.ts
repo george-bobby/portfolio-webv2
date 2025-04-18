@@ -1,16 +1,16 @@
-
 import { BlogPost } from './types';
 
 export const nextjsFeatures: BlogPost = {
-  id: "2",
-  slug: "nextjs-13-features",
-  title: "Next.js 13: A Deep Dive into New Features",
-  description: "Explore the latest features in Next.js 13, including the new App Router, Server Components, and improved data fetching patterns.",
-  date: "2024-03-10",
-  author: "Michael Chen",
-  image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
-  readingTime: "12 min read",
-  content: `# Next.js 13: A Deep Dive into New Features
+	id: '2',
+	slug: 'nextjs-13-features',
+	title: 'Next.js 13: A Deep Dive into New Features',
+	description:
+		'Explore the latest features in Next.js 13, including the new App Router, Server Components, and improved data fetching patterns.',
+	date: '2024-03-10',
+	author: 'George Bobby',
+	image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6',
+	readingTime: '12 min read',
+	content: `# Next.js 13: A Deep Dive into New Features
 
 Next.js 13 brings revolutionary changes to the React framework ecosystem. Let's explore the major features and improvements that make it a game-changer for web development, along with practical implementation examples and best practices.
 
@@ -257,5 +257,5 @@ export default function RootLayout({
 \`\`\`
 
 These features represent just the beginning of what's possible with Next.js 13. The framework continues to evolve with regular updates and improvements, making it an excellent choice for modern web development.`,
-  tags: ["Next.js", "React", "Web Development", "JavaScript"],
+	tags: ['Next.js', 'React', 'Web Development', 'JavaScript'],
 };

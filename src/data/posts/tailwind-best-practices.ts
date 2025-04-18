@@ -1,15 +1,16 @@
 import { BlogPost } from './types';
 
 export const tailwindBestPractices: BlogPost = {
-  id: "1",
-  slug: "mastering-tailwind-css-best-practices",
-  title: "Mastering Tailwind CSS: Best Practices for Modern Web",
-  description: "Learn the essential best practices for building responsive and maintainable websites using Tailwind CSS, including tips for optimization and component organization.",
-  date: "2024-03-15",
-  author: "Sarah Johnson",
-  image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-  readingTime: "10 min read",
-  content: `# Mastering Tailwind CSS: Best Practices for Modern Web Development
+	id: '1',
+	slug: 'mastering-tailwind-css-best-practices',
+	title: 'Mastering Tailwind CSS: Best Practices for Modern Web',
+	description:
+		'Learn the essential best practices for building responsive and maintainable websites using Tailwind CSS, including tips for optimization and component organization.',
+	date: '2024-03-15',
+	author: 'George Bobby',
+	image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085',
+	readingTime: '10 min read',
+	content: `# Mastering Tailwind CSS: Best Practices for Modern Web Development
 
 In recent years, Tailwind CSS has revolutionized the way we approach web design and development. This utility-first CSS framework has gained massive popularity due to its flexibility and developer-friendly approach. Let's dive deep into essential best practices and advanced techniques that will help you make the most of Tailwind CSS.
 
@@ -240,5 +241,5 @@ module.exports = {
 - Implement
 
 Remember to always consider accessibility and performance while building your components. Happy coding!`,
-  tags: ["Tailwind CSS", "Web Development", "CSS"],
+	tags: ['Tailwind CSS', 'Web Development', 'CSS'],
 };

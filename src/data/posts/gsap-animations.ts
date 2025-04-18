@@ -2,15 +2,16 @@
 import { BlogPost } from './types';
 
 export const gsapAnimations: BlogPost = {
-  id: "4",
-  slug: "gsap-animations-guide",
-  title: "Creating Stunning Animations with GSAP",
-  description: "Master the art of web animations using GSAP (GreenSock Animation Platform) with practical examples and tips.",
-  date: "2024-02-28",
-  author: "Alex Turner",
-  image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-  readingTime: "12 min read",
-  content: `# Creating Stunning Animations with GSAP
+	id: '4',
+	slug: 'gsap-animations-guide',
+	title: 'Creating Stunning Animations with GSAP',
+	description:
+		'Master the art of web animations using GSAP (GreenSock Animation Platform) with practical examples and tips.',
+	date: '2024-02-28',
+	author: 'George Bobby',
+	image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
+	readingTime: '12 min read',
+	content: `# Creating Stunning Animations with GSAP
 
 GSAP (GreenSock Animation Platform) is one of the most powerful animation libraries for the web. Let's explore how to create engaging animations with GSAP and dive deep into its advanced features.
 
@@ -169,5 +170,5 @@ gsap.to(".staggered", {
    - Performance monitoring
 
 Remember to always test your animations on various devices and optimize for performance. GSAP provides powerful tools, but with great power comes great responsibility!`,
-  tags: ["GSAP", "Animation", "JavaScript", "Web Development"],
+	tags: ['GSAP', 'Animation', 'JavaScript', 'Web Development'],
 };

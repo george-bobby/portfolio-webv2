@@ -74,7 +74,7 @@ const Navigation = () => {
             to="/"
             className="text-2xl font-heading font-bold text-foreground relative group"
           >
-            <span className="relative z-10">Portfolio</span>
+            <span className="relative z-10">&lt;George/&gt;</span>
             <span className="absolute inset-x-0 bottom-0 h-2 bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           </Link>
 
