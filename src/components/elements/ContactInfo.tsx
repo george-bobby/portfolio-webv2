@@ -84,19 +84,19 @@ const ContactInfo = () => {
                 toast({ description: "Email copied to clipboard!" });
               }}
               size="sm"
-              className="group/btn bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-300 w-full flex items-center justify-center gap-2 py-2.5"
+              className="group/btn bg-primary/60 hover:bg-primary text-primary-foreground transition-all duration-300 w-full flex items-center justify-center gap-2 py-2.5"
             >
               <span>Copy Email</span>
               <Copy className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
             </Button>
 
-            <a
+            {/* <a
               href="tel:+919746095420"
-              className="group/btn bg-primary/20 hover:bg-primary text-primary-foreground transition-all duration-300 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium"
+              className="group/btn bg-primary/60 hover:bg-primary text-primary-foreground transition-all duration-300 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium"
             >
               <span>Call Now</span>
               <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

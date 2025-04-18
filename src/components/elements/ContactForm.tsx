@@ -104,7 +104,7 @@ const ContactForm = () => {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full group relative overflow-hidden transition-all duration-300 bg-primary/20 hover:bg-primary hover:shadow-md hover:shadow-primary/10 text-primary-foreground rounded-md py-3"
+              className="w-full group relative overflow-hidden transition-all duration-300 bg-primary/60 hover:bg-primary hover:shadow-md hover:shadow-primary/10 text-primary-foreground rounded-md py-3"
             >
               {isSubmitting ? (
                 <Loader2 className="animate-spin w-5 h-5" />
