@@ -4,6 +4,17 @@ import gsap from "gsap";
 import { cn } from "@/utils/tw-merge";
 import { useIsMobile } from "@/utils/use-mobile";
 
+// Throttle function to limit the rate of function calls
+const throttle = (callback: Function, delay: number) => {
+  let lastCall = 0;
+  return (...args: any[]) => {
+    const now = new Date().getTime();
+    if (now - lastCall < delay) return;
+    lastCall = now;
+    callback(...args);
+  };
+};
+
 const CustomCursor = () => {
   const isMobile = useIsMobile();
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -25,16 +36,18 @@ const CustomCursor = () => {
     // Hide the default cursor on desktop
     document.body.style.cursor = "none";
 
-    const updatePosition = (e: MouseEvent) => {
+    // Throttled position update for better performance
+    const updatePosition = throttle((e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
 
-      // Faster transitions for better performance
-      gsap.to(cursor, { x: x - 8, y: y - 8, duration: 0.1 });
+      // Use set instead of to for better performance
+      gsap.set(cursor, { x: x - 8, y: y - 8 });
       gsap.to(follower, { x: x - 12, y: y - 12, duration: 0.15 });
       gsap.to(trail, { x: x - 16, y: y - 16, duration: 0.2 });
-    };
+    }, 10); // 10ms throttle
 
-    const handleIdleState = () => {
+    // Throttled idle state handler
+    const handleIdleState = throttle(() => {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       setIsIdle(false);
 
@@ -42,7 +55,7 @@ const CustomCursor = () => {
         setIsIdle(true);
         gsap.to(cursor, { scale: 1.2, opacity: 0.7, duration: 0.3 });
       }, 3000);
-    };
+    }, 100); // 100ms throttle
 
     const handleHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -82,8 +95,13 @@ const CustomCursor = () => {
       );
     };
 
-    document.addEventListener("mousemove", updatePosition);
-    document.addEventListener("mousemove", handleIdleState);
+    // Use a single mousemove handler for better performance
+    const handleMouseMove = (e: MouseEvent) => {
+      updatePosition(e);
+      handleIdleState();
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseenter", handleHover, true);
     document.addEventListener("mouseleave", resetCursor, true);
     document.addEventListener("click", handleClick);
@@ -93,8 +111,7 @@ const CustomCursor = () => {
       document.body.style.cursor = "auto";
 
       // Clean up event listeners
-      document.removeEventListener("mousemove", updatePosition);
-      document.removeEventListener("mousemove", handleIdleState);
+      document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseenter", handleHover, true);
       document.removeEventListener("mouseleave", resetCursor, true);
       document.removeEventListener("click", handleClick);

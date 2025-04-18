@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from "react";
+import { useIsMobile } from "@/utils/use-mobile";
 import gsap from "gsap";
 import {
     Database,
@@ -29,23 +30,24 @@ const iconNames = [
 
 const FloatingIcons = () => {
     const iconsContainerRef = useRef<HTMLDivElement>(null);
+    const isMobile = useIsMobile();
 
     // Adjust number of icons and size based on screen size
-    const [iconCount, setIconCount] = useState(10);
-    const [sizeMultiplier, setSizeMultiplier] = useState(1);
+    const [iconCount, setIconCount] = useState(isMobile ? 6 : 10);
+    const [sizeMultiplier, setSizeMultiplier] = useState(isMobile ? 0.7 : 1);
 
     useEffect(() => {
-        // Responsive adjustments
+        // Responsive adjustments - with throttling
         const handleResize = () => {
             const width = window.innerWidth;
             if (width < 640) { // Small mobile
-                setIconCount(6);
+                setIconCount(4); // Reduced for better performance
                 setSizeMultiplier(0.7);
             } else if (width < 768) { // Mobile
-                setIconCount(8);
+                setIconCount(6); // Reduced for better performance
                 setSizeMultiplier(0.8);
             } else if (width < 1024) { // Tablet
-                setIconCount(10);
+                setIconCount(8); // Reduced for better performance
                 setSizeMultiplier(0.9);
             } else { // Desktop
                 setIconCount(10);
@@ -53,9 +55,16 @@ const FloatingIcons = () => {
             }
         };
 
+        // Throttle resize handler
+        let resizeTimer: number | null = null;
+        const throttledResize = () => {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = window.setTimeout(handleResize, 200);
+        };
+
         handleResize(); // Initial call
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener('resize', throttledResize);
+        return () => window.removeEventListener('resize', throttledResize);
     }, []);
 
     const iconPositions = useMemo(() => Array.from({ length: iconCount }).map(() => ({
@@ -68,29 +77,46 @@ const FloatingIcons = () => {
     useEffect(() => {
         if (!iconsContainerRef.current) return;
 
+        // Skip complex animations on mobile for better performance
         const floatingIcons = gsap.utils.toArray<HTMLElement>(".floating-icon");
         if (floatingIcons.length > 0) {
-            floatingIcons.forEach((icon, index) => {
-                // Create a more complex animation
-                gsap.to(icon, {
-                    y: "-=25",
-                    x: Math.random() > 0.5 ? "+=10" : "-=10", // Add slight horizontal movement
-                    duration: 2.5,
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "sine.inOut",
-                    delay: index * 0.15,
-                });
+            // Create a single timeline for better performance
+            const tl = gsap.timeline();
 
-                // Add a subtle rotation
-                gsap.to(icon, {
-                    rotation: Math.random() > 0.5 ? 5 : -5,
-                    duration: 3,
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "sine.inOut",
-                    delay: index * 0.1,
-                });
+            floatingIcons.forEach((icon, index) => {
+                // Simpler animations with fewer properties
+                if (isMobile) {
+                    // Very simple animation for mobile
+                    gsap.to(icon, {
+                        y: "-=15",
+                        duration: 2,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut",
+                        delay: index * 0.1,
+                    });
+                } else {
+                    // More complex animation for desktop
+                    gsap.to(icon, {
+                        y: "-=25",
+                        x: Math.random() > 0.5 ? "+=10" : "-=10", // Add slight horizontal movement
+                        duration: 2.5,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut",
+                        delay: index * 0.15,
+                    });
+
+                    // Add a subtle rotation only on desktop
+                    gsap.to(icon, {
+                        rotation: Math.random() > 0.5 ? 5 : -5,
+                        duration: 3,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut",
+                        delay: index * 0.1,
+                    });
+                }
             });
         }
 
@@ -101,7 +127,7 @@ const FloatingIcons = () => {
                 gsap.killTweensOf(icon);
             });
         };
-    }, []);
+    }, [isMobile]);
 
     return (
         <TooltipProvider>
@@ -134,7 +160,7 @@ const FloatingIcons = () => {
                                     }}
                                 >
                                     <Icon
-                                        className="text-primary transition-all duration-300 hover:scale-125 hover:opacity-100 hover:filter hover:drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.7)] cursor-pointer md:hover:scale-125 touch-action-manipulation"
+                                        className={`text-primary transition-all duration-300 ${!isMobile ? 'hover:scale-125 hover:opacity-100 hover:filter hover:drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.7)]' : ''} cursor-pointer touch-action-manipulation`}
                                         style={{
                                             width: `${position.size}px`,
                                             height: `${position.size}px`,
