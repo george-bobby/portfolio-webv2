@@ -2,13 +2,18 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { cn } from "@/utils/tw-merge";
+import { useIsMobile } from "@/utils/use-mobile";
 
 const CustomCursor = () => {
+  const isMobile = useIsMobile();
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
   const trailRef = useRef<HTMLDivElement>(null);
   const [isIdle, setIsIdle] = useState(false);
   const idleTimerRef = useRef<number | null>(null);
+
+  // Don't render custom cursor on mobile devices
+  if (isMobile) return null;
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -17,7 +22,10 @@ const CustomCursor = () => {
 
     if (!cursor || !follower || !trail) return;
 
-    document.body.style.cursor = "none";
+    // Only hide the default cursor on desktop
+    if (!isMobile) {
+      document.body.style.cursor = "none";
+    }
 
     const updatePosition = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
@@ -83,7 +91,9 @@ const CustomCursor = () => {
     document.addEventListener("click", handleClick);
 
     return () => {
-      document.body.style.cursor = "auto";
+      if (!isMobile) {
+        document.body.style.cursor = "auto";
+      }
       document.removeEventListener("mousemove", updatePosition);
       document.removeEventListener("mousemove", handleIdleState);
       document.removeEventListener("mouseenter", handleHover, true);

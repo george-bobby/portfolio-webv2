@@ -3,15 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
-  Github,
-  Linkedin,
-  Twitter,
   Home,
   FolderKanban,
   BookOpen,
   User,
   Award,
-  Download
+  Linkedin
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
@@ -99,7 +96,7 @@ const Navigation = () => {
           </Button>
 
           <AnimatePresence>
-            {(isOpen || window.innerWidth >= 1024) && (
+            {(isOpen || (typeof window !== 'undefined' && window.innerWidth >= 1024)) && (
               <motion.div
                 variants={menuVariants}
                 initial="hidden"

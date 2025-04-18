@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import gsap from "gsap";
 import {
     Database,
@@ -30,12 +30,40 @@ const iconNames = [
 const FloatingIcons = () => {
     const iconsContainerRef = useRef<HTMLDivElement>(null);
 
-    const iconPositions = Array.from({ length: 10 }).map(() => ({
+    // Adjust number of icons and size based on screen size
+    const [iconCount, setIconCount] = useState(10);
+    const [sizeMultiplier, setSizeMultiplier] = useState(1);
+
+    useEffect(() => {
+        // Responsive adjustments
+        const handleResize = () => {
+            const width = window.innerWidth;
+            if (width < 640) { // Small mobile
+                setIconCount(6);
+                setSizeMultiplier(0.7);
+            } else if (width < 768) { // Mobile
+                setIconCount(8);
+                setSizeMultiplier(0.8);
+            } else if (width < 1024) { // Tablet
+                setIconCount(10);
+                setSizeMultiplier(0.9);
+            } else { // Desktop
+                setIconCount(10);
+                setSizeMultiplier(1);
+            }
+        };
+
+        handleResize(); // Initial call
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const iconPositions = useMemo(() => Array.from({ length: iconCount }).map(() => ({
         top: Math.random() * 100,
         left: Math.random() * 100,
-        size: Math.random() * 30 + 25, // Slightly larger icons
+        size: (Math.random() * 30 + 25) * sizeMultiplier, // Responsive size
         opacity: Math.random() * 0.2 + 0.2, // Increased base opacity for better visibility
-    }));
+    })), [iconCount, sizeMultiplier]);
 
     useEffect(() => {
         if (!iconsContainerRef.current) return;
@@ -106,7 +134,7 @@ const FloatingIcons = () => {
                                     }}
                                 >
                                     <Icon
-                                        className="text-primary transition-all duration-300 hover:scale-125 hover:opacity-100 hover:filter hover:drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.7)] cursor-pointer"
+                                        className="text-primary transition-all duration-300 hover:scale-125 hover:opacity-100 hover:filter hover:drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.7)] cursor-pointer md:hover:scale-125 touch-action-manipulation"
                                         style={{
                                             width: `${position.size}px`,
                                             height: `${position.size}px`,
@@ -115,7 +143,7 @@ const FloatingIcons = () => {
                                     />
                                 </div>
                             </TooltipTrigger>
-                            <TooltipContent side="top" className="bg-primary/90 text-primary-foreground border-primary/20">
+                            <TooltipContent side="top" sideOffset={5} className="bg-primary/90 text-primary-foreground border-primary/20 z-50">
                                 <p>{iconName}</p>
                             </TooltipContent>
                         </Tooltip>
