@@ -3,12 +3,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
+  Github,
+  Linkedin,
+  Twitter,
   Home,
   FolderKanban,
   BookOpen,
   User,
   Award,
-  Linkedin
+  Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
@@ -71,7 +74,7 @@ const Navigation = () => {
             to="/"
             className="text-2xl font-heading font-bold text-foreground relative group"
           >
-            <span className="relative z-10">&lt;George/&gt;</span>
+            <span className="relative z-10">Portfolio</span>
             <span className="absolute inset-x-0 bottom-0 h-2 bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           </Link>
 
@@ -96,7 +99,7 @@ const Navigation = () => {
           </Button>
 
           <AnimatePresence>
-            {(isOpen || (typeof window !== 'undefined' && window.innerWidth >= 1024)) && (
+            {(isOpen || window.innerWidth >= 1024) && (
               <motion.div
                 variants={menuVariants}
                 initial="hidden"

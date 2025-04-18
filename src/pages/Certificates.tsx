@@ -1,93 +1,58 @@
 import { motion } from "framer-motion";
 import { certifications } from "@/data/certificates";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { BadgeCheckIcon, CalendarIcon, BuildingIcon, KeyIcon, EyeIcon } from "lucide-react";
-
-
+import { BadgeCheckIcon, CalendarIcon, ExternalLinkIcon, BuildingIcon } from "lucide-react";
 
 const Certifications = () => {
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   return (
-    <div className="min-h-screen pt-24 pb-16 px-6 md:px-12 relative overflow-hidden">
-      {/* Background grid pattern */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
-
-      <div className="container mx-auto relative z-10">
+    <div className="min-h-screen pt-24 pb-16 px-6 md:px-12">
+      <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-            My Certifications
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">My Certifications</h1>
           {/* <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Professional certifications showcasing my skills and expertise
+            A curated list of my certifications showcasing my professional growth and skills.
           </p> */}
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {certifications.map((cert) => (
+        <div className="space-y-6">
+          {certifications.map((cert, index) => (
             <motion.div
               key={cert.id}
-              variants={cardVariants}
-              transition={{ duration: 0.4 }}
-              whileHover={{ y: -5 }}
-              className="h-full"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group h-full flex flex-col bg-secondary/5 backdrop-blur-sm border border-secondary/20 rounded-xl overflow-hidden shadow-md hover:shadow-xl hover:border-primary/30 transition-all duration-300">
-                <div className="p-6 flex-1">
-                  <div className="flex flex-col sm:flex-row items-start gap-4 mb-4">
-                    <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-primary/30 shadow-inner mb-2 sm:mb-0">
-                      <cert.icon className="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg font-semibold flex items-center gap-2 mb-1">
-                        <BadgeCheckIcon className="w-5 h-5 text-primary" />
-                        {cert.title}
-                      </CardTitle>
-                      <div className="flex flex-col space-y-1">
-                        <p className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <BuildingIcon className="w-3.5 h-3.5" /> {cert.issuer}
-                        </p>
-                        <p className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CalendarIcon className="w-3.5 h-3.5" /> {cert.date}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <CardContent className="p-0">
-                    <p className="text-sm text-muted-foreground mb-4">{cert.description}</p>
-                    <div className="flex flex-wrap gap-2">
+              <Card className="group flex flex-row items-center bg-white/5 border border-white/10 rounded-md shadow-md hover:shadow-xl transition-all duration-300 p-4">
+                <div className="w-20 h-20 flex items-center justify-center rounded-md bg-gradient-to-r from-primary/10 to-primary/20 mr-4">
+                  <cert.icon className="w-12 h-12 text-primary/80 transition-transform duration-300 group-hover:scale-110" />
+                </div>
+                <div className="flex-1">
+                  <CardHeader className="p-0">
+                    <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+                      <BadgeCheckIcon className="w-5 h-5 text-primary" />
+                      {cert.title}
+                    </CardTitle>
+                    <p className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                      <BuildingIcon className="w-4 h-4" /> {cert.issuer}
+                    </p>
+                    <p className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                      <CalendarIcon className="w-4 h-4" /> {cert.date}
+                    </p>
+                  </CardHeader>
+                  <CardContent className="mt-2 p-0">
+                    <p className="text-sm text-gray-400">{cert.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-2">
                       {cert.skills.map((skill, i) => (
                         <span
                           key={i}
-                          className="px-2.5 py-1 text-xs rounded-full bg-primary/10 text-primary font-medium transition-colors duration-300 hover:bg-primary/20"
+                          className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary font-medium"
                         >
                           {skill}
                         </span>
@@ -95,43 +60,18 @@ const Certifications = () => {
                     </div>
                   </CardContent>
                 </div>
-
-                <CardFooter className="p-4 pt-0 mt-auto border-t border-border/10 flex flex-col sm:flex-row gap-3 justify-end">
+                <CardFooter className="ml-auto">
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full sm:w-auto bg-secondary/20 border-secondary/30 hover:bg-secondary/40 transition-all duration-300"
-                        >
+                        <Button variant="default" className="py-2 px-4 text-sm font-semibold bg-primary text-white hover:bg-primary/90 transition">
                           <a href={cert.detailsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                            <KeyIcon className="w-4 h-4" /> View Credentials
+                            <ExternalLinkIcon className="w-5 h-5" /> View Certification
                           </a>
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent side="bottom">
-                        <p>View Certificate Credentials</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          className="w-full sm:w-auto group/btn relative overflow-hidden"
-                        >
-                          <a href={cert.detailsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 z-10 relative">
-                            <EyeIcon className="w-4 h-4" /> View Certificate
-                          </a>
-                          <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-300 origin-left" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom">
-                        <p>View Full Certificate</p>
+                      <TooltipContent>
+                        <p>View Certification</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -139,7 +79,7 @@ const Certifications = () => {
               </Card>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
