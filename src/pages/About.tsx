@@ -111,8 +111,8 @@ const About = () => {
                                 <p className="text-muted-foreground mb-4">{work.description}</p>
                                 <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Star className="w-4 h-4 text-primary" />Key Responsibilities</h4>
                                 <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">{work.responsibilities.map((responsibility, i) => (<li key={i}>{responsibility}</li>))}</ul>
-                                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Trophy className="w-4 h-4 text-primary" />Technologies</h4>
-                                <div className="flex flex-wrap gap-2">{work.tools.map((tool, i) => (<span key={i} className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">{tool}</span>))}</div>
+                                <h4 className="text-sm font-semibold mt-4 mb-2 flex items-center gap-2"><Trophy className="w-4 h-4 text-primary" />Technologies</h4>
+                                <div className="flex flex-wrap gap-2 ">{work.tools.map((tool, i) => (<span key={i} className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">{tool}</span>))}</div>
                             </>
                         )}
                     />

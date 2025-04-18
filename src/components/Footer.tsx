@@ -1,8 +1,8 @@
 
 import React from "react";
-import ContactForm from "./elements/ContactForm";
-import ContactInfo from "./elements/ContactInfo";
-import FloatingIcons from "./elements/FloatingIcons";
+import ContactForm from "./ContactForm";
+import ContactInfo from "./ContactInfo";
+import FloatingIcons from "./FloatingIcons";
 
 const Footer = () => {
   return (
