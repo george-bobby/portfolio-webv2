@@ -4,8 +4,6 @@ import Research from "@/components/Research";
 import Skills from "@/components/Skills";
 import BlogSection from "@/components/Blogs";
 import useSmoothScroll from "@/hooks/useSmoothScroll";
-import ProjectsToProducts from "@/components/Prod";
-
 
 const Index = () => {
   // Initialize smooth scrolling
@@ -31,10 +29,6 @@ const Index = () => {
 
       <section id="blog">
         <BlogSection />
-      </section>
-
-      <section id="products">
-        <ProjectsToProducts />
       </section>
     </div>
   );
