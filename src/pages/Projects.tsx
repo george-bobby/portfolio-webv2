@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion as m, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -37,21 +37,21 @@ const Projects = () => {
           </Button>
         </div>
 
-        <motion.h1
+        <m.h1
           {...fadeInUp}
           className="text-4xl md:text-5xl font-heading font-bold mb-8"
         >
           Projects
-        </motion.h1>
+        </m.h1>
 
-        <motion.div
+        <m.div
           {...fadeInUp}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );

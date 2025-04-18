@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion as m, useReducedMotion } from "framer-motion";
 import { blogPosts } from "@/data/posts";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -36,14 +36,14 @@ const Blog = () => {
                     </Button>
                 </div>
 
-                <motion.h1
+                <m.h1
                     {...fadeIn}
                     className="text-4xl md:text-5xl font-heading font-bold mb-12"
                 >
                     Blog Posts
-                </motion.h1>
+                </m.h1>
 
-                <motion.div
+                <m.div
                     {...fadeIn}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                 >
@@ -55,7 +55,7 @@ const Blog = () => {
                             />
                         )),
                         [])}
-                </motion.div>
+                </m.div>
             </div>
         </div>
     );

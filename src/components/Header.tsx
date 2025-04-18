@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as m, AnimatePresence } from "framer-motion";
+// Rename motion to m to avoid JSX namespace issues
 import {
   Menu,
   X,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
+import SmoothLink from "@/components/SmoothLink";
 import { useIsMobile } from "@/utils/use-mobile";
 
 const Navigation = () => {
@@ -30,14 +32,20 @@ const Navigation = () => {
   }, []);
 
   const isActive = (path: string) => {
+    // For anchor links on the home page
+    if (path.includes('#') && location.pathname === '/') {
+      return window.location.hash === path.split('#')[1] ? `#${path.split('#')[1]}` : false;
+    }
+    // For regular paths
     return location.pathname === path;
   };
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
-    { path: "/projects", label: "Projects", icon: FolderKanban },
+    { path: "/#skills", label: "Skills", icon: Award },
+    { path: "/#projects", label: "Projects", icon: FolderKanban },
+    { path: "/#research", label: "Research", icon: BookOpen },
     { path: "/blog", label: "Blog", icon: BookOpen },
-    { path: "/certificates", label: "Certificates", icon: Award },
     { path: "/about", label: "About", icon: User },
   ];
 
@@ -59,7 +67,7 @@ const Navigation = () => {
   };
 
   return (
-    <motion.nav
+    <m.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -86,7 +94,7 @@ const Navigation = () => {
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={isOpen ? "close" : "open"}
                 initial={{ opacity: 0, rotate: -90 }}
                 animate={{ opacity: 1, rotate: 0 }}
@@ -94,13 +102,13 @@ const Navigation = () => {
                 transition={{ duration: 0.2 }}
               >
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </motion.div>
+              </m.div>
             </AnimatePresence>
           </Button>
 
           <AnimatePresence>
             {(isOpen || isDesktop) && (
-              <motion.div
+              <m.div
                 variants={menuVariants}
                 initial="hidden"
                 animate="visible"
@@ -108,14 +116,14 @@ const Navigation = () => {
                 className={`${isOpen ? "flex" : "hidden lg:flex"
                   } absolute lg:relative top-full left-0 w-full lg:w-auto bg-background/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none flex-col lg:flex-row items-center gap-8 p-6 lg:p-0 border-b lg:border-none border-border/50 shadow-lg lg:shadow-none`}
               >
-                <motion.div
+                <m.div
                   className="flex flex-col lg:flex-row items-center gap-6"
                   variants={itemVariants}
                 >
                   {navItems.map((item) => {
                     const Icon = item.icon;
                     return (
-                      <Link
+                      <SmoothLink
                         key={item.path}
                         to={item.path}
                         className={`relative group flex items-center gap-2 text-base ${isActive(item.path)
@@ -131,12 +139,12 @@ const Navigation = () => {
                           <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary transform origin-left transition-transform duration-300 ${isActive(item.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                             }`} />
                         </span>
-                      </Link>
+                      </SmoothLink>
                     );
                   })}
-                </motion.div>
+                </m.div>
 
-                <motion.div
+                <m.div
                   className="flex items-center gap-6"
                   variants={itemVariants}
                 >
@@ -156,13 +164,13 @@ const Navigation = () => {
                       <span className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                     </a>
                   </Button>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>
       </div>
-    </motion.nav>
+    </m.nav>
   );
 };
 

@@ -1,27 +1,42 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Download } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
+import { useSpring, animated } from "react-spring";
 import FloatingIcons from "./FloatingIcons";
 import { useIsMobile } from "@/utils/use-mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const buttonsRef = useRef(null);
+  const scrollIndicatorRef = useRef(null);
+  const glowRef = useRef(null);
+  const projectsRef = useRef(null);
+  const productsRef = useRef(null);
+  const arrowSvgRef = useRef(null);
+  const arrowPathRef = useRef(null);
   const isMobile = useIsMobile();
 
-  // Throttle function to limit the rate of function calls
-  const throttle = (callback: Function, delay: number) => {
+  const [pathLength, setPathLength] = useState(0);
+  const [arrowVisible, setArrowVisible] = useState(false);
+
+  // Animation for drawing the arrow
+  const arrowAnimation = useSpring({
+    from: { strokeDashoffset: pathLength },
+    to: { strokeDashoffset: arrowVisible ? 0 : pathLength },
+    config: { duration: 800 },
+    delay: 100
+  });
+
+  const throttle = (callback, delay) => {
     let lastCall = 0;
-    return (...args: any[]) => {
+    return (...args) => {
       const now = new Date().getTime();
       if (now - lastCall < delay) return;
       lastCall = now;
@@ -29,12 +44,10 @@ const Hero = () => {
     };
   };
 
-  // Track mouse position for the glow effect - with throttling for performance
   useEffect(() => {
-    if (isMobile) return; // Skip on mobile devices
+    if (isMobile) return;
 
-    const handleMouseMove = throttle((e: MouseEvent) => {
-      // Update glow position directly without state update for better performance
+    const handleMouseMove = throttle((e) => {
       if (glowRef.current && sectionRef.current) {
         const sectionRect = sectionRef.current.getBoundingClientRect();
         gsap.to(glowRef.current, {
@@ -44,11 +57,68 @@ const Hero = () => {
           ease: "power2.out"
         });
       }
-    }, 50); // Throttle to 50ms
+    }, 50);
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isMobile]);
+
+  // Calculate and update the arrow path when elements are mounted
+  useEffect(() => {
+    if (!projectsRef.current || !productsRef.current || !arrowPathRef.current || !arrowSvgRef.current) {
+      return;
+    }
+
+    const updateArrowPath = () => {
+      const projectsRect = projectsRef.current.getBoundingClientRect();
+      const productsRect = productsRef.current.getBoundingClientRect();
+
+      // Starting point (first P of "Projects")
+      const startX = projectsRect.left;
+      const startY = projectsRect.top + projectsRect.height / 2;
+
+      // Ending point (first P of "Products")
+      const endX = productsRect.left;
+      const endY = productsRect.top + productsRect.height / 2;
+
+      // Get the position relative to the SVG
+      const svgRect = arrowSvgRef.current.getBoundingClientRect();
+      const relStartX = startX - svgRect.left;
+      const relStartY = startY - svgRect.top;
+      const relEndX = endX - svgRect.left;
+      const relEndY = endY - svgRect.top;
+
+      // Create a curved path
+      // Using a quadratic bezier curve for a nice arch
+      const controlX = (relStartX + relEndX) / 2;
+      const controlY = Math.min(relStartY, relEndY) - 30; // Curve upward
+
+      const path = `M ${relStartX} ${relStartY} Q ${controlX} ${controlY}, ${relEndX} ${relEndY}`;
+      arrowPathRef.current.setAttribute("d", path);
+
+      // Update SVG viewBox to fit the path
+      const minX = Math.min(relStartX, relEndX, controlX) - 20;
+      const minY = Math.min(relStartY, relEndY, controlY) - 20;
+      const width = Math.max(relStartX, relEndX, controlX) - minX + 40;
+      const height = Math.max(relStartY, relEndY, controlY) - minY + 40;
+
+      arrowSvgRef.current.setAttribute("viewBox", `${minX} ${minY} ${width} ${height}`);
+      arrowSvgRef.current.style.width = `${width}px`;
+      arrowSvgRef.current.style.height = `${height}px`;
+
+      // Update the path length for animation
+      const pathLength = arrowPathRef.current.getTotalLength();
+      setPathLength(pathLength);
+      arrowPathRef.current.style.strokeDasharray = pathLength;
+    };
+
+    // Run once after mount
+    updateArrowPath();
+
+    // And whenever window is resized
+    window.addEventListener("resize", updateArrowPath);
+    return () => window.removeEventListener("resize", updateArrowPath);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current || !headingRef.current || !buttonsRef.current || !scrollIndicatorRef.current) {
@@ -56,30 +126,27 @@ const Hero = () => {
     }
 
     const ctx = gsap.context(() => {
-      // Split text animation - only on desktop for better performance
       if (!isMobile) {
-        const titleText = new SplitType(headingRef.current!, {
+        const titleText = new SplitType(headingRef.current, {
           types: "chars",
           tagName: "span",
         });
 
         if (titleText.chars) {
-          // Initial animation for each character
           gsap.from(titleText.chars, {
             opacity: 0,
-            y: 20, // Simplified animation
-            stagger: 0.02, // Faster stagger
+            y: 20,
+            stagger: 0.02,
             duration: 0.6,
             ease: "back.out(1.7)",
             delay: 0.2
           });
 
-          // Interactive hover effect - only add to desktop
           if (!isMobile) {
             titleText.chars.forEach((char) => {
               char.addEventListener("mouseenter", () => {
                 gsap.to(char, {
-                  scale: 1.2, // Reduced scale for better performance
+                  scale: 1.2,
                   color: "#9333EA",
                   duration: 0.2,
                   ease: "power2.out"
@@ -98,7 +165,6 @@ const Hero = () => {
           }
         }
       } else {
-        // Simple animation for mobile
         gsap.from(headingRef.current, {
           opacity: 0,
           y: 20,
@@ -107,7 +173,6 @@ const Hero = () => {
         });
       }
 
-      // Button hover effects - only on desktop
       if (!isMobile) {
         const buttons = buttonsRef.current.querySelectorAll('button');
         buttons.forEach(button => {
@@ -141,7 +206,6 @@ const Hero = () => {
         });
       }
 
-      // Scroll indicator pulse animation
       gsap.to(scrollIndicatorRef.current, {
         y: 10,
         repeat: -1,
@@ -150,10 +214,8 @@ const Hero = () => {
         ease: "sine.inOut"
       });
 
-      // Main entrance animation - simplified for better performance
       const tl = gsap.timeline();
 
-      // Skip heading animation as it's already handled above
       tl.from(
         buttonsRef.current,
         {
@@ -163,17 +225,16 @@ const Hero = () => {
           ease: "power2.out",
         },
         "+=0.3"
-      )
-        .from(
-          scrollIndicatorRef.current,
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.6,
-            ease: "power2.out",
-          },
-          "-=0.3"
-        );
+      ).from(
+        scrollIndicatorRef.current,
+        {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -184,7 +245,6 @@ const Hero = () => {
       ref={sectionRef}
       className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center px-4"
     >
-      {/* Glow effect that follows cursor - only on desktop */}
       {!isMobile && (
         <div
           ref={glowRef}
@@ -202,7 +262,57 @@ const Hero = () => {
         >
           Hi, I'm <span className="text-primary">George Bobby</span>.
           <br />
-          <span className="mt-4 md:mt-6 lg:mt-8 inline-block">Turning Projects Into Products</span>
+          <div
+            className="mt-4 md:mt-6 lg:mt-8 inline-block relative group w-fit mx-auto"
+            onMouseEnter={() => setArrowVisible(true)}
+            onMouseLeave={() => setArrowVisible(false)}
+          >
+            <span className="font-bold text-white relative z-10">
+              <span
+                ref={projectsRef}
+                className="relative inline-block hover:text-primary transition-colors duration-300"
+              >
+                Projects
+              </span>
+              <span className="mx-2 text-muted-foreground">to</span>
+              <span
+                ref={productsRef}
+                className="relative inline-block hover:text-primary transition-colors duration-300"
+              >
+                Products
+              </span>
+            </span>
+
+            <animated.svg
+              ref={arrowSvgRef}
+              className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <marker
+                  id="arrowhead"
+                  markerWidth="10"
+                  markerHeight="10"
+                  refX="8"
+                  refY="5"
+                  orient="auto"
+                  markerUnits="strokeWidth"
+                >
+                  <path d="M0,0 L0,10 L10,5 z" fill="#9333EA" />
+                </marker>
+              </defs>
+              <animated.path
+                ref={arrowPathRef}
+                stroke="#9333EA"
+                strokeWidth="2"
+                fill="none"
+                markerEnd="url(#arrowhead)"
+                style={{
+                  strokeDashoffset: arrowAnimation.strokeDashoffset
+                }}
+              />
+            </animated.svg>
+          </div>
         </h1>
         <div
           ref={buttonsRef}
