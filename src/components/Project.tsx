@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
@@ -5,6 +6,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { projectsdata } from "@/data/projects";
+import { useIsMobile } from "@/utils/use-mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,18 +16,36 @@ const Project = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [showViewAll, setShowViewAll] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const section = sectionRef.current;
     const container = containerRef.current;
 
     if (!section || !container) return;
+    
+    // Clean up any existing ScrollTrigger instances
+    ScrollTrigger.getAll().forEach(st => st.kill());
 
+    // Skip complex animation on mobile for better performance
+    if (isMobile) {
+      // Simple mobile layout without ScrollTrigger
+      container.style.width = "100%";
+      container.style.flexDirection = "column";
+      container.style.position = "relative";
+      container.style.transform = "none";
+      setShowViewAll(true);
+      return;
+    }
+
+    // Desktop animation setup
     const totalPanels = projects.length;
     const panelWidth = window.innerWidth;
 
     // Set width once instead of in animation
     container.style.width = `${totalPanels * 100}%`;
+    container.style.flexDirection = "row";
+    container.style.position = "absolute";
 
     // Create a context to improve performance
     const ctx = gsap.context(() => {
@@ -59,7 +79,7 @@ const Project = () => {
     return () => {
       ctx.revert(); // More efficient cleanup
     };
-  }, []);
+  }, [isMobile, projects.length, showViewAll]);
 
   return (
     <section
@@ -68,21 +88,22 @@ const Project = () => {
     >
       <div
         ref={containerRef}
-        className="flex h-full absolute top-0 left-0 will-change-transform"
-        style={{ willChange: "transform" }}
+        className={`h-full ${isMobile ? "flex flex-col py-8 px-4 relative gap-8 overflow-y-auto" : "flex absolute top-0 left-0 will-change-transform"}`}
+        style={{ willChange: isMobile ? "auto" : "transform" }}
       >
         {projects.map((project, index) => (
           <div
             key={project.id}
-            className={`w-screen h-full flex items-center justify-center project-${index}`}
+            className={`${isMobile ? "w-full h-auto min-h-[60vh] mb-4" : "w-screen h-full"} flex items-center justify-center project-${index}`}
           >
-            <div className="w-[90vw] h-[80vh] relative bg-secondary/10 rounded-2xl overflow-hidden hover:bg-secondary/20 transition-all duration-500 group">
+            <div className="w-full h-full md:w-[90vw] md:h-[80vh] relative bg-secondary/10 rounded-2xl overflow-hidden hover:bg-secondary/20 transition-all duration-500 group">
               <div className="absolute inset-0">
                 <img
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-500"
                   loading="lazy"
+                  fetchPriority="auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/70 to-background/90" />
               </div>
@@ -121,19 +142,22 @@ const Project = () => {
         ))}
       </div>
 
-      {showViewAll && (
+      {(showViewAll || isMobile) && (
         <Button
-          onClick={() => navigate("/project")}
-          className="group absolute bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
+          onClick={() => navigate("/projects")}
+          className="group absolute bg-primary/50 hover:bg-primary text-primary-foreground transition-all duration-500 overflow-hidden bottom-16 right-8 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-10"
         >
           View All Projects
           <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
         </Button>
       )}
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-center text-muted-foreground flex items-center gap-2">
-        <ChevronDown className="w-6 h-6" />
-        <p className="text-sm">Scroll Down for More</p>
-      </div>
+      
+      {!isMobile && (
+        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-center text-muted-foreground flex items-center gap-2">
+          <ChevronDown className="w-6 h-6" />
+          <p className="text-sm">Scroll Down for More</p>
+        </div>
+      )}
     </section>
   );
 };
