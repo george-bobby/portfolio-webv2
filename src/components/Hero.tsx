@@ -1,27 +1,42 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Download } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
+import { useSpring, animated } from "react-spring";
 import FloatingIcons from "./FloatingIcons";
 import { useIsMobile } from "@/utils/use-mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const buttonsRef = useRef(null);
+  const scrollIndicatorRef = useRef(null);
+  const glowRef = useRef(null);
+  const projectsRef = useRef(null);
+  const productsRef = useRef(null);
+  const arrowSvgRef = useRef(null);
+  const arrowPathRef = useRef(null);
   const isMobile = useIsMobile();
 
-  // Throttle function to limit the rate of function calls
-  const throttle = (callback: Function, delay: number) => {
+  const [pathLength, setPathLength] = useState(0);
+  const [arrowVisible, setArrowVisible] = useState(false);
+
+  // Animation for drawing the arrow
+  const arrowAnimation = useSpring({
+    from: { strokeDashoffset: pathLength },
+    to: { strokeDashoffset: arrowVisible ? 0 : pathLength },
+    config: { duration: 800 },
+    delay: 100
+  });
+
+  const throttle = (callback, delay) => {
     let lastCall = 0;
-    return (...args: any[]) => {
+    return (...args) => {
       const now = new Date().getTime();
       if (now - lastCall < delay) return;
       lastCall = now;
@@ -29,12 +44,10 @@ const Hero = () => {
     };
   };
 
-  // Track mouse position for the glow effect - with throttling for performance
   useEffect(() => {
-    if (isMobile) return; // Skip on mobile devices
+    if (isMobile) return;
 
-    const handleMouseMove = throttle((e: MouseEvent) => {
-      // Update glow position directly without state update for better performance
+    const handleMouseMove = throttle((e) => {
       if (glowRef.current && sectionRef.current) {
         const sectionRect = sectionRef.current.getBoundingClientRect();
         gsap.to(glowRef.current, {
@@ -44,10 +57,52 @@ const Hero = () => {
           ease: "power2.out"
         });
       }
-    }, 50); // Throttle to 50ms
+    }, 50);
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [isMobile]);
+
+  // Calculate and update the arrow path
+  useEffect(() => {
+    if (!projectsRef.current || !productsRef.current || !arrowPathRef.current || isMobile) return;
+
+    const updateArrowPath = () => {
+      const projectsRect = projectsRef.current.getBoundingClientRect();
+      const productsRect = productsRef.current.getBoundingClientRect();
+      const svgRect = arrowSvgRef.current.getBoundingClientRect();
+
+      // Get first "P" positions
+      const startX = projectsRect.left - svgRect.left + 5;
+      const startY = projectsRect.top - svgRect.top + projectsRect.height / 2;
+      const endX = productsRect.left - svgRect.left + 5;
+      const endY = productsRect.top - svgRect.top + productsRect.height / 2;
+
+      // Create curved path
+      const controlX = (startX + endX) / 2;
+      const controlY = Math.min(startY, endY) - 30;
+
+      const path = `M ${startX} ${startY} Q ${controlX} ${controlY}, ${endX} ${endY}`;
+      arrowPathRef.current.setAttribute("d", path);
+
+      // Update viewBox
+      const minX = Math.min(startX, endX, controlX) - 20;
+      const minY = Math.min(startY, endY, controlY) - 20;
+      const width = Math.max(startX, endX, controlX) - minX + 40;
+      const height = Math.max(startY, endY, controlY) - minY + 40;
+
+      arrowSvgRef.current.setAttribute("viewBox", `${minX} ${minY} ${width} ${height}`);
+      arrowSvgRef.current.style.width = `${width}px`;
+      arrowSvgRef.current.style.height = `${height}px`;
+
+      const length = arrowPathRef.current.getTotalLength();
+      setPathLength(length);
+      arrowPathRef.current.style.strokeDasharray = length;
+    };
+
+    updateArrowPath();
+    window.addEventListener("resize", updateArrowPath);
+    return () => window.removeEventListener("resize", updateArrowPath);
   }, [isMobile]);
 
   useEffect(() => {
@@ -56,49 +111,43 @@ const Hero = () => {
     }
 
     const ctx = gsap.context(() => {
-      // Split text animation - only on desktop for better performance
       if (!isMobile) {
-        const titleText = new SplitType(headingRef.current!, {
+        const titleText = new SplitType(headingRef.current, {
           types: "chars",
           tagName: "span",
         });
 
         if (titleText.chars) {
-          // Initial animation for each character
           gsap.from(titleText.chars, {
             opacity: 0,
-            y: 20, // Simplified animation
-            stagger: 0.02, // Faster stagger
+            y: 20,
+            stagger: 0.02,
             duration: 0.6,
             ease: "back.out(1.7)",
             delay: 0.2
           });
 
-          // Interactive hover effect - only add to desktop
-          if (!isMobile) {
-            titleText.chars.forEach((char) => {
-              char.addEventListener("mouseenter", () => {
-                gsap.to(char, {
-                  scale: 1.2, // Reduced scale for better performance
-                  color: "#9333EA",
-                  duration: 0.2,
-                  ease: "power2.out"
-                });
-              });
-
-              char.addEventListener("mouseleave", () => {
-                gsap.to(char, {
-                  scale: 1,
-                  color: "inherit",
-                  duration: 0.2,
-                  ease: "power2.in",
-                });
+          titleText.chars.forEach((char) => {
+            char.addEventListener("mouseenter", () => {
+              gsap.to(char, {
+                scale: 1.2,
+                color: "#9333EA",
+                duration: 0.2,
+                ease: "power2.out"
               });
             });
-          }
+
+            char.addEventListener("mouseleave", () => {
+              gsap.to(char, {
+                scale: 1,
+                color: "inherit",
+                duration: 0.2,
+                ease: "power2.in",
+              });
+            });
+          });
         }
       } else {
-        // Simple animation for mobile
         gsap.from(headingRef.current, {
           opacity: 0,
           y: 20,
@@ -107,7 +156,6 @@ const Hero = () => {
         });
       }
 
-      // Button hover effects - only on desktop
       if (!isMobile) {
         const buttons = buttonsRef.current.querySelectorAll('button');
         buttons.forEach(button => {
@@ -124,24 +172,9 @@ const Hero = () => {
               duration: 0.3
             });
           });
-
-          button.addEventListener('mousedown', () => {
-            gsap.to(button, {
-              scale: 0.95,
-              duration: 0.1
-            });
-          });
-
-          button.addEventListener('mouseup', () => {
-            gsap.to(button, {
-              scale: 1,
-              duration: 0.1
-            });
-          });
         });
       }
 
-      // Scroll indicator pulse animation
       gsap.to(scrollIndicatorRef.current, {
         y: 10,
         repeat: -1,
@@ -150,10 +183,7 @@ const Hero = () => {
         ease: "sine.inOut"
       });
 
-      // Main entrance animation - simplified for better performance
       const tl = gsap.timeline();
-
-      // Skip heading animation as it's already handled above
       tl.from(
         buttonsRef.current,
         {
@@ -163,17 +193,16 @@ const Hero = () => {
           ease: "power2.out",
         },
         "+=0.3"
-      )
-        .from(
-          scrollIndicatorRef.current,
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.6,
-            ease: "power2.out",
-          },
-          "-=0.3"
-        );
+      ).from(
+        scrollIndicatorRef.current,
+        {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -184,7 +213,6 @@ const Hero = () => {
       ref={sectionRef}
       className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center px-4"
     >
-      {/* Glow effect that follows cursor - only on desktop */}
       {!isMobile && (
         <div
           ref={glowRef}
@@ -200,9 +228,58 @@ const Hero = () => {
           ref={headingRef}
           className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-relaxed md:leading-relaxed lg:leading-relaxed"
         >
-          Hi, I'm <span className="text-primary">George Bobby</span>.
+          Hey, I'm <span className="text-primary">George Bobby</span>.
           <br />
-          <span className="mt-4 md:mt-6 lg:mt-8 inline-block">Turning Projects Into Products</span>
+          <div
+            className="mt-4 md:mt-6 lg:mt-8 inline-block relative group w-fit mx-auto"
+            onMouseEnter={() => !isMobile && setArrowVisible(true)}
+            onMouseLeave={() => !isMobile && setArrowVisible(false)}
+          >
+            <span className="font-bold text-white relative z-10">
+              <span
+                ref={projectsRef}
+                className="relative inline-block hover:text-primary transition-colors duration-300"
+              >
+                Projects
+              </span>
+              <span className="mx-2 text-muted-foreground">to</span>
+              <span
+                ref={productsRef}
+                className="relative inline-block hover:text-primary transition-colors duration-300"
+              >
+                Products
+              </span>
+            </span>
+
+            <animated.svg
+              ref={arrowSvgRef}
+              className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <marker
+                  id="arrowhead"
+                  markerWidth="10"
+                  markerHeight="10"
+                  refX="8"
+                  refY="5"
+                  orient="auto"
+                >
+                  <path d="M0,0 L0,10 L10,5 z" fill="#9333EA" />
+                </marker>
+              </defs>
+              <animated.path
+                ref={arrowPathRef}
+                stroke="#9333EA"
+                strokeWidth="2"
+                fill="none"
+                markerEnd="url(#arrowhead)"
+                style={{
+                  strokeDashoffset: arrowAnimation.strokeDashoffset
+                }}
+              />
+            </animated.svg>
+          </div>
         </h1>
         <div
           ref={buttonsRef}
@@ -223,7 +300,7 @@ const Hero = () => {
             size="lg"
             variant="outline"
             className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2"
-            onClick={() => window.open("https://drive.google.com/file/d/1w4ijqOQZ0H0P1J4brWwQfOyEZkr5IttU/view?usp=drive_link", "_blank")}
+            onClick={() => window.open("https://drive.google.com/file/d/1w8YZT6kKLhOoR_veMWPwlDrzVR3TqTLR/view?usp=sharing", "_blank")}
           >
             <Download className="w-5 h-5 group-hover:text-primary group-hover:translate-y-[2px] transition-all duration-300" />
             <span className="relative z-10">

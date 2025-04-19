@@ -42,9 +42,9 @@ const Navigation = () => {
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
-    { path: "/#skills", label: "Skills", icon: Award },
-    { path: "/#projects", label: "Projects", icon: FolderKanban },
-    { path: "/#research", label: "Research", icon: BookOpen },
+    { path: "/projects", label: "Projects", icon: FolderKanban },
+    // { path: "/research", label: "Research", icon: BookOpen },
+    { path: "/certificates", label: "Certificates", icon: Award },
     { path: "/blog", label: "Blog", icon: BookOpen },
     { path: "/about", label: "About", icon: User },
   ];
@@ -117,7 +117,7 @@ const Navigation = () => {
                   } absolute lg:relative top-full left-0 w-full lg:w-auto bg-background/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none flex-col lg:flex-row items-center gap-8 p-6 lg:p-0 border-b lg:border-none border-border/50 shadow-lg lg:shadow-none`}
               >
                 <m.div
-                  className="flex flex-col lg:flex-row items-center gap-6"
+                  className="flex flex-col lg:flex-row items-center gap-9"
                   variants={itemVariants}
                 >
                   {navItems.map((item) => {
