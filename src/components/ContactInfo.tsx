@@ -43,7 +43,7 @@ const ContactInfo = () => {
                   </div>
                   <h4 className="font-medium">Email</h4>
                 </div>
-                <p className="text-base text-muted-foreground pl-11">mailto.georgebobby@gmail.com</p>
+                <p className="text-base text-muted-foreground pl-11">hello@georgebobby.me</p>
               </div>
 
               <div>
@@ -80,7 +80,7 @@ const ContactInfo = () => {
           <div className="space-y-4 mt-8">
             <Button
               onClick={() => {
-                navigator.clipboard.writeText("mailto.georgebobby@gmail.com");
+                navigator.clipboard.writeText("hello@georgebobby.me");
                 toast({ description: "Email copied to clipboard!" });
               }}
               size="sm"
