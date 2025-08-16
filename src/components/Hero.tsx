@@ -120,7 +120,8 @@ const Hero = () => {
     gifContainer.style.pointerEvents = "none";
     // Position it between the text and buttons
     gifContainer.style.top = "100%";
-    gifContainer.style.marginTop = "-200px";
+    gifContainer.style.marginTop = "-250px"; // Move GIF higher up
+    gifContainer.style.marginLeft = "80px"; // Move GIF to the right
 
     // Create and append the img element
     const img = document.createElement("img");
@@ -152,8 +153,7 @@ const Hero = () => {
 
       // Highlight "Products" text
       gsap.to(productsElement, {
-        color: "white",
-        scale: 1.1,
+        color: "#9333EA",
         duration: 0.3,
         ease: "power2.out",
       });
@@ -169,7 +169,6 @@ const Hero = () => {
       // Reset "Products" text
       gsap.to(productsElement, {
         color: "inherit",
-        scale: 1,
         duration: 0.3,
         ease: "power2.in",
       });
@@ -194,16 +193,16 @@ const Hero = () => {
           ref={headingRef}
           className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-relaxed md:leading-relaxed lg:leading-relaxed"
         >
-          Hey, I'm <span className="text-primary">George Bobby</span>.
+          <span className="space-x-4">Hey,</span> <span className="space-x-4">I'm</span> <span className="text-primary">George</span> <span className="text-primary">Bobby</span>.
           <br />
           <div className="mt-4 md:mt-6 lg:mt-8 inline-block relative group w-fit mx-auto">
             <span className="font-bold text-white relative z-10">
-              <span className="text-muted-foreground">Turning</span>
-              <span className="mx-2 relative inline-block hover:text-primary transition-colors duration-300 projects-text">
+              <span className="text-muted-foreground mr-4">Turning</span>
+              <span className="mx-4 relative inline-block hover:text-primary transition-colors duration-300 projects-text">
                 Projects
               </span>
-              <span className="text-muted-foreground">into</span>
-              <span className="mx-2 relative inline-block hover:text-primary transition-colors duration-300 products-text">
+              <span className="text-muted-foreground mx-4">into</span>
+              <span className="mx-4 relative inline-block hover:text-primary transition-colors duration-300 products-text">
                 Products
               </span>
             </span>
@@ -236,7 +235,7 @@ const Hero = () => {
             className="group relative overflow-hidden hover:scale-105 transition-transform duration-300 flex items-center gap-2"
             onClick={() =>
               window.open(
-                "https://drive.google.com/file/d/1w8YZT6kKLhOoR_veMWPwlDrzVR3TqTLR/view?usp=sharing",
+                "https://drive.google.com/file/d/1OIBPZXgmyZlm6uov8-zrEDfJ015KDT2q/view?usp=sharing",
                 "_blank"
               )
             }
