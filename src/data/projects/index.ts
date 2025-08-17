@@ -6,12 +6,14 @@ import { qnsaiProject } from './qnsai';
 import { carboProject } from './carbo';
 import { proddyProject } from './proddy';
 import { ctrackProject } from './ctrack';
+import { clinassignProject } from './clinassign';
 
 export const projectsdata = [
 	proddyProject,
 	ctrackProject,
 	carboProject,
 	clusterProject,
+	clinassignProject,
 	eventttsProject,
 	qnsaiProject,
 	graphyProject,
