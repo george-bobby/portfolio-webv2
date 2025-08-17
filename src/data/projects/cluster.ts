@@ -1,6 +1,6 @@
 export const clusterProject = {
 	id: 2,
-	title: 'Cluster: AI-Driven University Collaboration Platform',
+	title: 'Cluster - AI-Driven University Collaboration Platform',
 	description:
 		'Implemented AI-driven features for personalized project recommendations and academic collaborations. Developed hackathon team-matching module and enhanced student engagement through intelligent research paper suggestions.',
 	image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c',

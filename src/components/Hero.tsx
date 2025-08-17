@@ -193,7 +193,7 @@ const Hero = () => {
           ref={headingRef}
           className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-relaxed md:leading-relaxed lg:leading-relaxed"
         >
-          <span className="space-x-4">Hey,</span> <span className="space-x-4">I'm</span> <span className="text-primary">George</span> <span className="text-primary">Bobby</span>.
+          <span>Hey,</span> <span>I'm</span> <span className="text-primary">George</span> <span className="text-primary">Bobby</span>.
           <br />
           <div className="mt-4 md:mt-6 lg:mt-8 inline-block relative group w-fit mx-auto">
             <span className="font-bold text-white relative z-10">

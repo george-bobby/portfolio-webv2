@@ -1,6 +1,6 @@
 export const carboProject = {
 	id: 6,
-	title: 'Carbo: AI Carbon Footprint Analyzer and Chatbot',
+	title: 'Carbo - AI Carbon Analyzer and Chatbot',
 	description:
 		'Developed an AI-powered platform analyzing carbon footprints with a chatbot for sustainability insights. Integrated real-time news feed, carpooling features, and personalized sustainability recommendations with over 100 registered users.',
 	image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9',

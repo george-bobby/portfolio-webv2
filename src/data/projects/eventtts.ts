@@ -1,6 +1,6 @@
 export const eventttsProject = {
 	id: 4,
-	title: 'Eventtts: Event Management Fullstack Application',
+	title: 'Eventtts - Event Management Fullstack Platform',
 	description:
 		'Developed a Next.js-based event management system featuring nested events, timetables, and an events calendar. Integrated MongoDB for efficient event data storage and retrieval, Express.js for handling the backend API.',
 	image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678',

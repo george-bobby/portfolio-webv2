@@ -1,6 +1,6 @@
 export const caraeximProject = {
 	id: 1,
-	title: 'Scalable E-Commerce Platform for CaraExim',
+	title: 'CaraExim - Scalable E-Commerce Platform',
 	description:
 		'Designed and optimized a scalable e-commerce platform using the MERN stack, aiding deployment and maintenance. Built with advanced microservices architecture and implemented comprehensive analytics dashboard for business intelligence.',
 	image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc',

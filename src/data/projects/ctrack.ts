@@ -1,6 +1,6 @@
 export const ctrackProject = {
 	id: 8,
-	title: 'C Track - Navigation With Precision',
+	title: 'C Track - Campus Navigation With Precision',
 	description:
 		'Developed a campus navigation system that uses image recognition to detect user location, trained on a manually curated dataset.',
 	image: 'https://images.unsplash.com/photo-1562774053-701939374585',

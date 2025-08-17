@@ -1,6 +1,6 @@
 export const graphyProject = {
 	id: 3,
-	title: 'Graphy: Virtual Assistant with GraphRAG & Secure File Management',
+	title: 'Graphy - Virtual Assistant with Secure File Management',
 	description:
 		'Built a Retrieval-Augmented Generation (RAG)-based virtual assistant using GraphRAG (Neo4j) and Next.js. Engineered a secure document-handling system to ensure user-specific file privacy and data integrity.',
 	image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',

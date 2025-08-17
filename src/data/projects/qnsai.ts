@@ -1,12 +1,11 @@
 export const qnsaiProject = {
 	id: 5,
-	title: 'QnsAI: Question Paper Generation with Fine-Tuned Llama 3.2',
+	title: 'QnsAI - Question Paper Generation SaaS',
 	description:
 		"Implemented AI-driven customizable difficulty levels based on Bloom's Taxonomy. Developed a browser extension leveraging the V8 JavaScript Engine for seamless question preparation.",
 	image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40',
 	tools: [
 		'Llama 3.2',
-		'JavaScript',
 		'QTI',
 		'YouTube API',
 		'V8 Engine',
