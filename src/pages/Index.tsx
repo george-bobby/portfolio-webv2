@@ -3,6 +3,7 @@ import Project from "@/components/Project";
 import Research from "@/components/Research";
 import Skills from "@/components/Skills";
 import BlogSection from "@/components/Blogs";
+import Gallery from "@/components/Gallery";
 import useSmoothScroll from "@/hooks/useSmoothScroll";
 
 const Index = () => {
@@ -13,6 +14,10 @@ const Index = () => {
     <div className="min-h-screen bg-background text-foreground">
       <section id="hero">
         <Hero />
+      </section>
+
+      <section id="gallery">
+        <Gallery />
       </section>
 
       <section id="skills">
