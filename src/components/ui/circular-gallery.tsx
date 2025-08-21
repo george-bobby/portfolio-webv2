@@ -41,31 +41,73 @@ function createTextTexture(
   gl: GL,
   text: string,
   font: string = "bold 30px monospace",
-  color: string = "black"
+  color: string = "black",
+  withShadow: boolean = false,
+  maxWidth?: number
 ): { texture: Texture; width: number; height: number } {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Could not get 2d context");
 
   context.font = font;
-  const metrics = context.measureText(text);
-  const textWidth = Math.ceil(metrics.width);
   const fontSize = getFontSize(font);
-  const textHeight = Math.ceil(fontSize * 1.2);
 
-  canvas.width = textWidth + 20;
-  canvas.height = textHeight + 20;
+  // Handle text wrapping for descriptions
+  let lines: string[] = [text];
+  if (maxWidth && text.length > 50) {
+    lines = wrapText(context, text, maxWidth - 40); // Leave padding
+  }
+
+  const lineHeight = fontSize * 1.3;
+  const textWidth = Math.ceil(Math.max(...lines.map(line => context.measureText(line).width)));
+  const textHeight = Math.ceil(lines.length * lineHeight);
+
+  canvas.width = Math.min(textWidth + 40, maxWidth || textWidth + 40);
+  canvas.height = textHeight + 40;
 
   context.font = font;
-  context.fillStyle = color;
-  context.textBaseline = "middle";
+  context.textBaseline = "top";
   context.textAlign = "center";
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+  // Add shadow effect if requested
+  if (withShadow) {
+    context.shadowColor = "rgba(0, 0, 0, 0.8)";
+    context.shadowBlur = 4;
+    context.shadowOffsetX = 2;
+    context.shadowOffsetY = 2;
+  }
+
+  context.fillStyle = color;
+
+  // Draw each line
+  lines.forEach((line, index) => {
+    const y = 20 + (index * lineHeight);
+    context.fillText(line, canvas.width / 2, y);
+  });
 
   const texture = new Texture(gl, { generateMipmaps: false });
   texture.image = canvas;
   return { texture, width: canvas.width, height: canvas.height };
+}
+
+function wrapText(context: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = words[0];
+
+  for (let i = 1; i < words.length; i++) {
+    const word = words[i];
+    const width = context.measureText(currentLine + " " + word).width;
+    if (width < maxWidth) {
+      currentLine += " " + word;
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  lines.push(currentLine);
+  return lines;
 }
 
 interface TitleProps {
@@ -109,7 +151,8 @@ class Title {
       this.gl,
       this.text,
       this.font,
-      this.textColor
+      this.textColor,
+      false // No shadow for regular titles
     );
     const geometry = new Plane(this.gl);
     const program = new Program(this.gl, {
@@ -168,6 +211,7 @@ interface MediaProps {
   scene: Transform;
   screen: ScreenSize;
   text: string;
+  description: string;
   viewport: Viewport;
   bend: number;
   textColor: string;
@@ -186,6 +230,7 @@ class Media {
   scene: Transform;
   screen: ScreenSize;
   text: string;
+  description: string;
   viewport: Viewport;
   bend: number;
   textColor: string;
@@ -194,6 +239,7 @@ class Media {
   program!: Program;
   plane!: Mesh;
   title!: Title;
+  descriptionTitle!: Title;
   scale!: number;
   padding!: number;
   width!: number;
@@ -202,6 +248,7 @@ class Media {
   speed: number = 0;
   isBefore: boolean = false;
   isAfter: boolean = false;
+  isHovered: boolean = false;
 
   constructor({
     geometry,
@@ -213,6 +260,7 @@ class Media {
     scene,
     screen,
     text,
+    description,
     viewport,
     bend,
     textColor,
@@ -228,6 +276,7 @@ class Media {
     this.scene = scene;
     this.screen = screen;
     this.text = text;
+    this.description = description;
     this.viewport = viewport;
     this.bend = bend;
     this.textColor = textColor;
@@ -236,6 +285,7 @@ class Media {
     this.createShader();
     this.createMesh();
     this.createTitle();
+    this.createDescriptionTitle();
     this.onResize();
   }
 
@@ -266,13 +316,14 @@ class Media {
         uniform vec2 uPlaneSizes;
         uniform sampler2D tMap;
         uniform float uBorderRadius;
+        uniform float uHover;
         varying vec2 vUv;
-        
+
         float roundedBoxSDF(vec2 p, vec2 b, float r) {
           vec2 d = abs(p) - b;
           return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
         }
-        
+
         void main() {
           vec2 ratio = vec2(
             min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
@@ -283,13 +334,20 @@ class Media {
             vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
           );
           vec4 color = texture2D(tMap, uv);
-          
+
+          // Convert to grayscale
+          float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+          vec3 grayColor = vec3(gray);
+
+          // Mix between grayscale and original color based on hover state
+          vec3 finalColor = mix(grayColor, color.rgb, uHover);
+
           float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
           if(d > 0.0) {
             discard;
           }
-          
-          gl_FragColor = vec4(color.rgb, 1.0);
+
+          gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
       uniforms: {
@@ -299,6 +357,7 @@ class Media {
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius },
+        uHover: { value: 0 },
       },
       transparent: true,
     });
@@ -333,6 +392,86 @@ class Media {
     });
   }
 
+  createDescriptionTitle() {
+    // Create a custom description text with shadow and proper sizing
+    const descriptionFont = this.font ? this.font.replace(/\d+px/, "14px") : "bold 14px sans-serif";
+    const maxWidth = this.plane.scale.x * 200; // Scale relative to plane size
+
+    const { texture, width, height } = createTextTexture(
+      this.gl,
+      this.description,
+      descriptionFont,
+      "#ffffff",
+      true, // Enable shadow
+      maxWidth
+    );
+
+    const geometry = new Plane(this.gl);
+    const program = new Program(this.gl, {
+      vertex: `
+        attribute vec3 position;
+        attribute vec2 uv;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragment: `
+        precision highp float;
+        uniform sampler2D tMap;
+        uniform float uOpacity;
+        varying vec2 vUv;
+        void main() {
+          vec4 color = texture2D(tMap, vUv);
+          if (color.a < 0.1) discard;
+          gl_FragColor = vec4(color.rgb, color.a * uOpacity);
+        }
+      `,
+      uniforms: {
+        tMap: { value: texture },
+        uOpacity: { value: 0.0 }
+      },
+      transparent: true,
+    });
+
+    this.descriptionTitle = {
+      mesh: new Mesh(this.gl, { geometry, program }),
+      gl: this.gl,
+      plane: this.plane,
+      renderer: this.renderer,
+      text: this.description,
+      textColor: "#ffffff",
+      font: descriptionFont,
+      createMesh: () => { }
+    };
+
+    // Scale and position the description to fit within the card
+    const aspect = width / height;
+    const maxDescriptionWidth = this.plane.scale.x * 0.8; // 80% of card width
+    const maxDescriptionHeight = this.plane.scale.y * 0.6; // 60% of card height
+
+    let descriptionWidth = maxDescriptionWidth;
+    let descriptionHeight = descriptionWidth / aspect;
+
+    // If height is too large, scale down based on height
+    if (descriptionHeight > maxDescriptionHeight) {
+      descriptionHeight = maxDescriptionHeight;
+      descriptionWidth = descriptionHeight * aspect;
+    }
+
+    this.descriptionTitle.mesh.scale.set(descriptionWidth, descriptionHeight, 1);
+
+    // Position in the center of the card
+    this.descriptionTitle.mesh.position.set(0, 0, 0.01); // Slightly in front
+    this.descriptionTitle.mesh.setParent(this.plane);
+
+    // Initially hide the description
+    this.descriptionTitle.mesh.visible = false;
+  }
+
   update(
     scroll: { current: number; last: number },
     direction: "right" | "left"
@@ -364,6 +503,20 @@ class Media {
     this.program.uniforms.uTime.value += 0.04;
     this.program.uniforms.uSpeed.value = this.speed - 0.5;
 
+    // Update hover state
+    const targetHover = this.isHovered ? 1 : 0;
+    const currentHover = this.program.uniforms.uHover.value;
+    this.program.uniforms.uHover.value = lerp(currentHover, targetHover, 0.1);
+
+    // Animate description opacity
+    const targetOpacity = this.isHovered ? 1 : 0;
+    const currentOpacity = this.descriptionTitle.mesh.program.uniforms.uOpacity.value;
+    const newOpacity = lerp(currentOpacity, targetOpacity, 0.15);
+    this.descriptionTitle.mesh.program.uniforms.uOpacity.value = newOpacity;
+
+    // Show/hide description based on opacity
+    this.descriptionTitle.mesh.visible = newOpacity > 0.01;
+
     const planeOffset = this.plane.scale.x / 2;
     const viewportOffset = this.viewport.width / 2;
     this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
@@ -376,6 +529,10 @@ class Media {
       this.extra += this.widthTotal;
       this.isBefore = this.isAfter = false;
     }
+  }
+
+  setHover(isHovered: boolean) {
+    this.isHovered = isHovered;
   }
 
   onResize({
@@ -409,7 +566,7 @@ class Media {
 }
 
 interface AppConfig {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; description: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
@@ -432,7 +589,7 @@ class App {
   scene!: Transform;
   planeGeometry!: Plane;
   medias: Media[] = [];
-  mediasImages: { image: string; text: string }[] = [];
+  mediasImages: { image: string; text: string; description: string }[] = [];
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf: number = 0;
@@ -442,6 +599,7 @@ class App {
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
+  boundOnMouseMove!: (e: MouseEvent) => void;
 
   isDown: boolean = false;
   start: number = 0;
@@ -495,7 +653,7 @@ class App {
   }
 
   createMedias(
-    items: { image: string; text: string }[] | undefined,
+    items: { image: string; text: string; description: string }[] | undefined,
     bend: number = 1,
     textColor: string,
     borderRadius: number,
@@ -514,6 +672,7 @@ class App {
         scene: this.scene,
         screen: this.screen,
         text: data.text,
+        description: data.description,
         viewport: this.viewport,
         bend,
         textColor,
@@ -552,6 +711,29 @@ class App {
     const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
     const item = width * itemIndex;
     this.scroll.target = this.scroll.target < 0 ? -item : item;
+  }
+
+  onMouseMove(e: MouseEvent) {
+    const rect = this.container.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Convert screen coordinates to world coordinates
+    const normalizedX = (x / this.screen.width) * 2 - 1;
+    const normalizedY = -((y / this.screen.height) * 2 - 1);
+
+    // Check which media is being hovered
+    this.medias.forEach((media) => {
+      const mediaX = media.plane.position.x;
+      const mediaWidth = media.plane.scale.x;
+      const mediaHeight = media.plane.scale.y;
+
+      // Simple bounds check - this is approximate
+      const isHovered = Math.abs(normalizedX * this.viewport.width / 2 - mediaX) < mediaWidth / 2 &&
+        Math.abs(normalizedY * this.viewport.height / 2 - media.plane.position.y) < mediaHeight / 2;
+
+      media.setHover(isHovered);
+    });
   }
 
   onResize() {
@@ -595,6 +777,7 @@ class App {
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
+    this.boundOnMouseMove = this.onMouseMove.bind(this);
     window.addEventListener("resize", this.boundOnResize);
     window.addEventListener("mousewheel", this.boundOnWheel);
     window.addEventListener("wheel", this.boundOnWheel);
@@ -604,6 +787,7 @@ class App {
     window.addEventListener("touchstart", this.boundOnTouchDown);
     window.addEventListener("touchmove", this.boundOnTouchMove);
     window.addEventListener("touchend", this.boundOnTouchUp);
+    this.container.addEventListener("mousemove", this.boundOnMouseMove);
   }
 
   destroy() {
@@ -617,6 +801,7 @@ class App {
     window.removeEventListener("touchstart", this.boundOnTouchDown);
     window.removeEventListener("touchmove", this.boundOnTouchMove);
     window.removeEventListener("touchend", this.boundOnTouchUp);
+    this.container.removeEventListener("mousemove", this.boundOnMouseMove);
     if (
       this.renderer &&
       this.renderer.gl &&
@@ -630,7 +815,7 @@ class App {
 }
 
 interface CircularGalleryProps {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; description: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
