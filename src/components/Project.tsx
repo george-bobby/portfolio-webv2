@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { projectsdata } from "@/data/projects";
 import { useIsMobile } from "@/utils/use-mobile";
+import SplitType from "split-type";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,58 @@ const Project = () => {
   const navigate = useNavigate();
   const [showViewAll, setShowViewAll] = useState(false);
   const isMobile = useIsMobile();
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+
+  // GSAP animation for heading
+  useEffect(() => {
+    if (!headingRef.current) return;
+
+    const ctx = gsap.context(() => {
+      if (!isMobile) {
+        const titleText = new SplitType(headingRef.current, {
+          types: "chars",
+          tagName: "span",
+        });
+        if (titleText.chars) {
+          gsap.from(titleText.chars, {
+            opacity: 0,
+            y: 20,
+            stagger: 0.02,
+            duration: 0.6,
+            ease: "back.out(1.7)",
+            delay: 0.2,
+          });
+          titleText.chars.forEach((char) => {
+            char.addEventListener("mouseenter", () => {
+              gsap.to(char, {
+                scale: 1.2,
+                color: "#9333EA",
+                duration: 0.2,
+                ease: "power2.out",
+              });
+            });
+            char.addEventListener("mouseleave", () => {
+              gsap.to(char, {
+                scale: 1,
+                color: "inherit",
+                duration: 0.2,
+                ease: "power2.in",
+              });
+            });
+          });
+        }
+      } else {
+        gsap.from(headingRef.current, {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, [isMobile]);
 
   useEffect(() => {
     // Skip effect if window is not defined (SSR)
@@ -82,6 +135,14 @@ const Project = () => {
       ref={sectionRef}
       className={`relative ${isMobile ? '' : 'h-screen'} overflow-hidden bg-gradient-to-br from-background via-background/90 to-background will-change-transform`}
     >
+      <div className="container mx-auto px-4 pt-20 mb-8">
+        <h2
+          ref={headingRef}
+          className="text-5xl md:text-6xl font-heading font-bold mb-6"
+        >
+          Project Case Studies
+        </h2>
+      </div>
       <div
         ref={containerRef}
         className={`${isMobile ? 'flex flex-col gap-8 py-12 px-4' : 'flex h-full absolute top-0 left-0'} will-change-transform`}

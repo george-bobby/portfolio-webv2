@@ -4,12 +4,17 @@ import { ArrowRight, Book, Calendar, Building2, Users, ExternalLink } from "luci
 import { cn } from "@/utils/tw-merge";
 import { motion as m, useReducedMotion, useInView } from "framer-motion";
 import papers from "@/data/papers";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
+import SplitType from "split-type";
+import { useIsMobile } from "@/utils/use-mobile";
 
 const Research = () => {
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const isMobile = useIsMobile();
 
   const containerVariants = {
     hidden: prefersReducedMotion ? { opacity: 1 } : { opacity: 0 },
@@ -45,6 +50,57 @@ const Research = () => {
     }
   };
 
+  // GSAP animation for heading
+  useEffect(() => {
+    if (!headingRef.current) return;
+
+    const ctx = gsap.context(() => {
+      if (!isMobile) {
+        const titleText = new SplitType(headingRef.current, {
+          types: "chars",
+          tagName: "span",
+        });
+        if (titleText.chars) {
+          gsap.from(titleText.chars, {
+            opacity: 0,
+            y: 20,
+            stagger: 0.02,
+            duration: 0.6,
+            ease: "back.out(1.7)",
+            delay: 0.2,
+          });
+          titleText.chars.forEach((char) => {
+            char.addEventListener("mouseenter", () => {
+              gsap.to(char, {
+                scale: 1.2,
+                color: "#9333EA",
+                duration: 0.2,
+                ease: "power2.out",
+              });
+            });
+            char.addEventListener("mouseleave", () => {
+              gsap.to(char, {
+                scale: 1,
+                color: "inherit",
+                duration: 0.2,
+                ease: "power2.in",
+              });
+            });
+          });
+        }
+      } else {
+        gsap.from(headingRef.current, {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, [isMobile]);
+
   return (
     <section ref={sectionRef} className="min-h-screen py-24 px-6 bg-background">
       <m.div
@@ -57,7 +113,7 @@ const Research = () => {
           variants={titleVariants}
           className="mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+          <h2 ref={headingRef} className="text-5xl md:text-6xl font-heading font-bold mb-6">
             Research Papers
           </h2>
           {/* <p className="text-xl text-muted-foreground max-w-2xl">

@@ -1,6 +1,9 @@
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
+import gsap from "gsap";
+import SplitType from "split-type";
+import { useIsMobile } from "@/utils/use-mobile";
 
 import {
   Code, Database, Cloud, PenTool, Server, Laptop, Rocket,
@@ -79,6 +82,8 @@ const skills: Skill[] = [
 const Skills = () => {
   const marqueeRef1 = useRef<HTMLDivElement>(null);
   const marqueeRef2 = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const duplicateSkills = (marqueeElement: HTMLDivElement) => {
@@ -90,6 +95,57 @@ const Skills = () => {
     if (marqueeRef2.current) duplicateSkills(marqueeRef2.current);
   }, []);
 
+  // GSAP animation for heading
+  useEffect(() => {
+    if (!headingRef.current) return;
+
+    const ctx = gsap.context(() => {
+      if (!isMobile) {
+        const titleText = new SplitType(headingRef.current, {
+          types: "chars",
+          tagName: "span",
+        });
+        if (titleText.chars) {
+          gsap.from(titleText.chars, {
+            opacity: 0,
+            y: 20,
+            stagger: 0.02,
+            duration: 0.6,
+            ease: "back.out(1.7)",
+            delay: 0.2,
+          });
+          titleText.chars.forEach((char) => {
+            char.addEventListener("mouseenter", () => {
+              gsap.to(char, {
+                scale: 1.2,
+                color: "#9333EA",
+                duration: 0.2,
+                ease: "power2.out",
+              });
+            });
+            char.addEventListener("mouseleave", () => {
+              gsap.to(char, {
+                scale: 1,
+                color: "inherit",
+                duration: 0.2,
+                ease: "power2.in",
+              });
+            });
+          });
+        }
+      } else {
+        gsap.from(headingRef.current, {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, [isMobile]);
+
   const half = Math.ceil(skills.length / 2);
   const firstHalf = skills.slice(0, half);
   const secondHalf = skills.slice(half);
@@ -97,14 +153,12 @@ const Skills = () => {
   return (
     <section id="skills" className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <motion.h2
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
+        <h2
+          ref={headingRef}
           className="text-4xl font-heading font-bold mb-4"
         >
           Tools and Frameworks that Power my Creations
-        </motion.h2>
+        </h2>
         {/* <motion.p
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}

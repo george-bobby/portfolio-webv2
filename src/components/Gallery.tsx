@@ -1,4 +1,8 @@
 import { Component } from "./ui/circular-gallery";
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
+import SplitType from "split-type";
+import { useIsMobile } from "@/utils/use-mobile";
 
 const items = [
     {
@@ -64,19 +68,83 @@ const items = [
 ];
 
 const Gallery = () => {
+    const headingRef = useRef<HTMLHeadingElement | null>(null);
+    const isMobile = useIsMobile();
+
+    // GSAP animation for heading
+    useEffect(() => {
+        if (!headingRef.current) return;
+
+        const ctx = gsap.context(() => {
+            if (!isMobile) {
+                const titleText = new SplitType(headingRef.current, {
+                    types: "chars",
+                    tagName: "span",
+                });
+                if (titleText.chars) {
+                    gsap.from(titleText.chars, {
+                        opacity: 0,
+                        y: 20,
+                        stagger: 0.02,
+                        duration: 0.6,
+                        ease: "back.out(1.7)",
+                        delay: 0.2,
+                    });
+                    titleText.chars.forEach((char) => {
+                        char.addEventListener("mouseenter", () => {
+                            gsap.to(char, {
+                                scale: 1.2,
+                                color: "#9333EA",
+                                duration: 0.2,
+                                ease: "power2.out",
+                            });
+                        });
+                        char.addEventListener("mouseleave", () => {
+                            gsap.to(char, {
+                                scale: 1,
+                                color: "inherit",
+                                duration: 0.2,
+                                ease: "power2.in",
+                            });
+                        });
+                    });
+                }
+            } else {
+                gsap.from(headingRef.current, {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.8,
+                    ease: "power2.out",
+                });
+            }
+        });
+
+        return () => ctx.revert();
+    }, [isMobile]);
+
     return (
-        <div className="flex w-full h-screen justify-center items-center bg-black">
-            <div
-                className="w-full max-w-screen-xl mx-auto h-[80vh] overflow-hidden relative bg-black border-none shadow-none"
-            >
-                <Component
-                    items={items}
-                    bend={3}
-                    textColor="#ffffff"
-                    borderRadius={0.05}
-                />
+        <section id="workshops" className="py-20 relative overflow-hidden bg-black">
+            <div className="container mx-auto px-4 mb-16">
+                <h2
+                    ref={headingRef}
+                    className="text-5xl md:text-6xl font-heading font-bold mb-6 text-white"
+                >
+                    Workshops and Hackathons
+                </h2>
             </div>
-        </div>
+            <div className="flex w-full h-screen justify-center items-center">
+                <div
+                    className="w-full max-w-screen-xl mx-auto h-[80vh] overflow-hidden relative bg-black border-none shadow-none"
+                >
+                    <Component
+                        items={items}
+                        bend={3}
+                        textColor="#ffffff"
+                        borderRadius={0.05}
+                    />
+                </div>
+            </div>
+        </section>
     );
 };
 
