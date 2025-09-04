@@ -7,7 +7,7 @@ const papers = [
 		publication: 'Springer',
 		tags: ['NLP', 'LSA', 'Word2Vec', 'Seq2Seq', 'Question Paper Generation'],
 		slug: 'automatic-question-paper-generation',
-		link: 'https://link.springer.com/article/10.1007/s11227-053-5667-8',
+		link: 'https://link.springer.com/chapter/10.1007/978-3-032-00793-3_27',
 		image: '/paper/paper-1.webp',
 	},
 	{
