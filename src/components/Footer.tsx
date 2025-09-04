@@ -2,13 +2,10 @@
 import React from "react";
 import ContactForm from "./ContactForm";
 import ContactInfo from "./ContactInfo";
-import FloatingIcons from "./FloatingIcons";
 
 const Footer = () => {
   return (
     <footer className="py-20 bg-gradient-to-br from-background via-background/90 to-background relative overflow-hidden">
-      <FloatingIcons />
-
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
           <ContactForm />

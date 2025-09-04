@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
-import FloatingIcons from "./FloatingIcons";
+import DropletsBG from "./DropletsBG";
 import { useIsMobile } from "@/utils/use-mobile";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -187,39 +187,21 @@ const Hero = () => {
       ref={sectionRef}
       className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden text-center px-4"
     >
-      <FloatingIcons />
+      <DropletsBG />
       <div className="relative z-10 flex flex-col items-center">
         <h1
           ref={headingRef}
-          className="text-4xl md:text-6xl lg:text-8xl font-heading font-bold mb-6 leading-relaxed md:leading-relaxed lg:leading-relaxed"
+          className="text-4xl md:text-6xl lg:text-8xl font-heading font-bold mb-10 leading-relaxed md:leading-relaxed lg:leading-relaxed"
         >
-          <div>
-            <span>Hey,</span> <span>I'm</span> <span className="text-primary">George</span> <span className="text-primary">Bobby</span>.
+          <div className="font-[600] tracking-wide">
+            Turning <span className="text-primary">projects</span> into <span className="text-primary">products</span>
           </div>
         </h1>
 
-        <div className="mt-4 md:mt-6 lg:mt-8 inline-block relative group w-fit mx-auto">
-          <span className="font-bold text-white relative z-10 text-lg md:text-xl lg:text-6xl">
-            <span className="text-muted-foreground mr-4">Turning</span>
-            <span className="mx-4 relative inline-block hover:text-primary transition-colors duration-300 projects-text">
-              Projects
-            </span>
-            <span className="text-muted-foreground mx-4">into</span>
-            <span className="mx-4 relative inline-block hover:text-primary transition-colors duration-300 products-text">
-              Products
-            </span>
-          </span>
-
-          {/* Container for the GIF arrow - positioned relative to this text */}
-          <div className="arrow-container relative w-full h-20"></div>
-        </div>
-
-        {/* Small gap between animation area and buttons */}
-        <div className="h-6"></div>
 
         <div
           ref={buttonsRef}
-          className="flex flex-wrap gap-4 justify-center items-center mt-6"
+          className="flex flex-wrap gap-4 justify-center items-center mt-2"
         >
           <Button
             size="lg"

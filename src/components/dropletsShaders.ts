@@ -1,3 +1,17 @@
+// Shaders ported from hero-new/src/shaders
+// Using RawShaderMaterial-compatible shaders
+
+export const baseVert = `
+attribute vec3 position;
+varying vec2 vTexCoord;
+
+void main() {
+    vTexCoord = position.xy * 0.5 + 0.5;
+    gl_Position = vec4(position, 1.0);
+}
+`;
+
+export const outputFrag = `
 precision mediump float;
 
 const int TRAIL_LENGTH = 15;
@@ -29,7 +43,6 @@ float noise3D(vec3 p) {
     float a111 = rnd3D(i + vec3(1.0, 1.0, 1.0)); // (1,1,1)
 
     vec3 u = f * f * (3.0 - 2.0 * f);
-    // vec3 u = f*f*f*(f*(f*6.0-15.0)+10.0);
 
     float k0 = a000;
     float k1 = a100 - a000;
@@ -132,10 +145,11 @@ void main() {
         vec3 normal = generateNormal(ray);
 
         color = dropletColor(normal, rayDirection);
-        // color = normal; // for debug
     }
 
     vec3 finalColor = pow(color, vec3(7.0));
 
     gl_FragColor = vec4(finalColor, 1.0);
 }
+`;
+
