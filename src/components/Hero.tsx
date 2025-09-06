@@ -6,7 +6,6 @@ import { FaGithub } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SplitType from "split-type";
 import DropletsBG from "./DropletsBG";
 import { useIsMobile } from "@/utils/use-mobile";
 
@@ -30,47 +29,13 @@ const Hero = () => {
     }
 
     const ctx = gsap.context(() => {
-      if (!isMobile) {
-        const titleText = new SplitType(headingRef.current, {
-          types: "chars",
-          tagName: "span",
-        });
-        if (titleText.chars) {
-          gsap.from(titleText.chars, {
-            opacity: 0,
-            y: 20,
-            stagger: 0.02,
-            duration: 0.6,
-            ease: "back.out(1.7)",
-            delay: 0.2,
-          });
-          titleText.chars.forEach((char) => {
-            char.addEventListener("mouseenter", () => {
-              gsap.to(char, {
-                scale: 1.2,
-                color: "#9333EA",
-                duration: 0.2,
-                ease: "power2.out",
-              });
-            });
-            char.addEventListener("mouseleave", () => {
-              gsap.to(char, {
-                scale: 1,
-                color: "inherit",
-                duration: 0.2,
-                ease: "power2.in",
-              });
-            });
-          });
-        }
-      } else {
-        gsap.from(headingRef.current, {
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          ease: "power2.out",
-        });
-      }
+      // Simple fade-up for heading (no per-letter or hover pulse animations)
+      gsap.from(headingRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: "power2.out",
+      });
 
       gsap.to(scrollIndicatorRef.current, {
         y: 10,
@@ -150,13 +115,6 @@ const Hero = () => {
         opacity: 1,
         duration: 0.3,
       });
-
-      // Highlight "Products" text
-      gsap.to(productsElement, {
-        color: "#9333EA",
-        duration: 0.3,
-        ease: "power2.out",
-      });
     });
 
     projectsElement.addEventListener("mouseleave", () => {
@@ -166,12 +124,7 @@ const Hero = () => {
         duration: 0.3,
       });
 
-      // Reset "Products" text
-      gsap.to(productsElement, {
-        color: "inherit",
-        duration: 0.3,
-        ease: "power2.in",
-      });
+      // Keep text color unchanged (white)
     });
 
     // Cleanup
@@ -191,10 +144,10 @@ const Hero = () => {
       <div className="relative z-10 flex flex-col items-center">
         <h1
           ref={headingRef}
-          className="text-4xl md:text-6xl lg:text-8xl font-heading font-bold mb-10 leading-relaxed md:leading-relaxed lg:leading-relaxed"
+          className="text-4xl md:text-6xl lg:text-8xl font-heading font-bold mb-10 leading-relaxed md:leading-relaxed lg:leading-relaxed text-white"
         >
           <div className="font-[600] tracking-wide">
-            Turning <span className="text-primary">projects</span> into <span className="text-primary">products</span>
+            Turning <span className="projects-text">projects</span> into <span className="products-text">products</span>
           </div>
         </h1>
 
