@@ -36,10 +36,11 @@ const Research = () => {
   };
 
   const titleVariants = {
-    hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 },
+    hidden: prefersReducedMotion ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -10, scale: 0.98 },
     visible: {
       opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
         duration: 0.5,
         ease: "easeOut"
@@ -55,14 +56,16 @@ const Research = () => {
         animate={isInView ? "visible" : "hidden"}
         className="container max-w-7xl mx-auto"
       >
-        <motion.div
+        <motion.h2
           variants={titleVariants}
-          className="mb-16"
+          whileHover={{
+            scale: 1.05,
+            transition: { duration: 0.2 }
+          }}
+          className="text-4xl md:text-5xl font-heading font-bold mb-12 text-center text-white animate-pulse"
         >
-          <h2 className="text-5xl md:text-6xl font-heading font-bold mb-6 hover:text-primary transition-colors duration-300">
-            Research Papers
-          </h2>
-        </motion.div>
+          Research Papers
+        </motion.h2>
 
         <motion.div
           variants={containerVariants}

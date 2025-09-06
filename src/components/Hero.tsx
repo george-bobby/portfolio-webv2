@@ -147,7 +147,7 @@ const Hero = () => {
           className="text-4xl md:text-6xl lg:text-8xl font-heading font-bold mb-10 leading-relaxed md:leading-relaxed lg:leading-relaxed text-white"
         >
           <div className="font-[600] tracking-wide">
-            Turning <span className="projects-text">projects</span> into <span className="products-text">products</span>
+            Projects → Products
           </div>
         </h1>
 

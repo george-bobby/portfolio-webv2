@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import ContactForm from "./ContactForm";
 import ContactInfo from "./ContactInfo";
 
@@ -14,6 +15,26 @@ const Footer = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
+        {/* Section title */}
+        <motion.h2
+          initial={{ opacity: 0, y: -10, scale: 0.98 }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+              duration: 0.5,
+              ease: "easeOut"
+            }
+          }}
+          whileHover={{
+            scale: 1.05,
+            transition: { duration: 0.2 }
+          }}
+          className="text-4xl md:text-5xl font-heading font-bold mb-12 text-center text-white animate-pulse"
+        >
+          Contact Me
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
           <ContactForm />
           <ContactInfo />

@@ -153,12 +153,26 @@ const Skills = () => {
   return (
     <section id="skills" className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2
+        <motion.h2
           ref={headingRef}
-          className="text-4xl font-heading font-bold mb-4"
+          initial={{ opacity: 0, y: -10, scale: 0.98 }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+              duration: 0.5,
+              ease: "easeOut"
+            }
+          }}
+          whileHover={{
+            scale: 1.05,
+            transition: { duration: 0.2 }
+          }}
+          className="text-4xl md:text-5xl font-heading font-bold mb-12 text-center text-white animate-pulse"
         >
-          Tools and Frameworks that Power my Creations
-        </h2>
+          Tools and Frameworks
+        </motion.h2>
         {/* <motion.p
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}

@@ -1,5 +1,6 @@
 import { Component } from "./ui/circular-gallery";
 import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import SplitType from "split-type";
 import { useIsMobile } from "@/utils/use-mobile";
@@ -125,12 +126,26 @@ const Gallery = () => {
     return (
         <section id="workshops" className="py-20 relative overflow-hidden bg-black">
             <div className="container mx-auto px-4 mb-16">
-                <h2
+                <motion.h2
                     ref={headingRef}
-                    className="text-5xl md:text-6xl font-heading font-bold mb-6 text-white"
+                    initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                    whileInView={{
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        transition: {
+                            duration: 0.5,
+                            ease: "easeOut"
+                        }
+                    }}
+                    whileHover={{
+                        scale: 1.05,
+                        transition: { duration: 0.2 }
+                    }}
+                    className="text-4xl md:text-5xl font-heading font-bold mb-12 text-center text-white animate-pulse"
                 >
                     Workshops and Hackathons
-                </h2>
+                </motion.h2>
             </div>
             <div className="flex w-full h-screen justify-center items-center">
                 <div

@@ -1,5 +1,6 @@
 
 import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -134,12 +135,26 @@ const Project = () => {
         className={`relative ${isMobile ? 'py-20' : 'h-screen'} bg-gradient-to-br from-background via-background/90 to-background overflow-hidden`}
       >
         <div className="container mx-auto px-4 pt-20 mb-8 pb-10">
-          <h2
+          <motion.h2
             ref={headingRef}
-            className="text-5xl md:text-6xl font-heading font-bold mb-16 text-center"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              transition: {
+                duration: 0.5,
+                ease: "easeOut"
+              }
+            }}
+            whileHover={{
+              scale: 1.05,
+              transition: { duration: 0.2 }
+            }}
+            className="text-4xl md:text-5xl font-heading font-bold mb-12 text-center text-white animate-pulse"
           >
             Project Case Studies
-          </h2>
+          </motion.h2>
         </div>
 
         {/* Horizontal scrolling container */}
