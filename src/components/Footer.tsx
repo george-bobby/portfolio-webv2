@@ -1,4 +1,3 @@
-
 import React from "react";
 import ContactForm from "./ContactForm";
 import ContactInfo from "./ContactInfo";
@@ -6,6 +5,14 @@ import ContactInfo from "./ContactInfo";
 const Footer = () => {
   return (
     <footer className="py-20 bg-gradient-to-br from-background via-background/90 to-background relative overflow-hidden">
+      {/* Animated background layer from footer-new */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[220px] opacity-20">
+        <div className="footer-bg">
+          <div className="footer-bg-one" />
+          <div className="footer-bg-two" />
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
           <ContactForm />
