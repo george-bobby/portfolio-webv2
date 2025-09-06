@@ -1,12 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { blogPosts, BlogPost } from "@/data/posts";
-import { useMemo, memo, useRef, useEffect } from "react";
-import gsap from "gsap";
-import SplitType from "split-type";
-import { useIsMobile } from "@/utils/use-mobile";
+import { memo, useRef } from "react";
 
 const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -100,95 +97,65 @@ const GridPost = memo(({ post, onClick }: PostProps) => (
 
 const BlogSection = () => {
     const navigate = useNavigate();
-    const featuredPost = useMemo(() => blogPosts[0], []);
-    const gridPosts = useMemo(() => blogPosts.slice(1, 5), []);
-    const headingRef = useRef<HTMLHeadingElement | null>(null);
-    const isMobile = useIsMobile();
+    const prefersReducedMotion = useReducedMotion();
+    const sectionRef = useRef<HTMLElement>(null);
+    const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+
+    const featuredPost = blogPosts[0];
+    const gridPosts = blogPosts.slice(1, 5);
 
     // Simplified animation variants
-    const containerVariants = useMemo(() => ({
-        hidden: { opacity: 0 },
+    const containerVariants = {
+        hidden: prefersReducedMotion ? { opacity: 1 } : { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1
+                staggerChildren: 0.1,
+                duration: 0.3
             }
         }
-    }), []);
+    };
 
-    const itemVariants = useMemo(() => ({
-        hidden: { opacity: 0, y: 20 },
+    const itemVariants = {
+        hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
         visible: {
             opacity: 1,
-            y: 0
-        }
-    }), []);
-
-    // GSAP animation for heading
-    useEffect(() => {
-        if (!headingRef.current) return;
-
-        const ctx = gsap.context(() => {
-            if (!isMobile) {
-                const titleText = new SplitType(headingRef.current, {
-                    types: "chars",
-                    tagName: "span",
-                });
-                if (titleText.chars) {
-                    gsap.from(titleText.chars, {
-                        opacity: 0,
-                        y: 20,
-                        stagger: 0.02,
-                        duration: 0.6,
-                        ease: "back.out(1.7)",
-                        delay: 0.2,
-                    });
-                    titleText.chars.forEach((char) => {
-                        char.addEventListener("mouseenter", () => {
-                            gsap.to(char, {
-                                scale: 1.2,
-                                color: "#9333EA",
-                                duration: 0.2,
-                                ease: "power2.out",
-                            });
-                        });
-                        char.addEventListener("mouseleave", () => {
-                            gsap.to(char, {
-                                scale: 1,
-                                color: "inherit",
-                                duration: 0.2,
-                                ease: "power2.in",
-                            });
-                        });
-                    });
-                }
-            } else {
-                gsap.from(headingRef.current, {
-                    opacity: 0,
-                    y: 20,
-                    duration: 0.8,
-                    ease: "power2.out",
-                });
+            y: 0,
+            transition: {
+                duration: 0.4,
+                ease: "easeOut"
             }
-        });
+        }
+    };
 
-        return () => ctx.revert();
-    }, [isMobile]);
+    const titleVariants = {
+        hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+                ease: "easeOut"
+            }
+        }
+    };
 
     return (
-        <section className="py-20 bg-background">
+        <section ref={sectionRef} className="py-20 bg-background">
             <div className="container px-4 mx-auto">
-                <h2
-                    ref={headingRef}
-                    className="text-4xl font-heading font-bold mb-12"
+                <motion.h2
+                    variants={titleVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                    className="text-4xl font-heading font-bold mb-12 hover:text-primary transition-colors duration-300"
                 >
                     Latest Blog Posts
-                </h2>
+                </motion.h2>
 
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
-                    animate="visible"
+                    animate={isInView ? "visible" : "hidden"}
                     className="flex flex-col lg:flex-row gap-8 mb-12"
                 >
                     {/* Featured Post */}
@@ -218,9 +185,9 @@ const BlogSection = () => {
                 </motion.div>
 
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
                     className="text-center"
                 >
                     <Button
