@@ -441,6 +441,56 @@ const Skills = () => {
     if (marqueeRef2.current) duplicateSkills(marqueeRef2.current);
   }, []);
 
+  // Handle smooth hover animation speed transitions using playbackRate
+  useEffect(() => {
+    const setupMarqueeHover = (container: HTMLDivElement) => {
+      const marqueeElement = container.querySelector('.animate-marquee, .animate-marquee-reverse') as HTMLElement;
+      if (!marqueeElement) return;
+
+      let currentAnimation: Animation | null = null;
+
+      const handleMouseEnter = () => {
+        // Get the current animation
+        const animations = marqueeElement.getAnimations();
+        if (animations.length > 0) {
+          currentAnimation = animations[0];
+          // Smoothly reduce playback rate to slow down
+          if ('playbackRate' in currentAnimation) {
+            (currentAnimation as any).playbackRate = 0.5;
+          }
+        }
+      };
+
+      const handleMouseLeave = () => {
+        // Restore normal speed
+        if (currentAnimation && 'playbackRate' in currentAnimation) {
+          (currentAnimation as any).playbackRate = 1;
+        }
+      };
+
+      container.addEventListener('mouseenter', handleMouseEnter);
+      container.addEventListener('mouseleave', handleMouseLeave);
+
+      return () => {
+        container.removeEventListener('mouseenter', handleMouseEnter);
+        container.removeEventListener('mouseleave', handleMouseLeave);
+      };
+    };
+
+    const cleanupFunctions: (() => void)[] = [];
+
+    // Setup hover for both marquee rows
+    const marqueeRows = document.querySelectorAll('.marquee-row');
+    marqueeRows.forEach((row) => {
+      const cleanup = setupMarqueeHover(row as HTMLDivElement);
+      if (cleanup) cleanupFunctions.push(cleanup);
+    });
+
+    return () => {
+      cleanupFunctions.forEach(cleanup => cleanup());
+    };
+  }, []);
+
   // GSAP animation for heading
   useEffect(() => {
     if (!headingRef.current) return;
@@ -508,7 +558,7 @@ const Skills = () => {
 
         <div className="relative overflow-hidden py-12 flex flex-col gap-16">
           {/* First Marquee Row */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden marquee-row">
             <div ref={marqueeRef1} className="flex gap-8 w-max animate-marquee">
               {firstHalf.map((skill, index) => (
                 <motion.div
@@ -532,7 +582,7 @@ const Skills = () => {
           </div>
 
           {/* Second Marquee Row */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden marquee-row">
             <div ref={marqueeRef2} className="flex gap-8 w-max animate-marquee-reverse">
               {secondHalf.map((skill, index) => (
                 <motion.div
